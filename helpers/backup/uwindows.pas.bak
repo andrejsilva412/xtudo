@@ -1,0 +1,977 @@
+unit uwindows;
+
+{$mode delphi}
+interface
+
+uses
+  StrUtils, LCLIntf, dynLibs, Classes, Forms, Windows, SysUtils, ComObj,
+  Registry, TypInfo, Graphics, DwmApi, ShellApi, Controls;
+
+{ Immersive Colors. A partir do Windows 8 foi introduzido um novo recurso chamado
+  ImmersiveColors, com base nas configurações do SO e WallPaper
+  https://github.com/MahdiSafsafi/ImmersiveColors
+}
+
+const
+  WS_EX_LAYERED = $80000;
+  LWA_COLORKEY  = 1;
+  themelib = 'uxtheme.dll';
+
+function GetImmersiveColorFromColorSetEx(dwImmersiveColorSet: UInt;
+  dwImmersiveColorType: Integer; bIgnoreHighContrast: Bool;
+  dwHighContrastCacheMode: UInt): UInt; stdcall; external themelib index 95;
+
+type
+  _MARGINS = packed record
+    cxLeftWidth    : Integer;
+    cxRightWidth   : Integer;
+    cyTopHeight    : Integer;
+    cyBottomHeight : Integer;
+  end;
+
+type
+  PAlphaColor = ^TAlphaColor;
+  TAlphaColor = type Cardinal;
+  PMargins = ^_MARGINS;
+  TMargins = _MARGINS;
+
+  DwmIsCompositionEnabledFunc      = function(pfEnabled: PBoolean): HRESULT; stdcall;
+  DwmExtendFrameIntoClientAreaFunc = function(destWnd: HWND; const pMarInset: PMargins): HRESULT; stdcall;
+  SetLayeredWindowAttributesFunc   = function(destWnd: HWND; cKey: TColor; bAlpha: Byte; dwFlags: DWord): BOOL; stdcall;
+
+type
+  {$REGION 'ImmersiveColorType'}
+  TImmersiveColorType = (
+ImmersiveStartApplication,
+ImmersiveApplicationBackground,
+ImmersiveApplicationBackgroundDarkTheme,
+ImmersiveBootBackground,
+ImmersiveBootConfirmationButton,
+ImmersiveBootConfirmationButtonBackgroundHover,
+ImmersiveBootConfirmationButtonBorderDisabled,
+ImmersiveBootDefaultConfirmationButtonBackgroundHover,
+ImmersiveBootDefaultConfirmationButtonBackgroundRest,
+ImmersiveBootEditBackground,
+ImmersiveBootEditBackgroundHover,
+ImmersiveBootEditBorderDisabled,
+ImmersiveBootErrorText,
+ImmersiveBootMenuButtonMouseHover,
+ImmersiveBootTextLinkPressed,
+ImmersiveControlAppDefaultDarkButtonBackgroundHover,
+ImmersiveControlAppDefaultDarkButtonBackgroundRest,
+ImmersiveControlAppLightToggleTrackFillEnabled,
+ImmersiveControlBlackButtonDisabled,
+ImmersiveControlContextMenuBackgroundHover,
+ImmersiveControlContextMenuBackgroundPressed,
+ImmersiveControlContextMenuBackgroundRest,
+ImmersiveControlContextMenuSeparator,
+ImmersiveControlDarkAppButtonBackgroundDisabled,
+ImmersiveControlDarkAppButtonTextDisabled,
+ImmersiveControlDarkLinkHover,
+ImmersiveControlDarkLinkPressed,
+ImmersiveControlDarkLinkRest,
+ImmersiveControlDarkPanningIndicator,
+ImmersiveControlDarkProgressForeground,
+ImmersiveControlDarkRichEditButtonBackgroundHover,
+ImmersiveControlDarkRichEditHighlight,
+ImmersiveControlDarkRoundButtonFillLayerDisabled,
+ImmersiveControlDarkRoundButtonFillLayerHover,
+ImmersiveControlDarkRoundButtonGlyphDisabled,
+ImmersiveControlDarkRoundButtonGlyphLayerPressed,
+ImmersiveControlDarkScrollbarButtonGlyphPressed,
+ImmersiveControlDarkScrollbarButtonRest,
+ImmersiveControlDarkSelectBackgroundPressed,
+ImmersiveControlDarkSelectHighlightedSecondaryTextPressed,
+ImmersiveControlDarkSelectHighlightSelectedHover,
+ImmersiveControlDarkSliderThumbBorderDisabled,
+ImmersiveControlDarkSliderTrackBackgroundDisabled,
+ImmersiveControlDarkSliderTrackBackgroundHover,
+ImmersiveControlDarkSliderTrackBackgroundPressed,
+ImmersiveControlDarkSliderTrackBufferingDisabled,
+ImmersiveControlDarkSliderTrackBufferingHover,
+ImmersiveControlDarkSliderTrackBufferingPressed,
+ImmersiveControlDarkSliderTrackBufferingRest,
+ImmersiveControlDarkSliderTrackFillDisabled,
+ImmersiveControlDarkToggleThumbDisabled,
+ImmersiveControlDarkToggleTrackBackgroundDisabled,
+ImmersiveControlDarkToggleTrackBackgroundEnabled,
+ImmersiveControlDefaultLightButtonBackgroundDisabled,
+ImmersiveControlLightButtonBackgroundHover,
+ImmersiveControlLightButtonBackgroundRest,
+ImmersiveControlLightCheckboxBackgroundDisabled,
+ImmersiveControlLightLinkHover,
+ImmersiveControlLightLinkPressed,
+ImmersiveControlLightLinkRest,
+ImmersiveControlLightPanningIndicator,
+ImmersiveControlLightRadioButtonLabelDisabled,
+ImmersiveControlLightRadioButtonSelectedBackgroundDisabled,
+ImmersiveControlLightRadioButtonSelectedBorderRest,
+ImmersiveControlLightRadioButtonSelectedGlyphDisabled,
+ImmersiveControlLightRoundButtonFillLayerHover,
+ImmersiveControlLightScrollbarButtonHover,
+ImmersiveControlLightScrollbarButtonPressed,
+ImmersiveControlLightScrollbarButtonRest,
+ImmersiveControlLightSelectBorderPressed,
+ImmersiveControlLightSliderTrackBackgroundPressed,
+ImmersiveControlLightSliderTrackBackgroundRest,
+ImmersiveControlLightSliderTrackBufferingHover,
+ImmersiveControlLightSliderTrackFillDisabled,
+ImmersiveControlLightToggleLabelDisabled,
+ImmersiveControlLightToggleThumbDisabled,
+ImmersiveControlLightToggleTrackBackgroundDisabled,
+ImmersiveControlRadioButtonBorder,
+ImmersiveControlScrollbarButtonBackgroundHover,
+ImmersiveControlScrollbarPanningIndicatorBorder,
+ImmersiveControlScrollbarThumbBorderHover,
+ImmersiveControlScrollbarThumbBorderPressed,
+ImmersiveControlSkydriveCommerceBackground,
+ImmersiveControlSkydriveCommerceDefaultButtonBackground,
+ImmersiveControlTooltipBorder,
+ImmersiveDarkAcrylicWindowBackdropFallback,
+ImmersiveDarkActiveBorder,
+ImmersiveDarkChromeDisabledHigh,
+ImmersiveDarkChromeDisabledLow,
+ImmersiveDarkChromeHigh,
+ImmersiveDarkChromeLow,
+ImmersiveDarkChromeMedium,
+ImmersiveDarkChromeMediumLow,
+ImmersiveDarkChromeTaskbarBase,
+ImmersiveDarkInactiveBorder,
+ImmersiveFilesAppAppBarBackground,
+ImmersiveFilesAppCommandRowDisabled,
+ImmersiveFilesAppCommandRowHover,
+ImmersiveFilesAppDarkLinkText,
+ImmersiveFilesAppDarkLinkTextHover,
+ImmersiveFilesAppDarkLinkTextPressed,
+ImmersiveFilesAppDefaultButtonBackgroundHover,
+ImmersiveFilesAppDefaultButtonBackgroundRest,
+ImmersiveFilesAppHoverBackground,
+ImmersiveFilesAppItemSecondaryText,
+ImmersiveFilesAppLightErrorText,
+ImmersiveFilesAppLightLinkText,
+ImmersiveFilesAppLightLinkTextDisabled,
+ImmersiveFilesAppLightLinkTextHover,
+ImmersiveFilesAppLightLinkTextPressed,
+ImmersiveFilesAppLocalFolderBackground,
+ImmersiveFilesAppLocalFolderErrorText,
+ImmersiveFilesAppLocalFolderHoverSecondaryText,
+ImmersiveFilesAppPhotosAppSelectionBackground,
+ImmersiveFilesAppPickerDefaultButtonBackgroundHover,
+ImmersiveFilesAppPickerErrorText,
+ImmersiveFilesAppPickerHoverBackground,
+ImmersiveFilesAppPickerHoverSecondaryText,
+ImmersiveFilesAppPickerLocalFolderHoverBackground,
+ImmersiveFilesAppPickerPaneHighlight,
+ImmersiveFilesAppPickerPaneHoverBackground,
+ImmersiveFilesAppPickerSelectionHoverBackground,
+ImmersiveFilesAppPickerSkyDriveFolderHoverBackground,
+ImmersiveFilesAppProgressTrackFill,
+ImmersiveFilesAppSkyDriveEmphasisText,
+ImmersiveFilesAppSkyDriveFolderHoverSecondaryText,
+ImmersiveFilesAppSkyDriveUnavailableText,
+ImmersiveFilesAppTabTextHover,
+ImmersiveFilesAppTabTextRest,
+ImmersiveFilesAppTouchSelectHighlightSelectedHover,
+ImmersiveHardwareAppSwitcherBackground,
+ImmersiveHardwareButtonHover,
+ImmersiveHardwareCharmsBarBackgroundPressed,
+ImmersiveHardwareCharmsBarLogoWash,
+ImmersiveHardwareCharmsBarSelectedText,
+ImmersiveHardwareControlLink,
+ImmersiveHardwareControlLinkDisabled,
+ImmersiveHardwareControlLinkMouseHover,
+ImmersiveHardwareControlLinkPressed,
+ImmersiveHardwareControlLinkVisited,
+ImmersiveHardwareDarkCandidateControlBackgroundPressed,
+ImmersiveHardwareDarkCandidateControlBackgroundRest,
+ImmersiveHardwareDarkCandidateControlSecondaryTextRest,
+ImmersiveHardwareDarkKeyboardFunctionKeyBackground,
+ImmersiveHardwareDarkKeyboardThumbCentralNumberKeyBackground,
+ImmersiveHardwareDarkKeyboardThumbCentralNumberKeyText,
+ImmersiveHardwareDefaultKeyboardKeyBackgroundHover,
+ImmersiveHardwareFlipViewOutlineHover,
+ImmersiveHardwareGutterDown,
+ImmersiveHardwareHandwritingPanelBorder,
+ImmersiveHardwareHandwritingPanelButtonHover,
+ImmersiveHardwareHandwritingPanelButtonPress,
+ImmersiveHardwareHandwritingPanelCorrectionText,
+ImmersiveHardwareHandwritingPanelHoverWord,
+ImmersiveHardwareHandwritingPanelKanjiConversionBackground,
+ImmersiveHardwareHandwritingPanelKanjiConversionBackgroundHovered,
+ImmersiveHardwareHandwritingPanelKanjiConversionText,
+ImmersiveHardwareHandwritingPanelSuggestedWord,
+ImmersiveHardwareHelpStickerAccent,
+ImmersiveHardwareKeyboardChildPanelBackground,
+ImmersiveHardwareKeyboardChildPanelKeyBackground,
+ImmersiveHardwareKeyboardDarkSpaceKeyBackgroundPressed,
+ImmersiveHardwareKeyboardEmojiCategoryTextSelected,
+ImmersiveHardwareKeyboardFunctionKeyBackground,
+ImmersiveHardwareKeyboardFunctionKeyBackgroundHover,
+ImmersiveHardwareKeyboardFunctionKeyTextDisabled,
+ImmersiveHardwareKeyboardKeyPrimaryTextDisabled,
+ImmersiveHardwareKeyboardNumberKeyBackground,
+ImmersiveHardwareKeyboardNumberKeyBackgroundHover,
+ImmersiveHardwareKeyboardTitleBarTextDisabled,
+ImmersiveHardwareTitleBarCloseButtonHover,
+ImmersiveHardwareTitleBarCloseButtonPressed,
+ImmersiveHardwareTitleBarMinimizeButtonHover,
+ImmersiveHardwareTitleBarMinimizeButtonPressed,
+ImmersiveHardwareTrimBarProgressFill,
+ImmersiveHardwareWin8Pillarbox,
+ImmersiveInputSwitchColorDarkBackground,
+ImmersiveInputSwitchDarkBackground,
+ImmersiveInputSwitchDarkRadioButtonBackgroundSelected,
+ImmersiveInputSwitchLightBackground,
+ImmersiveLightBackgroundDisabled,
+ImmersiveLightChromeDisabledLow,
+ImmersiveLightChromeTaskbarAcrylic,
+ImmersiveLightControlLink,
+ImmersiveLightDesktopToastBackground,
+ImmersiveLightEntityItemBackgroundSelected,
+ImmersiveLightInlineErrorText,
+ImmersiveLightNavBackground,
+ImmersiveLightPlaceholderBackground,
+ImmersiveLightSearchAdBackground,
+ImmersiveLightSearchContactHeroAccentDark,
+ImmersiveLightSearchContactHeroAccentHitHighlight,
+ImmersiveLightSearchContactHeroAccentLight,
+ImmersiveLightSearchFinanceGreen,
+ImmersiveLightSearchFinanceRed,
+ImmersiveLightSearchHeroCollageAccentDark,
+ImmersiveLightSearchHeroMapAccentDark,
+ImmersiveLightSearchHeroMapAccentLight,
+ImmersiveLightSearchHitHighlight,
+ImmersiveLightSearchNewsBackgroundBorder,
+ImmersiveLightSearchWeatherBlue,
+ImmersiveLightSecondaryChartFill,
+ImmersiveLightWUError,
+ImmersiveLightWUNormal,
+ImmersiveLightWUWarning,
+ImmersiveMultitaskingMTVActiveVirtualDesktopHotTrackOuterBorder,
+ImmersiveMultitaskingMTVActiveVirtualDesktopOuterBorder,
+ImmersiveSaturatedBackButtonBar,
+ImmersiveSaturatedBackgroundDisabled,
+ImmersiveSaturatedCommandRowDisabled,
+ImmersiveSaturatedCommandRowHover,
+ImmersiveSaturatedDisabledText,
+ImmersiveSaturatedFolderBackground,
+ImmersiveSaturatedHighlight,
+ImmersiveSaturatedHoverBackground,
+ImmersiveSaturatedHoverSecondaryText,
+ImmersiveSaturatedSecondaryText,
+ImmersiveSaturatedSelectionSecondaryText,
+ImmersiveStartAPVNewAppText,
+ImmersiveStartBackgroundDisabled,
+ImmersiveStartCommandRowHover,
+ImmersiveStartCommandRowRest,
+ImmersiveStartDesktopAppBackground,
+ImmersiveStartDesktopBackgroundTattooStartPromptBackgroundHover,
+ImmersiveStartDesktopBackgroundTattooStartPromptBackgroundRest,
+ImmersiveStartDesktopBackgroundTattooViewSwitchButtonRest,
+ImmersiveStartDesktopTilesText,
+ImmersiveStartGroupNameHeader,
+ImmersiveStartHoverBackground,
+ImmersiveStartHoverSecondaryText,
+ImmersiveSystemAccentDark1,
+ImmersiveSystemAccentDark3,
+ImmersiveSystemAccentLight1
+);
+  {$ENDREGION 'ImmersiveColorType'}
+
+
+type
+
+  { TWindows }
+
+  TWindows = class
+     private
+       FHandle: THandle;
+       FColorSetChangedEvent: TNotifyEvent;
+       function GetOSInfo: TOSVERSIONINFO;
+       // Verifica se é Windows 64 bits
+       function IsWoW64: Boolean;
+       function GetColor(Index: TImmersiveColorType): TColor;
+       function AlphaToColor(AlphaColor: TAlphaColor): TColor;
+       function GetAlphaColor(Index: TImmersiveColorType): TAlphaColor;
+       function GetAlphaColorFromColorTypeName(const ColorTypeName: String): TAlphaColor;
+       function GetImmersiveColorToInt(const ColorTypeName: String): Integer;
+     protected
+       procedure WndProc(var Message: TMessage); virtual;
+     public
+       // A partir o windows 8, a Microsoft adotou o suporte a Immersive Color
+       function ImmersiveColorSuported: Boolean;
+       property ImmersiveColor[Index: TImmersiveColorType]: TColor read GetColor;
+       procedure GlassForm(frm: TForm; tmpMargins: TMargins; cBlurColorKey: TColor = $00DCDBDA);
+       // Verifica se é Windows Vista
+       function IsWindowsVista: Boolean;
+       function FileVersion(sFileName: String): String;
+  end;
+
+implementation
+
+{ TWindows }
+
+procedure TWindows.GlassForm(frm: TForm; tmpMargins: TMargins;
+  cBlurColorKey: TColor);
+var
+  hDwmDLL: Cardinal;
+  fDwmIsCompositionEnabled: DwmIsCompositionEnabledFunc;
+  fDwmExtendFrameIntoClientArea: DwmExtendFrameIntoClientAreaFunc;
+  fSetLayeredWindowAttributesFunc: SetLayeredWindowAttributesFunc;
+  bCmpEnable: Boolean;
+  mgn: TMargins;
+begin
+
+  { Continue if Windows version is compatible }
+  if IsWindowsVista then begin
+    { Continue if 'dwmapi' library is loaded }
+    hDwmDLL := LoadLibrary('dwmapi.dll');
+    if hDwmDLL <> 0 then begin
+      { Get values }
+      @fDwmIsCompositionEnabled        := GetProcAddress(hDwmDLL, 'DwmIsCompositionEnabled');
+      @fDwmExtendFrameIntoClientArea   := GetProcAddress(hDwmDLL, 'DwmExtendFrameIntoClientArea');
+      @fSetLayeredWindowAttributesFunc := GetProcAddress(GetModulehandle(user32), 'SetLayeredWindowAttributes');
+      { Continue if values are <> nil }
+      if (
+      (@fDwmIsCompositionEnabled <> nil) and
+      (@fDwmExtendFrameIntoClientArea <> nil) and
+      (@fSetLayeredWindowAttributesFunc <> nil)
+      )
+      then begin
+        { Continue if composition is enabled }
+        fDwmIsCompositionEnabled(@bCmpEnable);
+        if bCmpEnable = True then begin
+          { Set Form Color same as cBlurColorKey }
+          frm.Color := cBlurColorKey;
+          { ... }
+          SetWindowLong(frm.Handle, GWL_EXSTYLE, GetWindowLong(frm.Handle, GWL_EXSTYLE) or WS_EX_LAYERED);
+          { ... }
+          fSetLayeredWindowAttributesFunc(frm.Handle, cBlurColorKey, 0, LWA_COLORKEY);
+          { Set margins }
+          ZeroMemory(@mgn, SizeOf(mgn));
+          mgn.cxLeftWidth    := tmpMargins.cxLeftWidth;
+          mgn.cxRightWidth   := tmpMargins.cxRightWidth;
+          mgn.cyTopHeight    := tmpMargins.cyTopHeight;
+          mgn.cyBottomHeight := tmpMargins.cyBottomHeight;
+          { Extend Form }
+          fDwmExtendFrameIntoClientArea(frm.Handle,@mgn);
+        end;
+      end;
+      { Free loaded 'dwmapi' library }
+      FreeLibrary(hDWMDLL);
+    end;
+  end;
+
+end;
+
+{$ifdef IMMERSIVE_COLOR_ON}
+function TWindows.GetColor(Index: TImmersiveColorType): TColor;
+var
+  AlphaColor: TAlphaColor;
+begin
+  AlphaColor := GetAlphaColor(Index);
+  Result := AlphaToColor(AlphaColor);
+end;
+{$endif}
+
+function TWindows.GetOSInfo: TOSVERSIONINFO;
+begin
+
+  FillChar(Result, SizeOf(Result), 0);
+  Result.dwOSVersionInfoSize := SizeOf(Result);
+  GetVersionEx(Result);
+
+end;
+
+function TWindows.IsWoW64: Boolean;
+type
+  TisWow64Process = function (Handle: THandle; var Res: BOOL): BOOL; stdcall;
+var
+  isWow64Result: BOOL;
+  isWow64Process: TisWow64Process;
+begin
+
+  IsWow64Process := GetProcAddress(GetModuleHandle('kernel32'),'IsWow64Process');
+  if Assigned(isWow64Process) then
+  begin
+    if not isWow64Process(GetCurrentProcess, isWow64Result) then
+      Result := false;
+    Result := isWow64Result;
+  end else
+    Result := false;
+
+end;
+
+function TWindows.GetColor(Index: TImmersiveColorType): TColor;
+var
+  AlphaColor: TAlphaColor;
+begin
+  AlphaColor := GetAlphaColor(Index);
+  Result := AlphaToColor(AlphaColor)
+
+end;
+
+function TWindows.AlphaToColor(AlphaColor: TAlphaColor): TColor;
+begin
+  Result := TColor(AlphaColor and $00FFFFFF);
+end;
+
+function TWindows.GetAlphaColor(Index: TImmersiveColorType): TAlphaColor;
+var
+  LName: String;
+begin
+  LName := GetEnumName(TypeInfo(TImmersiveColorType), Ord(Index));
+  Result := GetAlphaColorFromColorTypeName(LName);
+end;
+
+function TWindows.GetAlphaColorFromColorTypeName(const ColorTypeName: String
+  ): TAlphaColor;
+var
+  ColorType: Integer;
+begin
+
+  ColorType := GetImmersiveColorToInt(ColorTypeName);
+
+  Result := $00;
+  if not ColorTypeName.IsEmpty then
+    Result := GetImmersiveColorFromColorSetEx(50, ColorType, False, 0);
+
+end;
+
+function TWindows.GetImmersiveColorToInt(const ColorTypeName: String): Integer;
+begin
+
+  case AnsiIndexStr(ColorTypeName, ['ImmersiveStartApplication',
+   'ImmersiveApplicationBackground',
+   'ImmersiveApplicationBackgroundDarkTheme',
+   'ImmersiveBootBackground',
+   'ImmersiveBootConfirmationButton',
+   'ImmersiveBootConfirmationButtonBackgroundHover',
+   'ImmersiveBootConfirmationButtonBorderDisabled',
+   'ImmersiveBootDefaultConfirmationButtonBackgroundHover',
+   'ImmersiveBootDefaultConfirmationButtonBackgroundRest',
+   'ImmersiveBootEditBackground',
+   'ImmersiveBootEditBackgroundHover',
+   'ImmersiveBootEditBorderDisabled',
+   'ImmersiveBootErrorText',
+   'ImmersiveBootMenuButtonMouseHover',
+   'ImmersiveBootTextLinkPressed',
+   'ImmersiveControlAppDefaultDarkButtonBackgroundHover',
+   'ImmersiveControlAppDefaultDarkButtonBackgroundRest',
+   'ImmersiveControlAppLightToggleTrackFillEnabled',
+   'ImmersiveControlBlackButtonDisabled',
+   'ImmersiveControlContextMenuBackgroundHover',
+   'ImmersiveControlContextMenuBackgroundPressed',
+   'ImmersiveControlContextMenuBackgroundRest',
+   'ImmersiveControlContextMenuSeparator',
+   'ImmersiveControlDarkAppButtonBackgroundDisabled',
+   'ImmersiveControlDarkAppButtonTextDisabled',
+   'ImmersiveControlDarkLinkHover',
+   'ImmersiveControlDarkLinkPressed',
+   'ImmersiveControlDarkLinkRest',
+   'ImmersiveControlDarkPanningIndicator',
+   'ImmersiveControlDarkProgressForeground',
+   'ImmersiveControlDarkRichEditButtonBackgroundHover',
+   'ImmersiveControlDarkRichEditHighlight',
+   'ImmersiveControlDarkRoundButtonFillLayerDisabled',
+   'ImmersiveControlDarkRoundButtonFillLayerHover',
+   'ImmersiveControlDarkRoundButtonGlyphDisabled',
+   'ImmersiveControlDarkRoundButtonGlyphLayerPressed',
+   'ImmersiveControlDarkScrollbarButtonGlyphPressed',
+   'ImmersiveControlDarkScrollbarButtonRest',
+   'ImmersiveControlDarkSelectBackgroundPressed',
+   'ImmersiveControlDarkSelectHighlightedSecondaryTextPressed',
+   'ImmersiveControlDarkSelectHighlightSelectedHover',
+   'ImmersiveControlDarkSliderThumbBorderDisabled',
+   'ImmersiveControlDarkSliderTrackBackgroundDisabled',
+   'ImmersiveControlDarkSliderTrackBackgroundHover',
+   'ImmersiveControlDarkSliderTrackBackgroundPressed',
+   'ImmersiveControlDarkSliderTrackBufferingDisabled',
+   'ImmersiveControlDarkSliderTrackBufferingHover',
+   'ImmersiveControlDarkSliderTrackBufferingPressed',
+   'ImmersiveControlDarkSliderTrackBufferingRest',
+   'ImmersiveControlDarkSliderTrackFillDisabled',
+   'ImmersiveControlDarkToggleThumbDisabled',
+   'ImmersiveControlDarkToggleTrackBackgroundDisabled',
+   'ImmersiveControlDarkToggleTrackBackgroundEnabled',
+   'ImmersiveControlDefaultLightButtonBackgroundDisabled',
+   'ImmersiveControlLightButtonBackgroundHover',
+   'ImmersiveControlLightButtonBackgroundRest',
+   'ImmersiveControlLightCheckboxBackgroundDisabled',
+   'ImmersiveControlLightLinkHover',
+   'ImmersiveControlLightLinkPressed',
+   'ImmersiveControlLightLinkRest',
+   'ImmersiveControlLightPanningIndicator',
+   'ImmersiveControlLightRadioButtonLabelDisabled',
+   'ImmersiveControlLightRadioButtonSelectedBackgroundDisabled',
+   'ImmersiveControlLightRadioButtonSelectedBorderRest',
+   'ImmersiveControlLightRadioButtonSelectedGlyphDisabled',
+   'ImmersiveControlLightRoundButtonFillLayerHover',
+   'ImmersiveControlLightScrollbarButtonHover',
+   'ImmersiveControlLightScrollbarButtonPressed',
+   'ImmersiveControlLightScrollbarButtonRest',
+   'ImmersiveControlLightSelectBorderPressed',
+   'ImmersiveControlLightSliderTrackBackgroundPressed',
+   'ImmersiveControlLightSliderTrackBackgroundRest',
+   'ImmersiveControlLightSliderTrackBufferingHover',
+   'ImmersiveControlLightSliderTrackFillDisabled',
+   'ImmersiveControlLightToggleLabelDisabled',
+   'ImmersiveControlLightToggleThumbDisabled',
+   'ImmersiveControlLightToggleTrackBackgroundDisabled',
+   'ImmersiveControlRadioButtonBorder',
+   'ImmersiveControlScrollbarButtonBackgroundHover',
+   'ImmersiveControlScrollbarPanningIndicatorBorder',
+   'ImmersiveControlScrollbarThumbBorderHover',
+   'ImmersiveControlScrollbarThumbBorderPressed',
+   'ImmersiveControlSkydriveCommerceBackground',
+   'ImmersiveControlSkydriveCommerceDefaultButtonBackground',
+   'ImmersiveControlTooltipBorder',
+   'ImmersiveDarkAcrylicWindowBackdropFallback',
+   'ImmersiveDarkActiveBorder',
+   'ImmersiveDarkChromeDisabledHigh',
+   'ImmersiveDarkChromeDisabledLow',
+   'ImmersiveDarkChromeHigh',
+   'ImmersiveDarkChromeLow',
+   'ImmersiveDarkChromeMedium',
+   'ImmersiveDarkChromeMediumLow',
+   'ImmersiveDarkChromeTaskbarBase',
+   'ImmersiveDarkInactiveBorder',
+   'ImmersiveFilesAppAppBarBackground',
+   'ImmersiveFilesAppCommandRowDisabled',
+   'ImmersiveFilesAppCommandRowHover',
+   'ImmersiveFilesAppDarkLinkText',
+   'ImmersiveFilesAppDarkLinkTextHover',
+   'ImmersiveFilesAppDarkLinkTextPressed',
+   'ImmersiveFilesAppDefaultButtonBackgroundHover',
+   'ImmersiveFilesAppDefaultButtonBackgroundRest',
+   'ImmersiveFilesAppHoverBackground',
+   'ImmersiveFilesAppItemSecondaryText',
+   'ImmersiveFilesAppLightErrorText',
+   'ImmersiveFilesAppLightLinkText',
+   'ImmersiveFilesAppLightLinkTextDisabled',
+   'ImmersiveFilesAppLightLinkTextHover',
+   'ImmersiveFilesAppLightLinkTextPressed',
+   'ImmersiveFilesAppLocalFolderBackground',
+   'ImmersiveFilesAppLocalFolderErrorText',
+   'ImmersiveFilesAppLocalFolderHoverSecondaryText',
+   'ImmersiveFilesAppPhotosAppSelectionBackground',
+   'ImmersiveFilesAppPickerDefaultButtonBackgroundHover',
+   'ImmersiveFilesAppPickerErrorText',
+   'ImmersiveFilesAppPickerHoverBackground',
+   'ImmersiveFilesAppPickerHoverSecondaryText',
+   'ImmersiveFilesAppPickerLocalFolderHoverBackground',
+   'ImmersiveFilesAppPickerPaneHighlight',
+   'ImmersiveFilesAppPickerPaneHoverBackground',
+   'ImmersiveFilesAppPickerSelectionHoverBackground',
+   'ImmersiveFilesAppPickerSkyDriveFolderHoverBackground',
+   'ImmersiveFilesAppProgressTrackFill',
+   'ImmersiveFilesAppSkyDriveEmphasisText',
+   'ImmersiveFilesAppSkyDriveFolderHoverSecondaryText',
+   'ImmersiveFilesAppSkyDriveUnavailableText',
+   'ImmersiveFilesAppTabTextHover',
+   'ImmersiveFilesAppTabTextRest',
+   'ImmersiveFilesAppTouchSelectHighlightSelectedHover',
+   'ImmersiveHardwareAppSwitcherBackground',
+   'ImmersiveHardwareButtonHover',
+   'ImmersiveHardwareCharmsBarBackgroundPressed',
+   'ImmersiveHardwareCharmsBarLogoWash',
+   'ImmersiveHardwareCharmsBarSelectedText',
+   'ImmersiveHardwareControlLink',
+   'ImmersiveHardwareControlLinkDisabled',
+   'ImmersiveHardwareControlLinkMouseHover',
+   'ImmersiveHardwareControlLinkPressed',
+   'ImmersiveHardwareControlLinkVisited',
+   'ImmersiveHardwareDarkCandidateControlBackgroundPressed',
+   'ImmersiveHardwareDarkCandidateControlBackgroundRest',
+   'ImmersiveHardwareDarkCandidateControlSecondaryTextRest',
+   'ImmersiveHardwareDarkKeyboardFunctionKeyBackground',
+   'ImmersiveHardwareDarkKeyboardThumbCentralNumberKeyBackground',
+   'ImmersiveHardwareDarkKeyboardThumbCentralNumberKeyText',
+   'ImmersiveHardwareDefaultKeyboardKeyBackgroundHover',
+   'ImmersiveHardwareFlipViewOutlineHover',
+   'ImmersiveHardwareGutterDown',
+   'ImmersiveHardwareHandwritingPanelBorder',
+   'ImmersiveHardwareHandwritingPanelButtonHover',
+   'ImmersiveHardwareHandwritingPanelButtonPress',
+   'ImmersiveHardwareHandwritingPanelCorrectionText',
+   'ImmersiveHardwareHandwritingPanelHoverWord',
+   'ImmersiveHardwareHandwritingPanelKanjiConversionBackground',
+   'ImmersiveHardwareHandwritingPanelKanjiConversionBackgroundHovered',
+   'ImmersiveHardwareHandwritingPanelKanjiConversionText',
+   'ImmersiveHardwareHandwritingPanelSuggestedWord',
+   'ImmersiveHardwareHelpStickerAccent',
+   'ImmersiveHardwareKeyboardChildPanelBackground',
+   'ImmersiveHardwareKeyboardChildPanelKeyBackground',
+   'ImmersiveHardwareKeyboardDarkSpaceKeyBackgroundPressed',
+   'ImmersiveHardwareKeyboardEmojiCategoryTextSelected',
+   'ImmersiveHardwareKeyboardFunctionKeyBackground',
+   'ImmersiveHardwareKeyboardFunctionKeyBackgroundHover',
+   'ImmersiveHardwareKeyboardFunctionKeyTextDisabled',
+   'ImmersiveHardwareKeyboardKeyPrimaryTextDisabled',
+   'ImmersiveHardwareKeyboardNumberKeyBackground',
+   'ImmersiveHardwareKeyboardNumberKeyBackgroundHover',
+   'ImmersiveHardwareKeyboardTitleBarTextDisabled',
+   'ImmersiveHardwareTitleBarCloseButtonHover',
+   'ImmersiveHardwareTitleBarCloseButtonPressed',
+   'ImmersiveHardwareTitleBarMinimizeButtonHover',
+   'ImmersiveHardwareTitleBarMinimizeButtonPressed',
+   'ImmersiveHardwareTrimBarProgressFill',
+   'ImmersiveHardwareWin8Pillarbox',
+   'ImmersiveInputSwitchColorDarkBackground',
+   'ImmersiveInputSwitchDarkBackground',
+   'ImmersiveInputSwitchDarkRadioButtonBackgroundSelected',
+   'ImmersiveInputSwitchLightBackground',
+   'ImmersiveLightBackgroundDisabled',
+   'ImmersiveLightChromeDisabledLow',
+   'ImmersiveLightChromeTaskbarAcrylic',
+   'ImmersiveLightControlLink',
+   'ImmersiveLightDesktopToastBackground',
+   'ImmersiveLightEntityItemBackgroundSelected',
+   'ImmersiveLightInlineErrorText',
+   'ImmersiveLightNavBackground',
+   'ImmersiveLightPlaceholderBackground',
+   'ImmersiveLightSearchAdBackground',
+   'ImmersiveLightSearchContactHeroAccentDark',
+   'ImmersiveLightSearchContactHeroAccentHitHighlight',
+   'ImmersiveLightSearchContactHeroAccentLight',
+   'ImmersiveLightSearchFinanceGreen',
+   'ImmersiveLightSearchFinanceRed',
+   'ImmersiveLightSearchHeroCollageAccentDark',
+   'ImmersiveLightSearchHeroMapAccentDark',
+   'ImmersiveLightSearchHeroMapAccentLight',
+   'ImmersiveLightSearchHitHighlight',
+   'ImmersiveLightSearchNewsBackgroundBorder',
+   'ImmersiveLightSearchWeatherBlue',
+   'ImmersiveLightSecondaryChartFill',
+   'ImmersiveLightWUError',
+   'ImmersiveLightWUNormal',
+   'ImmersiveLightWUWarning',
+   'ImmersiveMultitaskingMTVActiveVirtualDesktopHotTrackOuterBorder',
+   'ImmersiveMultitaskingMTVActiveVirtualDesktopOuterBorder',
+   'ImmersiveSaturatedBackButtonBar',
+   'ImmersiveSaturatedBackgroundDisabled',
+   'ImmersiveSaturatedCommandRowDisabled',
+   'ImmersiveSaturatedCommandRowHover',
+   'ImmersiveSaturatedDisabledText',
+   'ImmersiveSaturatedFolderBackground',
+   'ImmersiveSaturatedHighlight',
+   'ImmersiveSaturatedHoverBackground',
+   'ImmersiveSaturatedHoverSecondaryText',
+   'ImmersiveSaturatedSecondaryText',
+   'ImmersiveSaturatedSelectionSecondaryText',
+   'ImmersiveStartAPVNewAppText',
+   'ImmersiveStartBackgroundDisabled',
+   'ImmersiveStartCommandRowHover',
+   'ImmersiveStartCommandRowRest',
+   'ImmersiveStartDesktopAppBackground',
+   'ImmersiveStartDesktopBackgroundTattooStartPromptBackgroundHover',
+   'ImmersiveStartDesktopBackgroundTattooStartPromptBackgroundRest',
+   'ImmersiveStartDesktopBackgroundTattooViewSwitchButtonRest',
+   'ImmersiveStartDesktopTilesText',
+   'ImmersiveStartGroupNameHeader',
+   'ImmersiveStartHoverBackground',
+   'ImmersiveStartHoverSecondaryText',
+   'ImmersiveSystemAccentDark1',
+   'ImmersiveSystemAccentDark3',
+   'ImmersiveSystemAccentLight1']) of
+     0: Result := 9;
+     1: Result := 210;
+     2: Result := 212;
+     3: Result := 989;
+     4: Result := 993;
+     5: Result := 1006;
+     6: Result := 1016;
+     7: Result := 1018;
+     8: Result := 1017;
+     9: Result := 1001;
+     10: Result := 1030;
+     11: Result := 1033;
+     12: Result := 1000;
+     13: Result := 995;
+     14: Result := 1004;
+     15: Result := 928;
+     16: Result := 927;
+     17: Result := 909;
+     18: Result := 584;
+     19: Result := 921;
+     20: Result := 922;
+     21: Result := 920;
+     22: Result := 926;
+     23: Result := 938;
+     24: Result := 934;
+     25: Result := 86;
+     26: Result := 87;
+     27: Result := 84;
+     28: Result := 781;
+     29: Result := 113;
+     30: Result := 812;
+     31: Result := 111;
+     32: Result := 95;
+     33: Result := 97;
+     34: Result := 93;
+     35: Result := 94;
+     36: Result := 786;
+     37: Result := 785;
+     38: Result := 693;
+     39: Result := 708;
+     40: Result := 106;
+     41: Result := 899;
+     42: Result := 875;
+     43: Result := 876;
+     44: Result := 877;
+     45: Result := 883;
+     46: Result := 884;
+     47: Result := 885;
+     48: Result := 886;
+     49: Result := 891;
+     50: Result := 117;
+     51: Result := 118;
+     52: Result := 128;
+     53: Result := 684;
+     54: Result := 662;
+     55: Result := 661;
+     56: Result := 636;
+     57: Result := 90;
+     58: Result := 91;
+     59: Result := 88;
+     60: Result := 770;
+     61: Result := 956;
+     62: Result := 981;
+     63: Result := 972;
+     64: Result := 986;
+     65: Result := 606;
+     66: Result := 773;
+     67: Result := 772;
+     68: Result := 774;
+     69: Result := 729;
+     70: Result := 881;
+     71: Result := 882;
+     72: Result := 888;
+     73: Result := 892;
+     74: Result := 854;
+     75: Result := 858;
+     76: Result := 859;
+     77: Result := 615;
+     78: Result := 755;
+     79: Result := 752;
+     80: Result := 767;
+     81: Result := 768;
+     82: Result := 987;
+     83: Result := 988;
+     84: Result := 850;
+     85: Result := 314;
+     86: Result := 315;
+     87: Result := 308;
+     88: Result := 307;
+     89: Result := 305;
+     90: Result := 302;
+     91: Result := 304;
+     92: Result := 303;
+     93: Result := 300;
+     94: Result := 316;
+     95: Result := 160;
+     96: Result := 1070;
+     97: Result := 1068;
+     98: Result := 1088;
+     99: Result := 1089;
+     100: Result := 1090;
+     101: Result := 1099;
+     102: Result := 1098;
+     103: Result := 1039;
+     104: Result := 1046;
+     105: Result := 1082;
+     106: Result := 1084;
+     107: Result := 1087;
+     108: Result := 1085;
+     109: Result := 1086;
+     110: Result := 1054;
+     111: Result := 1058;
+     112: Result := 1056;
+     113: Result := 1044;
+     114: Result := 1108;
+     115: Result := 1083;
+     116: Result := 1041;
+     117: Result := 1062;
+     118: Result := 1063;
+     119: Result := 154;
+     120: Result := 1073;
+     121: Result := 1042;
+     122: Result := 1064;
+     123: Result := 1075;
+     124: Result := 1053;
+     125: Result := 1050;
+     126: Result := 1080;
+     127: Result := 1077;
+     128: Result := 1076;
+     129: Result := 1115;
+     130: Result := 416;
+     131: Result := 503;
+     132: Result := 410;
+     133: Result := 79;
+     134: Result := 413;
+     135: Result := 496;
+     136: Result := 498;
+     137: Result := 500;
+     138: Result := 499;
+     139: Result := 497;
+     140: Result := 169;
+     141: Result := 1149;
+     142: Result := 1155;
+     143: Result := 1141;
+     144: Result := 1137;
+     145: Result := 1138;
+     146: Result := 454;
+     147: Result := 541;
+     148: Result := 81;
+     149: Result := 469;
+     150: Result := 477;
+     151: Result := 478;
+     152: Result := 474;
+     153: Result := 488;
+     154: Result := 471;
+     155: Result := 489;
+     156: Result := 470;
+     157: Result := 473;
+     158: Result := 571;
+     159: Result := 462;
+     160: Result := 463;
+     161: Result := 449;
+     162: Result := 83;
+     163: Result := 458;
+     164: Result := 459;
+     165: Result := 461;
+     166: Result := 440;
+     167: Result := 455;
+     168: Result := 456;
+     169: Result := 467;
+     170: Result := 1120;
+     171: Result := 1121;
+     172: Result := 1118;
+     173: Result := 1119;
+     174: Result := 523;
+     175: Result := 570;
+     176: Result := 208;
+     177: Result := 1187;
+     178: Result := 206;
+     179: Result := 1203;
+     180: Result := 346;
+     181: Result := 337;
+     182: Result := 330;
+     183: Result := 371;
+     184: Result := 368;
+     185: Result := 362;
+     186: Result := 75;
+     187: Result := 350;
+     188: Result := 392;
+     189: Result := 381;
+     190: Result := 388;
+     191: Result := 391;
+     192: Result := 389;
+     193: Result := 379;
+     194: Result := 380;
+     195: Result := 394;
+     196: Result := 396;
+     197: Result := 397;
+     198: Result := 77;
+     199: Result := 386;
+     200: Result := 378;
+     201: Result := 73;
+     202: Result := 367;
+     203: Result := 365;
+     204: Result := 366;
+     205: Result := 185;
+     206: Result := 184;
+     207: Result := 286;
+     208: Result := 42;
+     209: Result := 57;
+     210: Result := 56;
+     211: Result := 44;
+     212: Result := 53;
+     213: Result := 50;
+     214: Result := 47;
+     215: Result := 48;
+     216: Result := 43;
+     217: Result := 46;
+     218: Result := 36;
+     219: Result := 13;
+     220: Result := 24;
+     221: Result := 23;
+     222: Result := 243;
+     223: Result := 40;
+     224: Result := 39;
+     225: Result := 247;
+     226: Result := 11;
+     227: Result := 38;
+     228: Result := 18;
+     229: Result := 19;
+     230: Result := 5;
+     231: Result := 7;
+     232: Result := 3;
+   end;
+
+end;
+
+procedure TWindows.WndProc(var Message: TMessage);
+begin
+  if (Message.Msg = WM_SETTINGCHANGE) and Assigned(FColorSetChangedEvent) and
+    (lstrcmpi(TWMSettingChange(Message).Section, 'ImmersiveColorSet') = 0) then
+    FColorSetChangedEvent(Self);
+end;
+
+function TWindows.IsWindowsVista: Boolean;
+var
+  osVinfo: TOSVERSIONINFO;
+begin
+  ZeroMemory(@osVinfo, SizeOf(osVinfo));
+  OsVinfo.dwOSVersionInfoSize := SizeOf(TOSVERSIONINFO);
+  if (
+  (GetVersionEx(osVInfo)   = True) and
+  (osVinfo.dwPlatformId    = VER_PLATFORM_WIN32_NT) and
+  (osVinfo.dwMajorVersion >= 6)
+  )
+  then Result:=True
+  else Result:=False
+end;
+
+function TWindows.FileVersion(sFileName: String): String;
+var
+  VerInfoSize: DWORD;
+  VerInfo: Pointer;
+  VerValueSize: DWORD;
+  VerValue: PVSFixedFileInfo;
+  Dummy: DWORD;
+begin
+
+  VerInfoSize := GetFileVersionInfoSize(PChar(sFileName), Dummy);
+  if VerInfoSize <> 0 then
+  begin
+    GetMem(VerInfo, VerInfoSize);
+    GetFileVersionInfo(PChar(sFileName), 0, VerInfoSize, VerInfo);
+    VerQueryValue(VerInfo, '\', Pointer(VerValue), VerValueSize);
+    with VerValue^ do
+    begin
+      Result := IntToStr(dwFileVersionMS shr 16);
+      Result := Result + '.' + IntToStr(dwFileVersionMS and $FFFF);
+      Result := Result + '.' + IntToStr(dwFileVersionLS shr 16);
+      Result := Result + '.' + IntToStr(dwFileVersionLS and $FFFF);
+    end;
+  end else Result := '';
+  FreeMem(VerInfo, VerInfoSize);
+
+end;
+
+function TWindows.ImmersiveColorSuported: Boolean;
+var
+  hModule: THandle;
+begin
+
+  hModule := GetModuleHandle(themelib);
+  Result := hModule <> 0;
+  if Result then
+    Result := GetProcAddress(hModule, 'GetImmersiveColorFromColorSetEx') <> nil;
+
+end;
+
+end.
+
+

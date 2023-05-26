@@ -1,0 +1,33 @@
+unit controller.sistema;
+
+{$mode ObjFPC}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils;
+
+type
+
+  { TSistema }
+
+  TSistema = class
+    public
+      function DiretorioUsuario: String;
+  end;
+
+implementation
+
+uses utils;
+
+{ TSistema }
+
+function TSistema.DiretorioUsuario: String;
+begin
+
+  Result := Path;
+
+end;
+
+end.
+

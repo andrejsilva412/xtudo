@@ -1,0 +1,18 @@
+object frmBasico: TfrmBasico
+  Left = 370
+  Height = 346
+  Top = 221
+  Width = 551
+  Caption = 'frmBasico'
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnPaint = FormPaint
+  SessionProperties = 'Height;Width;Top;Left'
+  LCLVersion = '2.2.6.0'
+  object IniPropStorage1: TIniPropStorage
+    StoredValues = <>
+    Active = False
+    Left = 384
+    Top = 112
+  end
+end
