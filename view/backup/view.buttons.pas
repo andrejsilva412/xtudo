@@ -38,9 +38,14 @@ var
   Sistema: TSistema;
 begin
 
+  Sistema := TSistema.Create;
+  try
+    Sistema.Tema.SetBcButtonStyle(BCButton1);
+    inherited SetStyle;
+  finally
+    FreeAndNil(Sistema);
+  end;
 
-
-  inherited SetStyle;
 end;
 
 end.

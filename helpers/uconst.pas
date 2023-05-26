@@ -10,7 +10,7 @@ uses
 const
 
   C_APP_TITLE = 'X-Tudo';
-  C_INI_FORM = 'form.ini';
+  C_INI_FORM = 'form.json';
 
 implementation
 

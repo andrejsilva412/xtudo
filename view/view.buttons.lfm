@@ -3,9 +3,9 @@ inherited frmBasButtons: TfrmBasButtons
   Top = 174
   Caption = 'Buttons'
   object BCButton1: TBCButton[0]
-    Left = 120
+    Left = 104
     Height = 96
-    Top = 88
+    Top = 72
     Width = 168
     StateClicked.Background.Color = 16245964
     StateClicked.Background.Gradient1.StartColor = 16422228
@@ -102,8 +102,8 @@ inherited frmBasButtons: TfrmBasButtons
     TextApplyGlobalOpacity = False
     MemoryUsage = bmuHigh
   end
-  inherited IniPropStorage1: TIniPropStorage[1]
-    Left = 376
-    Top = 24
+  inherited JSONPropStorage1: TJSONPropStorage[1]
+    Left = 288
+    Top = 64
   end
 end

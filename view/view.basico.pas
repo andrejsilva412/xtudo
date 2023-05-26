@@ -7,14 +7,14 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  IniPropStorage, ExtCtrls;
+  IniPropStorage, ExtCtrls, JSONPropStorage;
 
 type
 
   { TfrmBasico }
 
   TfrmBasico = class(TForm)
-    IniPropStorage1: TIniPropStorage;
+    JSONPropStorage1: TJSONPropStorage;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
@@ -53,9 +53,9 @@ begin
     Application.Title := C_APP_TITLE;
     Icon := Application.Icon;
     Caption := C_APP_TITLE;
-    IniPropStorage1.IniFileName := Path + C_INI_FORM;
-    IniPropStorage1.Active := true;
-    FBorderColor := Sistema.Tema.BorderColor;
+    JSONPropStorage1.JSONFileName := Path + C_INI_FORM;
+    JSONPropStorage1.Active := true;
+    FBorderColor := Sistema.Tema.BackGround2;
     FLeftMargin := 8;
     FRightMargin := 8;
     FTopMargin := 27;
@@ -85,7 +85,7 @@ end;
 
 procedure TfrmBasico.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  IniPropStorage1.Save;
+  JSONPropStorage1.Save;
 end;
 
 end.

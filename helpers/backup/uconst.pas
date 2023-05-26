@@ -9,7 +9,7 @@ uses
 
 const
 
-  C_APP_TITLE = Application.Title;
+  C_APP_TITLE = 'X-Tudo';
   C_INI_FORM = 'form.ini';
 
 implementation

@@ -9,10 +9,10 @@ object frmBasico: TfrmBasico
   OnPaint = FormPaint
   SessionProperties = 'Height;Width;Top;Left'
   LCLVersion = '2.2.6.0'
-  object IniPropStorage1: TIniPropStorage
+  object JSONPropStorage1: TJSONPropStorage
     StoredValues = <>
-    Active = False
-    Left = 384
-    Top = 112
+    Formatted = False
+    Left = 262
+    Top = 69
   end
 end
