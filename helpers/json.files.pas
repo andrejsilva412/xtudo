@@ -82,12 +82,12 @@ begin
     end else begin
       case VarType(Value) of
         varSmallInt, varInteger, varInt64:
-           JSON.Add(Ident, TJSONIntegerNumber(Integer(Value)));
+           JSON.Add(Ident, TJSONIntegerNumber(Int64(Value)));
         varDouble:
            JSON.Add(Ident, TJSONFloat(Value));
         varBoolean: begin
             Value := iif(Value = true, 1, 0);
-            JSON.Add(Ident, TJSONIntegerNumber(Integer(Value)));
+            JSON.Add(Ident, TJSONIntegerNumber(Int64(Value)));
             end;
         else
            JSON.Add(Ident, TJSONString(String(Value)));

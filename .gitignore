@@ -1,2 +1,5 @@
-/app
 /lib
+/app/*.json
+/app/theme
+/app/*.exe
+/app/config

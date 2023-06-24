@@ -1,0 +1,70 @@
+inherited frmBasCadastro: TfrmBasCadastro
+  Left = 304
+  Height = 312
+  Top = 142
+  Width = 446
+  Caption = 'Basico Cadastro'
+  ClientHeight = 312
+  ClientWidth = 446
+  OnCreate = FormCreate
+  OnShow = FormShow
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 347
+    Top = 274
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 236
+    Top = 274
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 141
+    Top = 274
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 46
+    Top = 274
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = -49
+    Top = 274
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = -144
+    Top = 274
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = -237
+    Top = 274
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = -330
+    Top = 274
+  end
+  inherited JSONPropStorage1: TJSONPropStorage
+    Left = 184
+    Top = 8
+  end
+  inherited ActionList1: TActionList
+    Left = 264
+    Top = 8
+    inherited acNovo: TAction
+      OnExecute = acNovoExecute
+    end
+    inherited acSalvar: TAction
+      OnExecute = acSalvarExecute
+    end
+    inherited acCancelar: TAction
+      OnExecute = acCancelarExecute
+    end
+    inherited acExcluir: TAction
+      OnExecute = acExcluirExecute
+    end
+  end
+  object DataSource1: TDataSource[10]
+    OnStateChange = DataSource1StateChange
+    Left = 352
+    Top = 8
+  end
+end
