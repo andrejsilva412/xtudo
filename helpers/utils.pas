@@ -26,5 +26,15 @@ begin
 
 end;
 
+function GetConfigFileName: String;
+begin
+
+  if not DirectoryExists('config') then
+    CreateDir('config');
+
+  Result := 'config\config.json';
+
+end;
+
 end.
 

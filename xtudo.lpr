@@ -12,7 +12,8 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, rxnew, view.basico, uconst, utils, utema, view.buttons, uimage,
   uhtmlutils, utypes, view.bascadastro, model.sqldb, ustatus, ustrutils, 
-model.database;
+model.database, view.assistenteinicial, uframetitulo, controller.config, 
+model.config;
 
 {$R *.res}
 
@@ -21,7 +22,7 @@ begin
   Application.Title := 'X-Tudo';
   Application.Scaled := True;
   Application.Initialize;
-  Application.CreateForm(TfrmBasCadastro, frmBasCadastro);
+  Application.CreateForm(TfrmAssistenteInicial, frmAssistenteInicial);
   Application.Run;
 end.
 

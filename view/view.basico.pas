@@ -20,14 +20,15 @@ type
     procedure FormPaint(Sender: TObject);
   private
     FBorderColor: TColor;
+    FDefaultTheme: String;
     FLeftMargin: Integer;
     FRightMargin: Integer;
     FTopMargin: Integer;
     FBottonMargin: Integer;
   protected
-
     procedure SetStyle; virtual;
-
+    procedure Clear; virtual;
+    property DefaultTheme: String read FDefaultTheme;
   public
 
   end;
@@ -52,7 +53,7 @@ begin
   try
     Application.Title := C_APP_TITLE;
     Icon := Application.Icon;
-    Caption := C_APP_TITLE;
+    Caption := C_APP_TITLE + ' ' + Caption ;
     JSONPropStorage1.JSONFileName := Path + C_INI_FORM;
     JSONPropStorage1.Active := true;
     FBorderColor := Sistema.Tema.BackGround2;
@@ -61,6 +62,7 @@ begin
     FTopMargin := 27;
     FBottonMargin := 48;
     SetStyle;
+    Clear;
   finally
     FreeAndNil(Sistema);
   end;
@@ -79,7 +81,32 @@ begin
 end;
 
 procedure TfrmBasico.SetStyle;
+var
+  Sistema: TSistema;
 begin
+
+  Sistema := TSistema.Create;
+  try
+    FDefaultTheme := Sistema.Config.Theme.FileTheme;
+  finally
+    FreeAndNil(Sistema);
+  end;
+
+end;
+
+procedure TfrmBasico.Clear;
+var
+  i: Integer;
+begin
+
+  for i := 0 to ComponentCount -1 do
+  begin
+    if (Components[i] is TCustomEdit) then
+    begin
+      (Components[i] as TCustomEdit).Clear;
+    end;
+  end;
+
 
 end;
 

@@ -1,7 +1,7 @@
 inherited frmBasCadastro: TfrmBasCadastro
-  Left = 239
+  Left = 304
   Height = 312
-  Top = 132
+  Top = 142
   Width = 446
   Caption = 'Basico Cadastro'
   ClientHeight = 312

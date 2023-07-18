@@ -3,7 +3,6 @@ object frmBasico: TfrmBasico
   Height = 346
   Top = 221
   Width = 551
-  Caption = 'frmBasico'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnPaint = FormPaint

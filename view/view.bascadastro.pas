@@ -20,7 +20,6 @@ type
     procedure acSalvarExecute(Sender: TObject);
     procedure DataSource1StateChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
 
   public
@@ -42,11 +41,6 @@ procedure TfrmBasCadastro.FormCreate(Sender: TObject);
 begin
   inherited;
   acNovo.Visible := true;
-end;
-
-procedure TfrmBasCadastro.FormShow(Sender: TObject);
-begin
-  RxMemoryData1.Open;
 end;
 
 procedure TfrmBasCadastro.DataSource1StateChange(Sender: TObject);

@@ -1,0 +1,124 @@
+inherited frmAssistenteInicial: TfrmAssistenteInicial
+  Left = 302
+  Height = 464
+  Top = 122
+  Width = 774
+  Caption = 'Assistente de Inicialização'
+  ClientHeight = 464
+  ClientWidth = 774
+  OnCreate = FormCreate
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 675
+    Top = 426
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 564
+    Top = 426
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 469
+    Top = 426
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 374
+    Top = 426
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = 279
+    Top = 426
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = 184
+    Top = 426
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = 91
+    Top = 426
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = -2
+    Top = 426
+  end
+  object PageControl1: TPageControl[8]
+    AnchorSideLeft.Control = frameTitulo1
+    AnchorSideTop.Control = frameTitulo1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = frameTitulo1
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = BCButtonFocus1
+    AnchorSideBottom.Side = asrBottom
+    Left = 10
+    Height = 336
+    Top = 81
+    Width = 754
+    ActivePage = TabSheet1
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Bottom = 38
+    TabIndex = 0
+    TabOrder = 8
+    object TabSheet1: TTabSheet
+      Caption = 'TabSheet1'
+      ClientHeight = 308
+      ClientWidth = 746
+      object RadioGroup1: TRadioGroup
+        AnchorSideLeft.Control = TabSheet1
+        AnchorSideTop.Control = TabSheet1
+        Left = 0
+        Height = 96
+        Top = 0
+        Width = 304
+        AutoFill = True
+        Caption = 'Este é o Servidor ou o Cliente?'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 76
+        ClientWidth = 300
+        ItemIndex = 1
+        Items.Strings = (
+          'Servidor'
+          'Cliente'
+        )
+        TabOrder = 0
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'TabSheet2'
+    end
+  end
+  inline frameTitulo1: TframeTitulo[9]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Top = 30
+    Width = 754
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 30
+    BorderSpacing.Right = 10
+    ClientWidth = 754
+    TabOrder = 9
+    inherited Bevel1: TBevel
+      Width = 750
+    end
+    inherited lblTitulo: TLabel
+      AnchorSideLeft.Control = frameTitulo1
+      AnchorSideTop.Control = frameTitulo1
+      AnchorSideRight.Control = frameTitulo1
+      Width = 750
+      Caption = 'Bem Vindo ao Sistema'
+    end
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[10]
+  end
+  inherited ActionList1: TActionList[11]
+  end
+end

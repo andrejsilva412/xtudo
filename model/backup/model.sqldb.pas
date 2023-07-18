@@ -138,8 +138,6 @@ begin
     FreeAndNil(Strings);
   end;
 
-
-
 end;
 
 function TModelSQLDB.Delete(AConnector: TSQLConnector; ATable,
@@ -183,9 +181,10 @@ function TModelSQLDB.Select(AConnector: TSQLConnector; ATable, AFields,
   ACondicao: String; AParams: array of Variant; ACount: String;
   AFieldCount: String; ADataSet: TBufDataset; APage: Integer; out
   AMaxPage: Integer): Integer;
-sLimit, SQL: String;
-APageDataSet: TBufDataset;
-OffSet, ARecords: Integer;
+var
+  sLimit, SQL: String;
+  APageDataSet: TBufDataset;
+  OffSet, ARecords: Integer;
 begin
 
   APageDataSet := TBufDataset.Create(nil);

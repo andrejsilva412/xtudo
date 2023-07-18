@@ -5,7 +5,8 @@ unit controller.sistema;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, LMessages, utema, uimage, json.files;
+  Classes, SysUtils, Controls, Dialogs, LMessages, utema, uimage,
+  controller.config;
 
 type
 
@@ -22,21 +23,17 @@ type
 
   TSistema = class
     private
-      FDefaultFileTheme: String;
       FTema: TTema;
-      FFPJSON: TFPJson;
       FImage: TImages;
       FMessagem: TMensagem;
-      procedure ReadConfiFile;
+      FConfig: TConfig;
     public
-      constructor Create;
       destructor Destroy; override;
       function DiretorioUsuario: String;
       function Tema: TTema;
-      function JSON: TFPJson;
       function Image: TImages;
       function Mensagem: TMensagem;
-      property DefaultFileTheme: String read FDefaultFileTheme write FDefaultFileTheme;
+      function Config: TConfig;
   end;
 
 implementation
@@ -79,39 +76,17 @@ end;
 
 { TSistema }
 
-procedure TSistema.ReadConfiFile;
-begin
-
-  if not DirectoryExists('config') then
-    CreateDir('config');
-
-  Self.JSON.FileName := 'config\config.json';
-  if not FileExists(Self.JSON.FileName) then
-    Self.JSON.WriteString('theme', 'theme\default.json');
-  FDefaultFileTheme := Self.JSON.ReadString('theme', 'theme\default.json');
-
-end;
-
-constructor TSistema.Create;
-begin
-
-  // Se não existir cria o arquivo de configuração
-  ReadConfiFile;
-  Self.Tema.SetTheme(FDefaultFileTheme);
-
-end;
-
 destructor TSistema.Destroy;
 begin
 
   if Assigned(FTema) then
     FreeAndNil(FTema);
-  if Assigned(FFPJSON) then
-    FreeAndNil(FFPJSON);
   if Assigned(FImage) then
     FreeAndNil(FImage);
   if Assigned(FMessagem) then
     FreeAndNil(FMessagem);
+  if Assigned(FConfig) then
+    FreeAndNil(FConfig);
   inherited Destroy;
 end;
 
@@ -131,15 +106,6 @@ begin
 
 end;
 
-function TSistema.JSON: TFPJson;
-begin
-
-  if not Assigned(FFPJSON) then
-    FFPJSON := TFPJson.Create;
-  Result := FFPJSON;
-
-end;
-
 function TSistema.Image: TImages;
 begin
   if not Assigned(FImage) then
@@ -152,6 +118,13 @@ begin
   if not Assigned(FMessagem) then
     FMessagem := TMensagem.Create;
   Result := FMessagem;
+end;
+
+function TSistema.Config: TConfig;
+begin
+  if not Assigned(FConfig) then
+    FConfig := TConfig.Create;
+  Result := FConfig;
 end;
 
 end.

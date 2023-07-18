@@ -116,6 +116,20 @@
         <Filename Value="model\model.database.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmAssistenteInicial"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframetitulo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frameTitulo"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -126,7 +140,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;helpers\windows;model"/>
+      <OtherUnitFiles Value="view;helpers;controller;helpers\windows;model;view\assistenteinicial;view\frames"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

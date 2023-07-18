@@ -1,0 +1,49 @@
+object frameTitulo: TframeTitulo
+  Left = 0
+  Height = 51
+  Top = 0
+  Width = 548
+  ClientHeight = 51
+  ClientWidth = 548
+  TabOrder = 0
+  DesignLeft = 325
+  DesignTop = 203
+  object Bevel1: TBevel
+    AnchorSideLeft.Control = lblTitulo
+    AnchorSideTop.Control = lblTitulo
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = lblTitulo
+    AnchorSideRight.Side = asrBottom
+    Left = 2
+    Height = 9
+    Top = 39
+    Width = 544
+    Anchors = [akTop, akLeft, akRight]
+    Shape = bsBottomLine
+  end
+  object lblTitulo: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 2
+    Height = 37
+    Top = 2
+    Width = 544
+    Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 2
+    BorderSpacing.Top = 2
+    BorderSpacing.Right = 2
+    Caption = 'Titulo'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -27
+    Font.Name = 'Segoe UI Semibold'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    ParentColor = False
+    ParentFont = False
+  end
+end

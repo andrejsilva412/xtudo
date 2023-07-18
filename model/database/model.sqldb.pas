@@ -37,7 +37,7 @@ const
 
 implementation
 
-uses ustrutils;
+uses ustrutils, utils;
 
 { TModelSQLDB }
 
@@ -181,9 +181,10 @@ function TModelSQLDB.Select(AConnector: TSQLConnector; ATable, AFields,
   ACondicao: String; AParams: array of Variant; ACount: String;
   AFieldCount: String; ADataSet: TBufDataset; APage: Integer; out
   AMaxPage: Integer): Integer;
-sLimit, SQL: String;
-APageDataSet: TBufDataset;
-OffSet, ARecords: Integer;
+var
+  sLimit, SQL: String;
+  APageDataSet: TBufDataset;
+  OffSet, ARecords: Integer;
 begin
 
   APageDataSet := TBufDataset.Create(nil);

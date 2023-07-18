@@ -41,10 +41,13 @@ begin
   try
     AFile.LoadFromFile(FFileName);
     JSON := TJSONData(GetJSON(AFile.Text)) as TJSONObject;
-    if JSON.FindPath(Ident) <> nil then
-      Result := JSON.Get(Ident)
-    else
-      Result := Default
+    if JSON <> nil then
+    begin
+      if JSON.FindPath(Ident) <> nil then
+        Result := JSON.Get(Ident)
+      else
+        Result := Default;
+    end else Result := Default;
   finally
     FreeAndNil(JSON);
     FreeAndNil(AFile);
@@ -66,18 +69,19 @@ begin
       AFile.LoadFromFile(FFileName);
       JSON := TJSONData(GetJSON(AFile.Text)) as TJSONObject;
     end;
-
+    if (JSON = nil) then
+      JSON := TJSONObject.Create;
     if JSON.Get(Ident) <> '' then
     begin
       case VarType(Value) of
         varSmallInt, varInteger, varInt64:
-           JSON.Integers[Ident] := Value;
+          JSON.Integers[Ident] := Value;
         varDouble:
-           JSON.Floats[Ident] := Value;
+          JSON.Floats[Ident] := Value;
         varBoolean:
-           JSON.Booleans[Ident] := Value;
+          JSON.Booleans[Ident] := Value;
         else
-           JSON.Strings[Ident] := Value;
+         JSON.Strings[Ident] := Value;
       end;
     end else begin
       case VarType(Value) of

@@ -5,7 +5,7 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, model.sqldb;
+  Classes, SysUtils, sqldb, BufDataset, model.sqldb;
 
 type
 

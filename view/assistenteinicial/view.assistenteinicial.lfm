@@ -1,0 +1,344 @@
+inherited frmAssistenteInicial: TfrmAssistenteInicial
+  Left = 302
+  Height = 464
+  Top = 122
+  Width = 774
+  Caption = 'Assistente de Inicialização'
+  ClientHeight = 464
+  ClientWidth = 774
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 675
+    Top = 426
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 564
+    Top = 426
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 469
+    Top = 426
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 374
+    Top = 426
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = 279
+    Top = 426
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = 184
+    Top = 426
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = 91
+    Top = 426
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = -2
+    Top = 426
+  end
+  object PageControl1: TPageControl[8]
+    AnchorSideLeft.Control = frameTitulo1
+    AnchorSideTop.Control = frameTitulo1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = frameTitulo1
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = BCButtonFocus1
+    AnchorSideBottom.Side = asrBottom
+    Left = 10
+    Height = 332
+    Top = 81
+    Width = 754
+    ActivePage = TabSheet1
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Bottom = 42
+    TabIndex = 0
+    TabOrder = 8
+    object TabSheet1: TTabSheet
+      Caption = 'TabSheet1'
+      ClientHeight = 304
+      ClientWidth = 746
+      object RadioGroup1: TRadioGroup
+        AnchorSideLeft.Control = TabSheet1
+        AnchorSideTop.Control = TabSheet1
+        Left = 4
+        Height = 96
+        Top = 4
+        Width = 212
+        AutoFill = True
+        BorderSpacing.Left = 4
+        BorderSpacing.Top = 4
+        Caption = 'Este é o Servidor ou o Cliente?'
+        ChildSizing.LeftRightSpacing = 6
+        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+        ChildSizing.EnlargeVertical = crsHomogenousChildResize
+        ChildSizing.ShrinkHorizontal = crsScaleChilds
+        ChildSizing.ShrinkVertical = crsScaleChilds
+        ChildSizing.Layout = cclLeftToRightThenTopToBottom
+        ChildSizing.ControlsPerLine = 1
+        ClientHeight = 76
+        ClientWidth = 208
+        ItemIndex = 1
+        Items.Strings = (
+          'Servidor'
+          'Cliente'
+        )
+        TabOrder = 0
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'TabSheet2'
+      ClientHeight = 304
+      ClientWidth = 746
+      object Label1: TLabel
+        Left = 8
+        Height = 15
+        Top = 39
+        Width = 132
+        Caption = 'Local do Banco de dados'
+        ParentColor = False
+      end
+      object edtBancoDeDados: TFileNameEdit
+        Left = 8
+        Height = 23
+        Top = 58
+        Width = 296
+        FileName = 'edtBancoDeDados'
+        Filter = 'Banco de Dados Firebird|*.fdb'
+        FilterIndex = 0
+        HideDirectories = False
+        ButtonWidth = 23
+        NumGlyphs = 1
+        MaxLength = 0
+        TabOrder = 0
+        Text = 'edtBancoDeDados'
+      end
+      object Label2: TLabel
+        Left = 8
+        Height = 15
+        Top = 95
+        Width = 40
+        Caption = 'Usuário'
+        ParentColor = False
+      end
+      object edBdUserName: TEdit
+        Left = 8
+        Height = 23
+        Top = 112
+        Width = 128
+        TabOrder = 1
+        Text = 'SYSDBA'
+      end
+      object Label3: TLabel
+        Left = 144
+        Height = 15
+        Top = 95
+        Width = 32
+        Caption = 'Senha'
+        ParentColor = False
+      end
+      object edBdPassword: TEdit
+        Left = 144
+        Height = 23
+        Top = 112
+        Width = 160
+        EchoMode = emPassword
+        PasswordChar = '*'
+        TabOrder = 2
+        Text = 'masterkey'
+      end
+      object Label4: TLabel
+        AnchorSideLeft.Control = TabSheet2
+        AnchorSideTop.Control = TabSheet2
+        AnchorSideRight.Control = TabSheet2
+        AnchorSideRight.Side = asrBottom
+        Left = 0
+        Height = 30
+        Top = 2
+        Width = 746
+        Alignment = taCenter
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 2
+        Caption = 'Configuração do Servidor'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -21
+        Font.Name = 'Segoe UI Semibold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object btnServidorTeste: TButton
+        Left = 8
+        Height = 25
+        Top = 141
+        Width = 107
+        AutoSize = True
+        Caption = 'Testar Conexão'
+        TabOrder = 3
+      end
+      object lblServidorTesteConexao: TLabel
+        AnchorSideLeft.Control = btnServidorTeste
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = btnServidorTeste
+        AnchorSideBottom.Control = btnServidorTeste
+        AnchorSideBottom.Side = asrBottom
+        Left = 119
+        Height = 25
+        Top = 141
+        Width = 129
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 4
+        Caption = 'lblServidorTesteConexao'
+        Layout = tlCenter
+        ParentColor = False
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'TabSheet3'
+      ClientHeight = 304
+      ClientWidth = 746
+      object Label5: TLabel
+        AnchorSideLeft.Control = TabSheet2
+        AnchorSideTop.Control = TabSheet2
+        AnchorSideRight.Control = TabSheet2
+        AnchorSideRight.Side = asrBottom
+        Left = 0
+        Height = 30
+        Top = 2
+        Width = 746
+        Alignment = taCenter
+        Anchors = [akTop, akLeft, akRight]
+        BorderSpacing.Top = 2
+        Caption = 'Configuração do Cliente'
+        Font.CharSet = ANSI_CHARSET
+        Font.Height = -21
+        Font.Name = 'Segoe UI Semibold'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
+      object Label6: TLabel
+        Left = 8
+        Height = 15
+        Top = 40
+        Width = 73
+        Caption = 'IP do Servidor'
+        ParentColor = False
+      end
+      object edCliServidor: TMaskEdit
+        Left = 8
+        Height = 23
+        Top = 57
+        Width = 80
+        MaxLength = 15
+        TabOrder = 0
+        EditMask = '999.999.999.999;1;_'
+        Text = '   .   .   .   '
+        SpaceChar = '_'
+      end
+      object Label7: TLabel
+        Left = 8
+        Height = 15
+        Top = 90
+        Width = 40
+        Caption = 'Usuário'
+        ParentColor = False
+      end
+      object edCliUserName: TEdit
+        Left = 8
+        Height = 23
+        Top = 107
+        Width = 128
+        TabOrder = 1
+        Text = 'SYSDBA'
+      end
+      object Label8: TLabel
+        Left = 144
+        Height = 15
+        Top = 90
+        Width = 32
+        Caption = 'Senha'
+        ParentColor = False
+      end
+      object edCliPassword: TEdit
+        Left = 144
+        Height = 23
+        Top = 107
+        Width = 160
+        EchoMode = emPassword
+        PasswordChar = '*'
+        TabOrder = 2
+        Text = 'masterkey'
+      end
+      object btnCliTeste: TButton
+        Left = 8
+        Height = 25
+        Top = 139
+        Width = 107
+        AutoSize = True
+        Caption = 'Testar Conexão'
+        TabOrder = 3
+      end
+      object lblClienteTesteConexao1: TLabel
+        AnchorSideLeft.Control = btnCliTeste
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = btnCliTeste
+        AnchorSideBottom.Control = btnCliTeste
+        AnchorSideBottom.Side = asrBottom
+        Left = 119
+        Height = 25
+        Top = 139
+        Width = 129
+        Anchors = [akTop, akLeft, akBottom]
+        BorderSpacing.Left = 4
+        Caption = 'lblClienteTesteConexao1'
+        Layout = tlCenter
+        ParentColor = False
+      end
+    end
+  end
+  inline frameTitulo1: TframeTitulo[9]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Top = 30
+    Width = 754
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 30
+    BorderSpacing.Right = 10
+    ClientWidth = 754
+    TabOrder = 9
+    inherited Bevel1: TBevel
+      Width = 750
+    end
+    inherited lblTitulo: TLabel
+      AnchorSideLeft.Control = frameTitulo1
+      AnchorSideTop.Control = frameTitulo1
+      AnchorSideRight.Control = frameTitulo1
+      Width = 750
+      Caption = 'Bem Vindo ao Sistema'
+    end
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[10]
+  end
+  inherited ActionList1: TActionList[11]
+    inherited acGenerico1: TAction
+      OnExecute = acGenerico1Execute
+    end
+    inherited acGenerico2: TAction
+      OnExecute = acGenerico2Execute
+    end
+  end
+end

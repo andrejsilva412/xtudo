@@ -85,7 +85,7 @@ end;
 
 procedure TfrmBasico.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  IniPropStorage1.Save;
+  JSONPropStorage1.Save;
 end;
 
 end.

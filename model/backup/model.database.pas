@@ -5,7 +5,7 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, model.sqldb;
+  Classes, SysUtils, sqldb, model.sqldb;
 
 type
 
@@ -86,7 +86,7 @@ begin
   Result := TGuid.NewGuid.ToString();
   Result := StringReplace(Result, '{', '', [rfReplaceAll]);
   Result := StringReplace(Result, '}', '', [rfReplaceAll]);
-  Result := DelChars(Result, '-');
+  Result := StringReplace(Result, '-', '', [rfReplaceAll]);
 end;
 
 function TModelDataBase.Update(ATable, AFields, Acondicao: String;
