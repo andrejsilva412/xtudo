@@ -5,8 +5,7 @@ unit controller.sistema;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, LMessages, utema, uimage,
-  controller.config;
+  Classes, SysUtils, Controls, Dialogs, LMessages, uimage, controller.config;
 
 type
 
@@ -23,14 +22,12 @@ type
 
   TSistema = class
     private
-      FTema: TTema;
       FImage: TImages;
       FMessagem: TMensagem;
       FConfig: TConfig;
     public
       destructor Destroy; override;
       function DiretorioUsuario: String;
-      function Tema: TTema;
       function Image: TImages;
       function Mensagem: TMensagem;
       function Config: TConfig;
@@ -79,8 +76,6 @@ end;
 destructor TSistema.Destroy;
 begin
 
-  if Assigned(FTema) then
-    FreeAndNil(FTema);
   if Assigned(FImage) then
     FreeAndNil(FImage);
   if Assigned(FMessagem) then
@@ -94,15 +89,6 @@ function TSistema.DiretorioUsuario: String;
 begin
 
   Result := Path;
-
-end;
-
-function TSistema.Tema: TTema;
-begin
-
-  if not Assigned(FTema) then
-    FTema := TTema.Create;
-  Result := FTema;
 
 end;
 

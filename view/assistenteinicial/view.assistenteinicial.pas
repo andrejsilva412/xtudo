@@ -6,7 +6,11 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, StdCtrls,
-  ExtCtrls, EditBtn, MaskEdit, uframetitulo, view.buttons, controller.sistema;
+  ExtCtrls, EditBtn, MaskEdit, uframetitulo, view.buttons, IBConnection;
+
+type
+
+  TTipoSistema = (tsServidor, tsCliente);
 
 type
 
@@ -32,6 +36,7 @@ type
     edCliServidor: TMaskEdit;
     edtBancoDeDados: TFileNameEdit;
     frameTitulo1: TframeTitulo;
+    IBConnection1: TIBConnection;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -49,14 +54,24 @@ type
     TabSheet3: TTabSheet;
     procedure acGenerico1Execute(Sender: TObject);
     procedure acGenerico2Execute(Sender: TObject);
+    procedure btnCliTesteClick(Sender: TObject);
+    procedure btnServidorTesteClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
+    procedure RadioGroup1Click(Sender: TObject);
+    procedure TabSheet2Show(Sender: TObject);
+    procedure TabSheet3Show(Sender: TObject);
   private
-    Sistema: TSistema;
+    FCheckClient: Boolean;
+    FCheckServer: Boolean;
+    FTipoSistema: TTipoSistema;
+    procedure SetCheckClient(AValue: Boolean);
+    procedure SetCheckServer(AValue: Boolean);
   protected
     procedure Clear; override;
   public
-
+    property TipoSistema: TTipoSistema read FTipoSistema write FTipoSistema;
+    property CheckServer: Boolean read FCheckServer write SetCheckServer;
+    property CheckClient: Boolean read FCheckClient write SetCheckClient;
   end;
 
 const
@@ -86,7 +101,6 @@ end;
 procedure TfrmAssistenteInicial.FormCreate(Sender: TObject);
 begin
 
-  Sistema := TSistema.Create;
   inherited;
   PageControl1.ShowTabs := false;
 
@@ -97,12 +111,53 @@ begin
   acGenerico2.Caption := 'Voltar';
   acGenerico2.Visible := true;
   acGenerico2.Enabled := false;
+  CheckClient := false;
+  CheckServer := false;
 
 end;
 
-procedure TfrmAssistenteInicial.FormDestroy(Sender: TObject);
+procedure TfrmAssistenteInicial.RadioGroup1Click(Sender: TObject);
 begin
-  FreeAndNil(Sistema);
+  case RadioGroup1.ItemIndex of
+    0: TTipoSistema := tsServidor;
+    1: TTipoSistema := tsCliente;
+  end;
+end;
+
+procedure TfrmAssistenteInicial.TabSheet2Show(Sender: TObject);
+begin
+  SetFocus(edtBancoDeDados);
+end;
+
+procedure TfrmAssistenteInicial.TabSheet3Show(Sender: TObject);
+begin
+  SetFocus(edCliServidor);
+end;
+
+procedure TfrmAssistenteInicial.SetCheckClient(AValue: Boolean);
+begin
+  FCheckClient := AValue;
+  if AValue = false then
+  begin
+    lblClienteTesteConexao1.Caption := 'Failed';
+    lblClienteTesteConexao1.Font.Color := clRed;
+  end else begin
+    lblClienteTesteConexao1.Caption := 'Ok';
+    lblClienteTesteConexao1.Font.Color := clGreen;
+  end;
+end;
+
+procedure TfrmAssistenteInicial.SetCheckServer(AValue: Boolean);
+begin
+  FCheckServer := AValue;
+  if AValue = false then
+  begin
+    lblServidorTesteConexao.Caption := 'Failed';
+    lblServidorTesteConexao.Font.Color := clRed;
+  end else begin
+    lblServidorTesteConexao.Caption := 'Ok';
+    lblServidorTesteConexao.Font.Color := clGreen;
+  end;
 end;
 
 procedure TfrmAssistenteInicial.Clear;
@@ -128,6 +183,40 @@ begin
    acGenerico2.Enabled := PageControl1.TabIndex > 0;
    acGenerico1.Caption := C_AVANCAR;
 
+end;
+
+procedure TfrmAssistenteInicial.btnCliTesteClick(Sender: TObject);
+begin
+  with Sistema.Config.Database do
+  begin
+    CharSet := '';
+    CheckTransaction := true;
+    DataBaseName := edtBancoDeDados.FileName;
+    HostName := ''
+    Port := 0
+    Params := '';
+    UserName := edBdUserName.Text;
+    Password := edBdPassword.Text;
+    SetConfig;
+    CheckClient := CheckDB;
+  end;
+end;
+
+procedure TfrmAssistenteInicial.btnServidorTesteClick(Sender: TObject);
+begin
+  with Sistema.Config.Database do
+  begin
+    CharSet := '';
+    CheckTransaction := true;
+    DataBaseName := edtBancoDeDados.FileName;
+    HostName := ''
+    Port := 0
+    Params := '';
+    UserName := edBdUserName.Text;
+    Password := edBdPassword.Text;
+    SetConfig;
+    CheckServer := CheckDB;
+  end;
 end;
 
 procedure TfrmAssistenteInicial.acGenerico1Execute(Sender: TObject);

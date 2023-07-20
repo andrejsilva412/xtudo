@@ -6,8 +6,18 @@ interface
 
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  IniPropStorage, ExtCtrls, JSONPropStorage;
+  LMessages, LCLIntf, Classes, SysUtils, Forms, Controls, ComCtrls, Graphics,
+  Dialogs, StdCtrls, IniPropStorage, ExtCtrls, JSONPropStorage,
+  controller.sistema;
+
+type
+
+  { TForm }
+
+  TForm = class(Forms.TForm)
+    public
+      procedure SetFocus(AControl: TWinControl); overload;
+  end;
 
 type
 
@@ -20,15 +30,14 @@ type
     procedure FormPaint(Sender: TObject);
   private
     FBorderColor: TColor;
-    FDefaultTheme: String;
     FLeftMargin: Integer;
     FRightMargin: Integer;
     FTopMargin: Integer;
     FBottonMargin: Integer;
   protected
+    Sistema: TSistema;
     procedure SetStyle; virtual;
     procedure Clear; virtual;
-    property DefaultTheme: String read FDefaultTheme;
   public
 
   end;
@@ -38,34 +47,57 @@ var
 
 implementation
 
-uses controller.sistema, uconst, utils;
+uses uconst, utils;
 
 {$R *.lfm}
+
+{ TForm }
+
+procedure TForm.SetFocus(AControl: TWinControl);
+var
+  P: TWinControl;
+begin
+
+  try
+    if AControl is TWinControl then
+    begin
+      P := TWinControl(AControl).Parent;
+      while Assigned(P) and not (P is TCustomForm) do
+      begin
+        if P is TTabSheet then
+          TTabSheet(P).PageControl.ActivePage := TTabSheet(P);
+        P := P.Parent;
+      end;
+      if AControl.CanFocus then
+      begin
+        PostMessage(TWinControl(AControl).Handle, LM_SETFOCUS, 0, 0);
+        TWinControl(AControl).SetFocus;
+      end;
+    end;
+  except
+
+  end;
+
+end;
 
 { TfrmBasico }
 
 procedure TfrmBasico.FormCreate(Sender: TObject);
-var
-  Sistema: TSistema;
 begin
 
   Sistema := TSistema.Create;
-  try
-    Application.Title := C_APP_TITLE;
-    Icon := Application.Icon;
-    Caption := C_APP_TITLE + ' ' + Caption ;
-    JSONPropStorage1.JSONFileName := Path + C_INI_FORM;
-    JSONPropStorage1.Active := true;
-    FBorderColor := Sistema.Tema.BackGround2;
-    FLeftMargin := 8;
-    FRightMargin := 8;
-    FTopMargin := 27;
-    FBottonMargin := 48;
-    SetStyle;
-    Clear;
-  finally
-    FreeAndNil(Sistema);
-  end;
+  Application.Title := C_APP_TITLE;
+  Icon := Application.Icon;
+  Caption := C_APP_TITLE + ' ' + Caption ;
+  JSONPropStorage1.JSONFileName := Path + C_INI_FORM;
+  JSONPropStorage1.Active := true;
+  FBorderColor := Sistema.Config.Theme.BackGround2;
+  FLeftMargin := 8;
+  FRightMargin := 8;
+  FTopMargin := 27;
+  FBottonMargin := 48;
+  SetStyle;
+  Clear;
 
 end;
 
@@ -81,16 +113,8 @@ begin
 end;
 
 procedure TfrmBasico.SetStyle;
-var
-  Sistema: TSistema;
 begin
 
-  Sistema := TSistema.Create;
-  try
-    FDefaultTheme := Sistema.Config.Theme.FileTheme;
-  finally
-    FreeAndNil(Sistema);
-  end;
 
 end;
 
@@ -113,6 +137,7 @@ end;
 procedure TfrmBasico.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   JSONPropStorage1.Save;
+  FreeAndNil(Sistema);
 end;
 
 end.

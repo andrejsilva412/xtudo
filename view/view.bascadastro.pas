@@ -31,8 +31,6 @@ var
 
 implementation
 
-uses controller.sistema;
-
 {$R *.lfm}
 
 { TfrmBasCadastro }
@@ -74,16 +72,9 @@ begin
 end;
 
 procedure TfrmBasCadastro.acExcluirExecute(Sender: TObject);
-var
-  Sistema: TSistema;
 begin
-  Sistema := TSistema.Create;
-  try
-    if Sistema.Mensagem.Excluir = True then
-       DataSource1.DataSet.Delete;
-  finally
-    FreeAndNil(Sistema);
-  end;
+  if Sistema.Mensagem.Excluir = True then
+     DataSource1.DataSet.Delete;
 end;
 
 procedure TfrmBasCadastro.acSalvarExecute(Sender: TObject);

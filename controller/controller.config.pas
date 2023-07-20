@@ -5,7 +5,8 @@ unit controller.config;
 interface
 
 uses
-  Classes, SysUtils, json.files;
+  Classes, SysUtils, Graphics, BCButton, BCTypes, BCButtonFocus,
+  BGRABitmapTypes, uhtmlutils, json.files;
 
 type
 
@@ -13,11 +14,16 @@ type
 
   TBaseConfig = class
   private
+    FDirectory: String;
+    FFileName: String;
     FJSON: TFPJson;
+    procedure SetFileName(AValue: String);
   protected
     function GetConfig(AConfig: String; ADefault: String): String;
     procedure SetConfig(AConfig: String; AValue: String);
     procedure Get; virtual;
+    property FileName: String read FFileName write SetFileName;
+    property Directory: String read FDirectory write FDirectory;
   public
     constructor Create;
     destructor Destroy; override;
@@ -29,11 +35,35 @@ type
 
   TConfigTheme = class(TBaseConfig)
     private
+      FHTMLUtils: THTMLUtils;
+      FBackGround1: TColor;
+      FBackGround2: TColor;
       FFileTheme: String;
+      FForeGround: TColor;
+      FSecondary1: TColor;
+      FSecondary2: TColor;
+      FSecondary3: TColor;
+      FSecondary4: TColor;
+      FSecondary5: TColor;
+      FSecondary6: TColor;
+      FSecondary7: TColor;
     protected
       procedure Get; override;
     public
+      constructor Create;
+      destructor Destroy; override;
+      procedure SetBcButtonStyle(Button: TBCButtonFocus);
       property FileTheme: String read FFileTheme;
+      property BackGround1: TColor read FBackGround1;
+      property BackGround2: TColor read FBackGround2;
+      property ForeGround: TColor read FForeGround;
+      property Secondary1: TColor read FSecondary1;
+      property Secondary2: TColor read FSecondary2;
+      property Secondary3: TColor read FSecondary3;
+      property Secondary4: TColor read FSecondary4;
+      property Secondary5: TColor read FSecondary5;
+      property Secondary6: TColor read FSecondary6;
+      property Secondary7: TColor read FSecondary7;
   end;
 
 type
@@ -42,11 +72,11 @@ type
 
   TConfigDatabase = class(TBaseConfig)
     private
-      FFileName: String;
+      FDataBaseFileName: String;
     protected
       procedure Get; override;
     public
-      property FileName: String read FFileName write FFileName;
+      property FileName: String read FDataBaseFileName write FDataBaseFileName;
   end;
 
 
@@ -101,36 +131,109 @@ var
   FDefault: String;
 begin
 
+  Directory := '';
+  FileName := '';
+
   FDefault := 'theme' + PathDelim + 'default.json';
-  FFileTheme := GetConfig('theme', '');
-  if FFileTheme = '' then
-    SetConfig('theme', FDefault);
   FFileTheme := GetConfig('theme', FDefault);
+
+  with FHTMLUtils do
+  begin
+    FBackGround1 := HTMLToColor('#272727');
+    FBackGround2 := HTMLToColor('#2F0505');
+    FForeGround := HTMLToColor('#85311B');
+    FSecondary1 := HTMLToColor('#C1853B');
+    FSecondary2 := HTMLToColor('#DB9327');
+    FSecondary3 := HTMLToColor('#CC1B1B');
+    FSecondary4 := HTMLToColor('#9E9E9E');
+    FSecondary5 := HTMLToColor('#E2C52C');
+    FSecondary6 := HTMLToColor('#0CA147');
+    FSecondary7 := HTMLToColor('#F4F4F4');
+
+    Directory := 'theme';
+    FileName := 'default.json';
+
+    SetConfig('background1', ColorToHTML(FBackGround1));
+    SetConfig('background2', ColorToHTML(FBackGround2));
+    SetConfig('foreground', ColorToHTML(FForeGround));
+    SetConfig('secondary1', ColorToHTML(FSecondary1));
+    SetConfig('secondary2', ColorToHTML(FSecondary2));
+    SetConfig('secondary3', ColorToHTML(FSecondary3));
+    SetConfig('secondary4', ColorToHTML(FSecondary4));
+    SetConfig('secondary5', ColorToHTML(FSecondary5));
+    SetConfig('secondary6', ColorToHTML(FSecondary6));
+    SetConfig('secondary7', ColorToHTML(FSecondary7));
+  end;
+
+end;
+
+constructor TConfigTheme.Create;
+begin
+  inherited;
+  FHTMLUtils := THTMLUtils.Create;
+end;
+
+destructor TConfigTheme.Destroy;
+begin
+  FreeAndNil(FHTMLUtils);
+  inherited Destroy;
+end;
+
+procedure TConfigTheme.SetBcButtonStyle(Button: TBCButtonFocus);
+begin
+
+  with Button do
+  begin
+    with StateNormal do
+    begin
+      with Background do
+      begin
+        Style := bbsColor;
+        Color := FHTMLUtils.HTMLToColor('#85311B');
+      end;
+      with Border do
+      begin
+        Style := bboSolid;
+        Color := Background.Color;
+      end;
+      with FontEx do
+      begin
+        Color := InvertColor(Background.Color);
+        FontQuality := fqSystemClearType;
+      end;
+    end;
+
+    with StateHover do
+    begin
+      with Background do
+      begin
+        Style := bbsColor;
+        Color := FHTMLUtils.HTMLToColor('#85311B');
+        ColorOpacity := 235;
+      end;
+      with Border do
+      begin
+        Style := bboSolid;
+        Color := Background.Color;
+      end;
+      with FontEx do
+      begin
+        FontQuality := fqSystemClearType;
+      end;
+    end;
+    StateClicked.Assign(StateNormal);
+  end;
+
 end;
 
 { TBaseConfig }
 
 constructor TBaseConfig.Create;
-var
-  FConfigFileName, cDir: String;
-  AFile: TStringList;
 begin
 
   FJSON := TFPJson.Create;
-  cDir := {$ifdef windows} 'config' {$else} '.config' {$endif};
-  if not DirectoryExists(cDir) then
-    CreateDir(cDir);
-  FConfigFileName := cDir + PathDelim + 'config.json';
-  if not FileExists(FConfigFileName) then
-  begin
-    AFile := TStringList.Create;
-    try
-      AFile.SaveToFile(FConfigFileName);
-    finally
-      FreeAndNil(AFile);
-    end;
-  end;
-  FJSON.FileName := FConfigFileName;
+  FileName := '';
+  Directory := '';
   Get;
 
 end;
@@ -141,9 +244,38 @@ begin
   inherited Destroy;
 end;
 
+procedure TBaseConfig.SetFileName(AValue: String);
+var
+  AFile: TStringList;
+begin
+
+  if FDirectory = '' then
+    FDirectory := {$ifdef windows} 'config' {$else} '.config' {$endif};
+  if not DirectoryExists(FDirectory) then
+    CreateDir(FDirectory);
+
+  if AValue = '' then
+    AValue := 'config.json';
+
+  FFileName := AValue;
+
+  FFileName := FDirectory + PathDelim + FFileName;
+  if not FileExists(FFileName) then
+  begin
+    AFile := TStringList.Create;
+    try
+      AFile.SaveToFile(FFileName);
+    finally
+      FreeAndNil(AFile);
+    end;
+  end;
+
+end;
+
 function TBaseConfig.GetConfig(AConfig: String; ADefault: String): String;
 begin
 
+  FJSON.FileName := FFileName;
   Result := FJSON.ReadString(AConfig, ADefault);
 
 end;
@@ -151,6 +283,7 @@ end;
 procedure TBaseConfig.SetConfig(AConfig: String; AValue: String);
 begin
 
+  FJSON.FileName := FFileName;
   FJSON.WriteString(AConfig, AValue);
 
 end;
@@ -168,11 +301,10 @@ var
 begin
 
   aDef := Path + 'database' + PathDelim + 'XTUDO.FDB';
-
-  FFileName := GetConfig('database_filename', '');
-  if FFileName = '' then
+  FDataBaseFileName := GetConfig('database_filename', '');
+  if FDataBaseFileName = '' then
     SetConfig('database_filename', aDef);
-  FFileName := GetConfig('database_filename', aDef);
+  FDataBaseFileName := GetConfig('database_filename', aDef);
 
 end;
 

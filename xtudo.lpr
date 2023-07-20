@@ -10,10 +10,10 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, rxnew, view.basico, uconst, utils, utema, view.buttons, uimage,
-  uhtmlutils, utypes, view.bascadastro, model.sqldb, ustatus, ustrutils, 
-model.database, view.assistenteinicial, uframetitulo, controller.config, 
-model.config;
+  Forms, datetimectrls, rxnew, view.basico, uconst, utils, view.buttons,
+  uimage, uhtmlutils, utypes, view.bascadastro, ustatus, ustrutils,
+  view.assistenteinicial, uframetitulo, controller.config,
+  model.config;
 
 {$R *.res}
 

@@ -7,7 +7,6 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
   ClientHeight = 464
   ClientWidth = 774
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
@@ -54,10 +53,10 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     Height = 332
     Top = 81
     Width = 754
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 42
-    TabIndex = 0
+    TabIndex = 2
     TabOrder = 8
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
@@ -88,6 +87,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
           'Servidor'
           'Cliente'
         )
+        OnClick = RadioGroup1Click
         TabOrder = 0
       end
     end
@@ -95,6 +95,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Caption = 'TabSheet2'
       ClientHeight = 304
       ClientWidth = 746
+      OnShow = TabSheet2Show
       object Label1: TLabel
         Left = 8
         Height = 15
@@ -181,6 +182,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Width = 107
         AutoSize = True
         Caption = 'Testar Conexão'
+        OnClick = btnServidorTesteClick
         TabOrder = 3
       end
       object lblServidorTesteConexao: TLabel
@@ -204,6 +206,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Caption = 'TabSheet3'
       ClientHeight = 304
       ClientWidth = 746
+      OnShow = TabSheet3Show
       object Label5: TLabel
         AnchorSideLeft.Control = TabSheet2
         AnchorSideTop.Control = TabSheet2
@@ -286,6 +289,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Width = 107
         AutoSize = True
         Caption = 'Testar Conexão'
+        OnClick = btnCliTesteClick
         TabOrder = 3
       end
       object lblClienteTesteConexao1: TLabel
@@ -340,5 +344,14 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     inherited acGenerico2: TAction
       OnExecute = acGenerico2Execute
     end
+  end
+  object IBConnection1: TIBConnection[12]
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    CheckTransactionParams = False
+    UseConnectionCharSetIfNone = False
+    Left = 424
+    Top = 176
   end
 end
