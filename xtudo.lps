@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="59" Y="15"/>
-        <UsageCount Value="56"/>
+        <UsageCount Value="61"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.basico.pas"/>
@@ -18,19 +18,17 @@
         <ComponentName Value="frmBasico"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="114"/>
         <CursorPos X="14" Y="140"/>
-        <UsageCount Value="56"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="61"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uconst.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="12"/>
-        <UsageCount Value="56"/>
+        <CursorPos X="42" Y="23"/>
+        <UsageCount Value="61"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\utils.pas"/>
@@ -38,7 +36,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos Y="27"/>
-        <UsageCount Value="56"/>
+        <UsageCount Value="61"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\utema.pas"/>
@@ -46,7 +44,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="129"/>
         <CursorPos X="50" Y="176"/>
-        <UsageCount Value="55"/>
+        <UsageCount Value="60"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.buttons.pas"/>
@@ -54,12 +52,10 @@
         <ComponentName Value="frmBasButtons"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="208"/>
-        <CursorPos X="7" Y="230"/>
-        <UsageCount Value="49"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="100"/>
+        <CursorPos Y="151"/>
+        <UsageCount Value="54"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uimage.pas"/>
@@ -67,7 +63,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos Y="52"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="46"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uhtmlutils.pas"/>
@@ -75,7 +71,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="232"/>
         <CursorPos Y="258"/>
-        <UsageCount Value="41"/>
+        <UsageCount Value="46"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\utypes.pas"/>
@@ -83,7 +79,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos Y="27"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="45"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.bascadastro.pas"/>
@@ -91,12 +87,10 @@
         <ComponentName Value="frmBasCadastro"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="57"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="56"/>
         <CursorPos X="15" Y="59"/>
-        <UsageCount Value="36"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <UsageCount Value="41"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.sqldb.pas"/>
@@ -104,7 +98,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="22" Y="40"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="38"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\ustatus.pas"/>
@@ -112,7 +106,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <CursorPos X="21" Y="37"/>
-        <UsageCount Value="33"/>
+        <UsageCount Value="38"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\ustrutils.pas"/>
@@ -120,7 +114,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="41"/>
         <CursorPos X="41" Y="72"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="37"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.database.pas"/>
@@ -128,7 +122,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="40" Y="8"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="36"/>
       </Unit>
       <Unit>
         <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
@@ -136,10 +130,8 @@
         <ComponentName Value="frmAssistenteInicial"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="185"/>
-        <CursorPos X="16" Y="201"/>
-        <UsageCount Value="31"/>
+        <CursorPos X="30" Y="10"/>
+        <UsageCount Value="36"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -151,15 +143,15 @@
         <ResourceBaseClass Value="Frame"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="36"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.config.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="128"/>
-        <CursorPos X="32" Y="148"/>
-        <UsageCount Value="28"/>
+        <TopLine Value="376"/>
+        <CursorPos Y="403"/>
+        <UsageCount Value="33"/>
       </Unit>
       <Unit>
         <Filename Value="model\config\model.config.pas"/>
@@ -167,7 +159,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="3" Y="29"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="32"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\windows\uimmersivecolors.pas"/>
@@ -179,10 +171,11 @@
       </Unit>
       <Unit>
         <Filename Value="controller\controller.sistema.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="87"/>
-        <CursorPos Y="114"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="102"/>
+        <CursorPos X="23" Y="125"/>
         <UsageCount Value="21"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uwindows.pas"/>
@@ -240,9 +233,9 @@
       <Unit>
         <Filename Value="helpers\json.files.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="95"/>
-        <CursorPos Y="122"/>
-        <UsageCount Value="15"/>
+        <TopLine Value="100"/>
+        <CursorPos Y="117"/>
+        <UsageCount Value="16"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-json\src\fpjson.pp"/>
@@ -309,9 +302,9 @@
       <Unit>
         <Filename Value="helpers\ueditchangecolor.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="164"/>
-        <CursorPos X="42" Y="175"/>
-        <UsageCount Value="12"/>
+        <TopLine Value="104"/>
+        <CursorPos X="54" Y="114"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -323,133 +316,126 @@
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="368"/>
         <CursorPos Y="381"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\ucript.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="31"/>
+        <CursorPos Y="58"/>
+        <UsageCount Value="25"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\database\model.database.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="59"/>
+        <CursorPos Y="72"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="C:\Users\andre\AppData\Local\lazarus\onlinepackagemanager\packages\DCPcrypt\dcpblockciphers.pas"/>
+        <UnitName Value="DCPblockciphers"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="264"/>
+        <CursorPos Y="277"/>
+        <UsageCount Value="11"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframecnpj.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frameCNPJ"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="35"/>
+        <CursorPos X="27" Y="43"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframeendereco.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrameEndereco"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="21"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\uvalida.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="4"/>
+        <CursorPos X="49" Y="11"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\umodelnomefonetico.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="21" Y="12"/>
+        <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="12">
       <Position>
         <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="120" Column="31" TopLine="108"/>
+        <Caret Line="10" Column="30"/>
       </Position>
       <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="126" Column="31" TopLine="109"/>
+        <Filename Value="view\frames\uframecnpj.pas"/>
+        <Caret Line="53" Column="25" TopLine="35"/>
       </Position>
       <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="117" TopLine="109"/>
+        <Filename Value="helpers\uvalida.pas"/>
+        <Caret Line="18" Column="18" TopLine="6"/>
       </Position>
       <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="117" TopLine="109"/>
+        <Filename Value="helpers\uvalida.pas"/>
+        <Caret Line="19" Column="36"/>
       </Position>
       <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="113" Column="18" TopLine="108"/>
+        <Filename Value="helpers\uvalida.pas"/>
+        <Caret Line="20" Column="16" TopLine="8"/>
       </Position>
       <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="9" Column="78"/>
+        <Filename Value="helpers\uvalida.pas"/>
+        <Caret Line="18" Column="21"/>
       </Position>
       <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="13" Column="36" TopLine="10"/>
+        <Filename Value="helpers\uvalida.pas"/>
+        <Caret Line="29" Column="16" TopLine="10"/>
       </Position>
       <Position>
-        <Filename Value="view\view.buttons.pas"/>
-        <Caret Line="35" Column="3" TopLine="23"/>
+        <Filename Value="helpers\uvalida.pas"/>
+        <Caret Line="12" Column="15" TopLine="4"/>
       </Position>
       <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="29" Column="18" TopLine="22"/>
+        <Filename Value="controller\controller.sistema.pas"/>
+        <Caret Line="31" Column="30" TopLine="16"/>
       </Position>
       <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="87" TopLine="85"/>
+        <Filename Value="controller\controller.sistema.pas"/>
+        <Caret Line="89" Column="26" TopLine="79"/>
       </Position>
       <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="28" Column="15" TopLine="17"/>
+        <Filename Value="controller\controller.sistema.pas"/>
+        <Caret Line="36" Column="18" TopLine="18"/>
       </Position>
       <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="139" Column="22" TopLine="119"/>
+        <Filename Value="controller\controller.sistema.pas"/>
+        <Caret Line="124" Column="30" TopLine="102"/>
       </Position>
       <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="94" Column="20" TopLine="82"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.buttons.pas"/>
-        <Caret Line="73" Column="6" TopLine="53"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.buttons.pas"/>
-        <Caret Line="230" Column="8" TopLine="213"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="58" Column="3" TopLine="45"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="91" TopLine="79"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="102" TopLine="93"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="38" Column="5" TopLine="25"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="94" Column="19" TopLine="76"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.basico.pas"/>
-        <Caret Line="140" Column="14" TopLine="120"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.buttons.pas"/>
-        <Caret Line="230" Column="7" TopLine="214"/>
-      </Position>
-      <Position>
-        <Filename Value="view\view.bascadastro.pas"/>
-        <Caret Line="33" TopLine="21"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="126" Column="27" TopLine="126"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="65" Column="77" TopLine="58"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="62" TopLine="59"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="71" Column="74" TopLine="57"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="112" Column="23" TopLine="90"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="200" Column="20" TopLine="181"/>
-      </Position>
-      <Position>
-        <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
-        <Caret Line="196" Column="7" TopLine="181"/>
+        <Filename Value="view\frames\uframecnpj.pas"/>
+        <Caret Line="43" Column="27" TopLine="35"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -513,7 +499,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="controller\controller.sistema.pas"/>
-        <Line Value="97"/>
+        <Line Value="102"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
@@ -528,6 +514,13 @@
         <WatchKind Value="wpkWrite"/>
         <Source Value="helpers\utema.pas"/>
         <Line Value="62"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="view\view.buttons.pas"/>
+        <Line Value="151"/>
       </Item>
     </BreakPoints>
   </Debugging>

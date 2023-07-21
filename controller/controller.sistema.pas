@@ -5,7 +5,8 @@ unit controller.sistema;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, LMessages, uimage, controller.config;
+  Classes, SysUtils, Controls, Dialogs, LMessages, uimage, controller.config,
+  uvalida;
 
 type
 
@@ -25,12 +26,14 @@ type
       FImage: TImages;
       FMessagem: TMensagem;
       FConfig: TConfig;
+      FValidador: TValidador;
     public
       destructor Destroy; override;
       function DiretorioUsuario: String;
       function Image: TImages;
       function Mensagem: TMensagem;
       function Config: TConfig;
+      function Validador: TValidador;
   end;
 
 implementation
@@ -82,6 +85,8 @@ begin
     FreeAndNil(FMessagem);
   if Assigned(FConfig) then
     FreeAndNil(FConfig);
+  if Assigned(FValidador) then
+    FreeAndNil(FValidador);
   inherited Destroy;
 end;
 
@@ -111,6 +116,13 @@ begin
   if not Assigned(FConfig) then
     FConfig := TConfig.Create;
   Result := FConfig;
+end;
+
+function TSistema.Validador: TValidador;
+begin
+  if not Assigned(FValidador) then
+    FValidador := TValidador.Create;
+  Result := FValidador;
 end;
 
 end.

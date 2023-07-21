@@ -19,6 +19,9 @@ const
   C_EXCLUIR = 'Excluir';
   C_CANCELAR = 'Cancelar';
 
+  // Mask
+  C_CNPJ_MASK = '99.999.999/9999-99;1;_';
+
 resourcestring
 
   SMSTituloExcluir = 'Confirma a exclusão?';

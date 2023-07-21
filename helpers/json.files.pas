@@ -17,8 +17,10 @@ type
       function ReadVariant(Ident: String; Default: Variant): Variant;
       procedure WriteVariant(Ident: String; Value: Variant);
     public
-      function ReadString(Ident: String; Default: String): String;
-      procedure WriteString(Ident: String; Value: String);
+      function ReadString(Ident: String; Default: String): String; overload;
+      function ReadBoolean(Ident: String; Default: Boolean): Boolean; overload;
+      procedure WriteString(Ident: String; Value: String); overload;
+      procedure WriteBoolean(IDent: String; Value: Boolean); overload;
       property FileName: String read FFileName write FFileName;
   end;
 
@@ -114,11 +116,23 @@ begin
 
 end;
 
+function TFPJson.ReadBoolean(Ident: String; Default: Boolean): Boolean;
+begin
+
+  Result := ReadVariant(Ident, Default);
+
+end;
+
 procedure TFPJson.WriteString(Ident: String; Value: String);
 begin
 
   WriteVariant(Ident, Value);
 
+end;
+
+procedure TFPJson.WriteBoolean(IDent: String; Value: Boolean);
+begin
+  WriteVariant(IDent, Value);
 end;
 
 end.

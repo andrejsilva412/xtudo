@@ -5,7 +5,7 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, sqldb, BufDataset, model.sqldb;
+  Classes, SysUtils, sqldb, BufDataset, IBConnection, model.sqldb;
 
 type
 
@@ -13,7 +13,7 @@ type
 
   TModelDataBase = class(TModelSQLDB)
     private
-      FDataBase: TSQLConnector;
+      FDataBase: TIBConnection;
       FTransact: TSQLTransaction;
       procedure BeforeConnect(Sender: TObject);
     protected
@@ -29,27 +29,47 @@ type
         AParams: array of Variant; ACount: String; AFieldCount: String;
         APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer; overload;
     public
+      function Connected: Boolean;
       constructor Create;
       destructor Destroy; override;
   end;
 
 implementation
 
-uses ustrutils;
+uses ustrutils, controller.config;
 
 { TModelDataBase }
 
 procedure TModelDataBase.BeforeConnect(Sender: TObject);
+var
+  Config: TConfig;
 begin
-  FDataBase.DatabaseName := 'data.db';
-   FDataBase.CharSet := 'UTF8';
-   FDataBase.ConnectorType := 'SQLite3';
+
+  Config := TConfig.Create;
+  try
+    FDataBase.DatabaseName := Config.Database.DatabaseName;
+    FDataBase.CheckTransactionParams := Config.Database.CheckTransaction;
+    FDataBase.Dialect := 3;
+    FDataBase.HostName := Config.Database.HostName;
+    FDataBase.Params.Assign(Config.Database.Params);
+    FDataBase.Password := Config.Database.Password;
+    FDataBase.Port := Config.Database.Port;
+    FDataBase.UserName := Config.Database.Username;
+  finally
+    FreeAndNil(Config);
+  end;
+
 end;
 
 procedure TModelDataBase.StartTransaction;
 begin
   if not FDataBase.Transaction.Active then
     FDataBase.Transaction.Active := true;
+end;
+
+function TModelDataBase.Connected: Boolean;
+begin
+  Result := FDataBase.Connected;
 end;
 
 procedure TModelDataBase.Commit;
@@ -72,13 +92,13 @@ end;
 procedure TModelDataBase.Insert(ATable, AFields: String;
   AParams: array of Variant);
 begin
-  inherited Insert(FDataBase, ATable, AFields, AParams);
+  inherited Insert(TSQLConnector(FDataBase), ATable, AFields, AParams);
 end;
 
 function TModelDataBase.Delete(ATable, ACondicao: String;
   AParams: array of Variant): Integer;
 begin
-  Result := inherited Delete(FDataBase, ATable, ACondicao, AParams);
+  Result := inherited Delete(TSQLConnector(FDataBase), ATable, ACondicao, AParams);
 end;
 
 function TModelDataBase.GetID: String;
@@ -92,20 +112,20 @@ end;
 function TModelDataBase.Update(ATable, AFields, Acondicao: String;
   AParams: array of Variant): Integer;
 begin
-  Result := inherited Update(FDataBase, ATable, AFields, Acondicao, AParams);
+  Result := inherited Update(TSQLConnector(FDataBase), ATable, AFields, Acondicao, AParams);
 end;
 
 function TModelDataBase.Select(ATable, AFields, ACondicao: String;
   AParams: array of Variant; ACount: String; AFieldCount: String;
   APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
 begin
-  Result := Inherited Select(FDataBase, ATable, AFields, ACondicao, AParams, ACount, AFieldCount,
+  Result := Inherited Select(TSQLConnector(FDataBase), ATable, AFields, ACondicao, AParams, ACount, AFieldCount,
     ADataSet, APage, AMaxPage);
 end;
 
 constructor TModelDataBase.Create;
 begin
-  FDataBase := TSQLConnector.Create(nil);
+  FDataBase := TIBConnection.Create(nil);
   FTransact := TSQLTransaction.Create(nil);
   FDataBase.BeforeConnect := @BeforeConnect;
   FDataBase.Transaction := FTransact;

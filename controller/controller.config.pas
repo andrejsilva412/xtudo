@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, BCButton, BCTypes, BCButtonFocus,
-  BGRABitmapTypes, uhtmlutils, json.files;
+  BGRABitmapTypes, uhtmlutils, ucript, json.files;
 
 type
 
@@ -14,14 +14,18 @@ type
 
   TBaseConfig = class
   private
+    FCript: TCript;
     FDirectory: String;
     FFileName: String;
     FJSON: TFPJson;
     procedure SetFileName(AValue: String);
   protected
-    function GetConfig(AConfig: String; ADefault: String): String;
-    procedure SetConfig(AConfig: String; AValue: String);
+    function GetConfig(AConfig: String; ADefault: String): String; overload;
+    function GetConfig(AConfig: String; ADefault: Boolean): Boolean; overload;
+    procedure SetConfig(AConfig: String; AValue: String); overload;
+    procedure SetConfig(AConfig: String; AValue: Boolean); overload;
     procedure Get; virtual;
+    function Cript: TCript;
     property FileName: String read FFileName write SetFileName;
     property Directory: String read FDirectory write FDirectory;
   public
@@ -72,11 +76,29 @@ type
 
   TConfigDatabase = class(TBaseConfig)
     private
-      FDataBaseFileName: String;
+      FCharSet: String;
+      FCheckTransaction: Boolean;
+      FDatabaseName: String;
+      FHostName: String;
+      FParams: TStringList;
+      FPassword: String;
+      FPort: Integer;
+      FUsername: String;
     protected
       procedure Get; override;
     public
-      property FileName: String read FDataBaseFileName write FDataBaseFileName;
+      constructor Create;
+      destructor Destroy; override;
+      procedure Save;
+      function CheckDB: Boolean;
+      property CharSet: String read FCharSet;
+      property CheckTransaction: Boolean read FCheckTransaction write FCheckTransaction;
+      property DatabaseName: String read FDatabaseName write FDatabaseName;
+      property HostName: String read FHostName write FHostName;
+      property Port: Integer read FPort write FPort;
+      property Params: TStringList read FParams write FParams;
+      property Username: String read FUsername write FUsername;
+      property Password: String read FPassword write FPassword;
   end;
 
 
@@ -94,7 +116,7 @@ type
 
 implementation
 
-uses utils;
+uses utils, model.database;
 
 { TConfig }
 
@@ -240,6 +262,8 @@ end;
 
 destructor TBaseConfig.Destroy;
 begin
+  if Assigned(FCript) then
+    FreeAndNil(FCript);
   FreeAndNil(FJSON);
   inherited Destroy;
 end;
@@ -280,6 +304,12 @@ begin
 
 end;
 
+function TBaseConfig.GetConfig(AConfig: String; ADefault: Boolean): Boolean;
+begin
+  FJSON.FileName := FFileName;
+  Result := FJSON.ReadBoolean(AConfig, ADefault);
+end;
+
 procedure TBaseConfig.SetConfig(AConfig: String; AValue: String);
 begin
 
@@ -288,9 +318,22 @@ begin
 
 end;
 
+procedure TBaseConfig.SetConfig(AConfig: String; AValue: Boolean);
+begin
+  FJSON.FileName := FFileName;
+  FJSON.WriteBoolean(AConfig, AValue);
+end;
+
 procedure TBaseConfig.Get;
 begin
 
+end;
+
+function TBaseConfig.Cript: TCript;
+begin
+  if not Assigned(FCript) then
+    FCript := TCript.Create;
+  Result := FCript;
 end;
 
 { TConfigDatabase }
@@ -301,10 +344,61 @@ var
 begin
 
   aDef := Path + 'database' + PathDelim + 'XTUDO.FDB';
-  FDataBaseFileName := GetConfig('database_filename', '');
-  if FDataBaseFileName = '' then
+  FDatabaseName := GetConfig('database_filename', '');
+  if FDatabaseName = '' then
     SetConfig('database_filename', aDef);
-  FDataBaseFileName := GetConfig('database_filename', aDef);
+  FDatabaseName := GetConfig('database_filename', aDef);
+  FCharSet := GetConfig('database_charset', 'WIN1252');
+  FCheckTransaction := GetConfig('database_checktransaction', false);
+  FParams.Clear;
+  FParams.DelimitedText :=
+    GetConfig('database_params', 'isc_tpb_read_committed');
+  FUsername :=
+    Cript.Sha256Decrypt(
+        GetConfig('database_username', ''));
+  FPassword :=
+    Cript.Sha256Decrypt(
+        GetConfig('database_password', ''));
+end;
+
+constructor TConfigDatabase.Create;
+begin
+  FParams := TStringList.Create;
+  inherited;
+end;
+
+destructor TConfigDatabase.Destroy;
+begin
+  FreeAndNil(FParams);
+  inherited Destroy;
+end;
+
+procedure TConfigDatabase.Save;
+begin
+
+  SetConfig('database_filename', FDatabaseName);
+  SetConfig('database_charset', FCharSet);
+  SetConfig('database_checktransaction', FCheckTransaction);
+  SetConfig('database_params', FParams.DelimitedText);
+  SetConfig('database_username',
+    Cript.Sha256Encrypt(FUsername));
+  SetConfig('database_password', Cript.Sha256Encrypt(
+    FPassword));
+  Get;
+
+end;
+
+function TConfigDatabase.CheckDB: Boolean;
+var
+  FDB: TModelDataBase;
+begin
+
+  FDB := TModelDataBase.Create;
+  try
+    Result := FDB.Connected;
+  finally
+    FreeAndNil(FDB);
+  end;
 
 end;
 

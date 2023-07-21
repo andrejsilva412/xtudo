@@ -1,0 +1,128 @@
+object FrameEndereco: TFrameEndereco
+  Left = 0
+  Height = 87
+  Top = 0
+  Width = 460
+  ClientHeight = 87
+  ClientWidth = 460
+  TabOrder = 0
+  DesignLeft = 322
+  DesignTop = 10
+  object Label1: TLabel
+    Left = 0
+    Height = 15
+    Top = 0
+    Width = 21
+    Caption = 'CEP'
+    ParentColor = False
+  end
+  object DBEdit1: TDBEdit
+    Left = 0
+    Height = 23
+    Top = 16
+    Width = 84
+    EditMask = '99999-999;1;_'
+    MaxLength = 9
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    Left = 90
+    Height = 15
+    Top = 0
+    Width = 49
+    Caption = 'Endereço'
+    ParentColor = False
+  end
+  object DBEdit2: TDBEdit
+    Left = 90
+    Height = 23
+    Top = 16
+    Width = 256
+    MaxLength = 0
+    TabOrder = 1
+  end
+  object Label3: TLabel
+    Left = 352
+    Height = 15
+    Top = 0
+    Width = 44
+    Caption = 'Número'
+    ParentColor = False
+  end
+  object DBEdit3: TDBEdit
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 352
+    Height = 23
+    Top = 16
+    Width = 108
+    Anchors = [akTop, akLeft, akRight]
+    MaxLength = 0
+    TabOrder = 2
+  end
+  object Label4: TLabel
+    Left = 0
+    Height = 15
+    Top = 48
+    Width = 77
+    Caption = 'Complemento'
+    ParentColor = False
+  end
+  object DBComboBox1: TDBComboBox
+    Left = 0
+    Height = 23
+    Top = 64
+    Width = 84
+    ItemHeight = 15
+    MaxLength = 0
+    TabOrder = 3
+  end
+  object Label5: TLabel
+    Left = 90
+    Height = 15
+    Top = 48
+    Width = 31
+    Caption = 'Bairro'
+    ParentColor = False
+  end
+  object DBEdit4: TDBEdit
+    Left = 90
+    Height = 23
+    Top = 64
+    Width = 208
+    MaxLength = 0
+    TabOrder = 4
+  end
+  object Label6: TLabel
+    Left = 304
+    Height = 15
+    Top = 48
+    Width = 37
+    Caption = 'Cidade'
+    ParentColor = False
+  end
+  object DBComboBox2: TDBComboBox
+    AnchorSideRight.Control = SpeedButton1
+    Left = 304
+    Height = 23
+    Top = 64
+    Width = 133
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    MaxLength = 0
+    TabOrder = 5
+  end
+  object SpeedButton1: TSpeedButton
+    AnchorSideLeft.Control = DBComboBox2
+    AnchorSideTop.Control = DBComboBox2
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = DBComboBox2
+    AnchorSideBottom.Side = asrBottom
+    Left = 437
+    Height = 23
+    Top = 64
+    Width = 23
+    Anchors = [akTop, akRight, akBottom]
+  end
+end

@@ -13,7 +13,7 @@ uses
   Forms, datetimectrls, rxnew, view.basico, uconst, utils, view.buttons,
   uimage, uhtmlutils, utypes, view.bascadastro, ustatus, ustrutils,
   view.assistenteinicial, uframetitulo, controller.config,
-  model.config;
+  model.config, ucript, uframecnpj, uframeendereco, uvalida, umodelnomefonetico;
 
 {$R *.res}
 

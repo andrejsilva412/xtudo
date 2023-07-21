@@ -38,6 +38,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="dcpcrypt"/>
+      </Item>
+      <Item>
         <PackageName Value="DateTimeCtrls"/>
       </Item>
       <Item>
@@ -141,6 +144,32 @@
         <Filename Value="model\config\model.config.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="helpers\ucript.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframecnpj.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frameCNPJ"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframeendereco.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrameEndereco"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\uvalida.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\umodelnomefonetico.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -151,7 +180,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;helpers\windows;model;view\assistenteinicial;view\frames;model\config"/>
+      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

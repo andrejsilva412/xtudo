@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, StdCtrls, Controls, Graphics, DateTimePicker, TypInfo,
-  TreeFilterEdit;
+  TreeFilterEdit, EditBtn;
 
 type
 
@@ -108,6 +108,14 @@ begin
            OldColor := (Sender as TTreeFilterEdit).Color;
        (Sender as TTreeFilterEdit).Font.Style := fsStyle;
        (Sender as TTreeFilterEdit).Color := clColor;
+     end;
+
+     if (Sender is TCustomEditButton) then
+     begin
+       if bEnter then
+         OldColor := (Sender as TCustomEditButton).Color;
+       (Sender as TCustomEditButton).Font.Style := fsStyle;
+       (Sender as TCustomEditButton).Color := clColor;
      end;
 
      if ALabel <> nil then
