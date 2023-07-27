@@ -18,15 +18,18 @@ type
       constructor Create;
       destructor Destroy; override;
       function CNPJ(AString: String): Boolean;
+      function MinPasswordLength(APassword: String): Boolean;
   end;
 
 implementation
+
+uses uconst;
 
 { TValidador }
 
 constructor TValidador.Create;
 begin
-  FValidador: TACBrValidador.Create(nil);
+  FValidador := TACBrValidador.Create(nil);
 end;
 
 destructor TValidador.Destroy;
@@ -37,9 +40,14 @@ end;
 
 function TValidador.CNPJ(AString: String): Boolean;
 begin
-  FValida.TipoDocto := docCNPJ;
-  FValida.Documento := Documento;
+  FValidador.TipoDocto := docCNPJ;
+  FValidador.Documento := AString;
   Result := FValidador.Validar;
+end;
+
+function TValidador.MinPasswordLength(APassword: String): Boolean;
+begin
+  Result := Length(APassword) >= StrToInt(C_MIN_PASSWORD_LENGHT);
 end;
 
 end.

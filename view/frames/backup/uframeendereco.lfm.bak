@@ -1,0 +1,142 @@
+object FrameEndereco: TFrameEndereco
+  Left = 0
+  Height = 87
+  Top = 0
+  Width = 460
+  ClientHeight = 87
+  ClientWidth = 460
+  TabOrder = 0
+  DesignLeft = 322
+  DesignTop = 10
+  object Label1: TLabel
+    Left = 0
+    Height = 15
+    Top = 0
+    Width = 21
+    Caption = 'CEP'
+    ParentColor = False
+  end
+  object DBEdit1: TDBEdit
+    Left = 0
+    Height = 23
+    Top = 16
+    Width = 84
+    EditMask = '99999-999;1;_'
+    MaxLength = 9
+    TabOrder = 0
+    OnKeyUp = LocalizarEndereco
+  end
+  object Label2: TLabel
+    Left = 90
+    Height = 15
+    Top = 0
+    Width = 49
+    Caption = 'Endereço'
+    ParentColor = False
+  end
+  object DBEdit2: TDBEdit
+    Left = 90
+    Height = 23
+    Top = 16
+    Width = 256
+    MaxLength = 0
+    TabOrder = 1
+    OnKeyUp = LocalizarEndereco
+  end
+  object Label3: TLabel
+    Left = 352
+    Height = 15
+    Top = 0
+    Width = 44
+    Caption = 'Número'
+    ParentColor = False
+  end
+  object DBEdit3: TDBEdit
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 352
+    Height = 23
+    Top = 16
+    Width = 108
+    Anchors = [akTop, akLeft, akRight]
+    MaxLength = 0
+    TabOrder = 2
+    OnKeyUp = LocalizarEndereco
+  end
+  object Label4: TLabel
+    Left = 0
+    Height = 15
+    Top = 48
+    Width = 77
+    Caption = 'Complemento'
+    ParentColor = False
+  end
+  object DBComboBox1: TDBComboBox
+    Left = 0
+    Height = 23
+    Top = 64
+    Width = 84
+    ItemHeight = 15
+    MaxLength = 0
+    OnKeyUp = LocalizarEndereco
+    TabOrder = 3
+  end
+  object Label5: TLabel
+    Left = 90
+    Height = 15
+    Top = 48
+    Width = 31
+    Caption = 'Bairro'
+    ParentColor = False
+  end
+  object Label6: TLabel
+    Left = 304
+    Height = 15
+    Top = 48
+    Width = 37
+    Caption = 'Cidade'
+    ParentColor = False
+  end
+  object DBComboBox2: TDBComboBox
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 304
+    Height = 23
+    Top = 64
+    Width = 156
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    MaxLength = 0
+    OnKeyUp = LocalizarEndereco
+    TabOrder = 5
+  end
+  object DBComboBox3: TDBComboBox
+    Left = 90
+    Height = 23
+    Top = 64
+    Width = 208
+    ItemHeight = 15
+    MaxLength = 0
+    OnKeyUp = LocalizarEndereco
+    TabOrder = 4
+  end
+  object Label7: TLabel
+    AnchorSideTop.Control = DBEdit2
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = DBEdit2
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = DBEdit2
+    Left = 191
+    Height = 12
+    Top = 4
+    Width = 155
+    Anchors = [akRight, akBottom]
+    Caption = 'Use CTRL+F para localizar um endereço'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -9
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentColor = False
+    ParentFont = False
+  end
+end

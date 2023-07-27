@@ -5,7 +5,7 @@ unit ucript;
 interface
 
 uses
-  Classes, SysUtils, DCPblowfish, DCPsha256;
+  Classes, SysUtils, DCPblowfish, DCPsha256, md5;
 
 type
 
@@ -19,6 +19,7 @@ type
       destructor Destroy; override;
       function Sha256Encrypt(AString: String): String;
       function Sha256Decrypt(AStrCript: String): String;
+      function GetHash(const AString: String): String;
   end;
 
 const
@@ -54,6 +55,16 @@ begin
   FCipher.InitStr(FPrivateKey, TDCP_sha256);
   Result := FCipher.DecryptString(AStrCript);
   FCipher.Burn;
+
+end;
+
+function TCript.GetHash(const AString: String): String;
+var
+  Str: String;
+begin
+
+  Str := Sha256Encrypt(AString);
+  Result := MD5Print(MD5String(Str));
 
 end;
 

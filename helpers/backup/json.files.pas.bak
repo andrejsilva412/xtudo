@@ -17,8 +17,10 @@ type
       function ReadVariant(Ident: String; Default: Variant): Variant;
       procedure WriteVariant(Ident: String; Value: Variant);
     public
-      function ReadString(Ident: String; Default: String): String;
-      procedure WriteString(Ident: String; Value: String);
+      function ReadString(Ident: String; Default: String): String; overload;
+      function ReadBoolean(Ident: String; Default: Boolean): Boolean; overload;
+      procedure WriteString(Ident: String; Value: String); overload;
+      procedure WriteBoolean(IDent: String; Value: Boolean); overload;
       property FileName: String read FFileName write FFileName;
   end;
 
@@ -41,10 +43,13 @@ begin
   try
     AFile.LoadFromFile(FFileName);
     JSON := TJSONData(GetJSON(AFile.Text)) as TJSONObject;
-    if JSON.FindPath(Ident) <> nil then
-      Result := JSON.Get(Ident)
-    else
-      Result := Default
+    if JSON <> nil then
+    begin
+      if JSON.FindPath(Ident) <> nil then
+        Result := JSON.Get(Ident)
+      else
+        Result := Default;
+    end else Result := Default;
   finally
     FreeAndNil(JSON);
     FreeAndNil(AFile);
@@ -66,28 +71,29 @@ begin
       AFile.LoadFromFile(FFileName);
       JSON := TJSONData(GetJSON(AFile.Text)) as TJSONObject;
     end;
-
+    if (JSON = nil) then
+      JSON := TJSONObject.Create;
     if JSON.Get(Ident) <> '' then
     begin
       case VarType(Value) of
         varSmallInt, varInteger, varInt64:
-           JSON.Integers[Ident] := Value;
+          JSON.Integers[Ident] := Value;
         varDouble:
-           JSON.Floats[Ident] := Value;
+          JSON.Floats[Ident] := Value;
         varBoolean:
-           JSON.Booleans[Ident] := Value;
+          JSON.Booleans[Ident] := Value;
         else
-           JSON.Strings[Ident] := Value;
+         JSON.Strings[Ident] := Value;
       end;
     end else begin
       case VarType(Value) of
         varSmallInt, varInteger, varInt64:
-           JSON.Add(Ident, TJSONIntegerNumber(Int64(Value)));
+           JSON.Add(Ident, TJSONIntegerNumber(Integer(Value)));
         varDouble:
            JSON.Add(Ident, TJSONFloat(Value));
         varBoolean: begin
             Value := iif(Value = true, 1, 0);
-            JSON.Add(Ident, TJSONIntegerNumber(Integer(Value)));
+            JSON.Add(Ident, TJSONIntegerNumber(Int64(Value)));
             end;
         else
            JSON.Add(Ident, TJSONString(String(Value)));
@@ -110,11 +116,23 @@ begin
 
 end;
 
+function TFPJson.ReadBoolean(Ident: String; Default: Boolean): Boolean;
+begin
+
+  Result := ReadVariant(Ident, Default);
+
+end;
+
 procedure TFPJson.WriteString(Ident: String; Value: String);
 begin
 
   WriteVariant(Ident, Value);
 
+end;
+
+procedure TFPJson.WriteBoolean(IDent: String; Value: Boolean);
+begin
+  WriteVariant(IDent, Value);
 end;
 
 end.

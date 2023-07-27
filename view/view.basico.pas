@@ -29,12 +29,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
   private
-    FBorderColor: TColor;
     FLeftMargin: Integer;
     FRightMargin: Integer;
     FTopMargin: Integer;
     FBottonMargin: Integer;
   protected
+    FBorderColor: TColor;
     Sistema: TSistema;
     procedure SetStyle; virtual;
     procedure Clear; virtual;

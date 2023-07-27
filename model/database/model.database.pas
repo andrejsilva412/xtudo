@@ -5,138 +5,310 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, sqldb, BufDataset, IBConnection, model.sqldb;
+  Classes, SysUtils, sqldb, BufDataset, controller.config,
+  Math, udbnotifier;
 
 type
 
-  { TModelDataBase }
+  { TModelDatabase }
 
-  TModelDataBase = class(TModelSQLDB)
+  generic TModelDatabase<T> = class(TDBStatus)
     private
-      FDataBase: TIBConnection;
+      FDatabase: T;
+      FConfig: TConfig;
       FTransact: TSQLTransaction;
-      procedure BeforeConnect(Sender: TObject);
-    protected
+      function AddLimit(OffSet: Integer): String;
+      procedure  BeforeConnect(Sender: TObject); virtual;
+      function ClearWhereFromCondition(ACondition: String): String;
+      function Execute(const SQL: String; ADataSet: TBufDataset;
+        AParams: array of Variant): Integer;
+      procedure SQLQueryToBufDataSet(InDataSet: TSQLQuery; OutDataSet: TBufDataset);
+    public
       procedure StartTransaction;
       procedure Commit;
       procedure RollBack;
-      procedure CloseDB;
-      procedure Insert(ATable, AFields: String; AParams: array of Variant);
+      procedure ExecuteDirect(ASQL: String);
+      function Insert(ATable, AFields: String; AParams: array of Variant): Integer;
       function Delete(ATable, ACondicao: String; AParams: array of Variant): Integer;
-      function GetID: String;
       function Update(ATable, AFields, Acondicao: String; AParams: array of Variant): Integer;
       function Select(ATable, AFields, ACondicao: String;
         AParams: array of Variant; ACount: String; AFieldCount: String;
         APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer; overload;
-    public
+      function Select(ATable, AFields, ACondicao: String;
+        AParams: array of Variant; ADataSet: TBufDataset): Integer; overload;
       function Connected: Boolean;
+      function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String): String; overload;
+      function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean): Boolean; overload;
       constructor Create;
       destructor Destroy; override;
   end;
 
+const
+  C_MAX_REG = 100; // Limite de Resultado de Registros por página
+  C_SELECT = 'select %s from %s';
+  C_INSERT = 'insert into %s (%s) values (%s)';
+  C_UPDATE = 'update %s set %s where %s';
+  C_DELETE = 'delete from %s where %s';
+
 implementation
 
-uses ustrutils, controller.config;
+uses ustrutils, utils;
 
-{ TModelDataBase }
+function TModelDatabase.AddLimit(OffSet: Integer): String;
+begin
+  Result := Format('limit %d, %d', [OffSet, C_MAX_REG]);
+end;
 
-procedure TModelDataBase.BeforeConnect(Sender: TObject);
-var
-  Config: TConfig;
+procedure TModelDatabase.BeforeConnect(Sender: TObject);
 begin
 
-  Config := TConfig.Create;
+end;
+
+function TModelDatabase.ClearWhereFromCondition(ACondition: String): String;
+begin
+  Result := Trim(StringReplace(ACondition, 'where', '', [rfReplaceAll]));
+end;
+
+function TModelDatabase.Execute(const SQL: String; ADataSet: TBufDataset;
+  AParams: array of Variant): Integer;
+var
+  ASQLQuery: TSQLQuery;
+  i: Integer;
+begin
+
+  ASQLQuery := TSQLQuery.Create(nil);
   try
-    FDataBase.DatabaseName := Config.Database.DatabaseName;
-    FDataBase.CheckTransactionParams := Config.Database.CheckTransaction;
-    FDataBase.Dialect := 3;
-    FDataBase.HostName := Config.Database.HostName;
-    FDataBase.Params.Assign(Config.Database.Params);
-    FDataBase.Password := Config.Database.Password;
-    FDataBase.Port := Config.Database.Port;
-    FDataBase.UserName := Config.Database.Username;
+    ASQLQuery.DataBase := FDatabase;
+    ASQLQuery.Transaction := FDatabase.Transaction;
+    ASQLQuery.SQL.Clear;
+    ASQLQuery.SQL.Add(SQL);
+    for i := 0 to ASQLQuery.Params.Count -1 do
+    begin
+      ASQLQuery.Params[i].Value := AParams[i];
+    end;
+    if ADataSet = nil then
+    begin
+      ASQLQuery.ExecSQL;
+      Result := ASQLQuery.RowsAffected;
+    end else begin
+      ASQLQuery.Open;
+      SQLQueryToBufDataSet(ASQLQuery, ADataSet);
+      Result := 0;
+    end;
+    ASQLQuery.Close;
   finally
-    FreeAndNil(Config);
+    FreeAndNil(ASQLQuery);
   end;
 
 end;
 
-procedure TModelDataBase.StartTransaction;
+procedure TModelDatabase.SQLQueryToBufDataSet(InDataSet: TSQLQuery;
+  OutDataSet: TBufDataset);
+var
+  MemoryStream: TMemoryStream;
+begin
+
+  if OutDataSet.ClassType = TBufDataset then
+  begin
+    MemoryStream := TMemoryStream.Create;
+    try
+      InDataSet.SaveToStream(MemoryStream, dfBinary);
+      OutDataSet.LoadFromStream(MemoryStream, dfBinary);
+    finally
+      FreeAndNil(MemoryStream);
+    end;
+  end else
+    raise Exception.Create('Informe um dataset do tipo TBufDataSet');
+
+end;
+
+procedure TModelDatabase.StartTransaction;
 begin
   if not FDataBase.Transaction.Active then
     FDataBase.Transaction.Active := true;
 end;
 
-function TModelDataBase.Connected: Boolean;
-begin
-  Result := FDataBase.Connected;
-end;
-
-procedure TModelDataBase.Commit;
+procedure TModelDatabase.Commit;
 begin
   FDataBase.Transaction.Commit;
 end;
 
-procedure TModelDataBase.RollBack;
+procedure TModelDatabase.RollBack;
 begin
   FDataBase.Transaction.Rollback;
 end;
 
-procedure TModelDataBase.CloseDB;
-begin
-  FDataBase.CloseDataSets;
-  FDataBase.CloseTransactions;
-  FDataBase.Close();
-end;
-
-procedure TModelDataBase.Insert(ATable, AFields: String;
-  AParams: array of Variant);
-begin
-  inherited Insert(TSQLConnector(FDataBase), ATable, AFields, AParams);
-end;
-
-function TModelDataBase.Delete(ATable, ACondicao: String;
+function TModelDatabase.Insert(ATable, AFields: String;
   AParams: array of Variant): Integer;
+var
+  Strings: TStringList;
+  ASQL, Aux, Str1, Str2: String;
+  i: Integer;
 begin
-  Result := inherited Delete(TSQLConnector(FDataBase), ATable, ACondicao, AParams);
+
+  Str1 := '';
+  Str2 := '';
+  Strings := TStringList.Create;
+  try
+    AFields := DelChars(AFields, ' ');
+    AFields := StringReplace(AFields, ',', ';', [rfReplaceAll]);
+    Split(';', AFields, Strings);
+    for i := 0 to Strings.Count -1 do
+    begin
+      Aux := TextoEntre(Strings[i], '', '=', true);
+      Str1 := Str1 + Aux + ',';
+      Aux := TextoEntre(Strings[i], '=', '', true);
+      Str2 := Str2 + Aux + ',';
+    end;
+    System.Delete(Str1, Length(Str1), 1);
+    System.Delete(Str2, Length(Str2), 1);
+    ASQL := Format(C_INSERT, [ATable, Str1, Str2]);
+    Result := Execute(ASQL, nil, AParams);
+  finally
+    FreeAndNil(Strings);
+  end;
 end;
 
-function TModelDataBase.GetID: String;
-begin
-  Result := TGuid.NewGuid.ToString();
-  Result := StringReplace(Result, '{', '', [rfReplaceAll]);
-  Result := StringReplace(Result, '}', '', [rfReplaceAll]);
-  Result := StringReplace(Result, '-', '', [rfReplaceAll]);
-end;
-
-function TModelDataBase.Update(ATable, AFields, Acondicao: String;
+function TModelDatabase.Delete(ATable, ACondicao: String;
   AParams: array of Variant): Integer;
+var
+  ASQL: String;
 begin
-  Result := inherited Update(TSQLConnector(FDataBase), ATable, AFields, Acondicao, AParams);
+
+  if Trim(ACondicao) = '' then
+  begin
+    ASQL := Format(C_DELETE, [ATable, ACondicao]);
+    ASQL := Trim(LeftStr(ASQL, Pos('where', ASQL) -1));
+  end else begin
+    ACondicao := ClearWhereFromCondition(ACondicao);
+    ASQL := Format(C_DELETE, [ATable, ACondicao]);
+  end;
+
+  Result := Execute(ASQL, nil, AParams);
 end;
 
-function TModelDataBase.Select(ATable, AFields, ACondicao: String;
+function TModelDatabase.Update(ATable, AFields, Acondicao: String;
+  AParams: array of Variant): Integer;
+var
+  ASQL: String;
+begin
+
+  if Acondicao = '' then
+  begin
+    ASQL := Format(C_UPDATE, [ATable, AFields]);
+    ASQL := Trim(LeftStr(ASQL, Pos('where', ASQL)-1));
+  end else begin
+    Acondicao := ClearWhereFromCondition(Acondicao);
+    ASQL := Format(C_UPDATE, [ATable, AFields, ACondicao]);
+  end;
+  Result := Execute(ASQL, nil, AParams);
+
+end;
+
+function TModelDatabase.Select(ATable, AFields, ACondicao: String;
   AParams: array of Variant; ACount: String; AFieldCount: String;
   APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
+var
+  sLimit, SQL: String;
+  APageDataSet: TBufDataset;
+  OffSet, ARecords: Integer;
 begin
-  Result := Inherited Select(TSQLConnector(FDataBase), ATable, AFields, ACondicao, AParams, ACount, AFieldCount,
-    ADataSet, APage, AMaxPage);
+
+  APageDataSet := TBufDataset.Create(nil);
+  try
+    SQL := Trim(Format(C_SELECT, [ACount, ATable]) + ' ' + ACondicao);
+    Execute(SQL, APageDataSet, AParams);
+
+    if not APageDataSet.IsEmpty then
+      ARecords := APageDataSet.FieldByName(AFieldCount).AsInteger
+    else ARecords := 0;
+
+    OffSet := (C_MAX_REG * APage) - C_MAX_REG;
+
+    sLimit := AddLimit(OffSet);
+
+    SQL := Trim(Format(C_SELECT, [AFields, ATable]) + ' ' + ACondicao);
+    SQL := SQL + ' ' + sLimit;
+    Execute(SQL, ADataSet, AParams);
+
+    AMaxPage := Ceil(ARecords / C_MAX_REG);
+    AMaxPage := iif(AMaxPage = 0, 1, AMaxPage);
+    Result := ARecords;
+  finally
+    FreeAndNil(APageDataSet);
+  end;
 end;
 
-constructor TModelDataBase.Create;
+function TModelDatabase.Select(ATable, AFields, ACondicao: String;
+  AParams: array of Variant; ADataSet: TBufDataset): Integer;
+var
+  SQL: String;
 begin
-  FDataBase := TIBConnection.Create(nil);
+
+  SQL := Trim(Format(C_SELECT, [AFields, ATable]) + ' ' + ACondicao);
+  Result := Execute(SQL, ADataSet, AParams);
+
+end;
+
+function TModelDatabase.Connected: Boolean;
+begin
+  Result := FDataBase.Connected;
+end;
+
+procedure TModelDatabase.ExecuteDirect(ASQL: String);
+begin
+  TSQLConnector(FDatabase).ExecuteDirect(ASQL);
+end;
+
+function TModelDatabase.Search(ATable, AField, ACondicao: String;
+  AParams: array of Variant; ADefault: String): String;
+var
+  ADataSet: TBufDataset;
+begin
+
+  ADataSet := TBufDataset.Create(nil);
+  try
+      Select(ATable, AField, ACondicao,
+      AParams, ADataSet);
+    if ADataSet.IsEmpty then
+      Result := ADefault
+    else
+      Result := ADataSet.FieldByName(AField).AsString;
+  finally
+    FreeAndNil(ADataSet);
+  end;
+
+end;
+
+function TModelDatabase.Search(ATable, AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Boolean): Boolean;
+var
+  LBoolean: String;
+begin
+
+  LBoolean := Search(ATable, AField, ACondicao, AParams, '');
+  if LBoolean = '' then
+    Result := ADefault
+  else Result := true;
+
+end;
+
+constructor TModelDatabase.Create;
+begin
+  FConfig := TConfig.Create;
+  FDataBase := T.Create(nil);
   FTransact := TSQLTransaction.Create(nil);
   FDataBase.BeforeConnect := @BeforeConnect;
   FDataBase.Transaction := FTransact;
   FDataBase.Open;
 end;
 
-destructor TModelDataBase.Destroy;
+destructor TModelDatabase.Destroy;
 begin
-  CloseDB;
-  FreeAndNil(FTransact);
-  FreeAndNil(FDataBase);
+  FreeAndNil(FConfig);
+  FDataBase.CloseDataSets;
+  FDataBase.CloseTransactions;
+  FDataBase.Close;
   inherited Destroy;
 end;
 

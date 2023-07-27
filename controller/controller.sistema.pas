@@ -6,15 +6,23 @@ interface
 
 uses
   Classes, SysUtils, Controls, Dialogs, LMessages, uimage, controller.config,
-  uvalida;
+  controller.admin, controller.log, uvalida;
 
 type
 
   { TMensagem }
 
   TMensagem = class
+    private
+      procedure GenericTaskDialog
+                (ACaption, ATitle, AText: String;
+                 ACommonButtons: TTaskDialogCommonButtons;
+                  AIcon: TTaskDialogIcon);
     public
       function Excluir: Boolean;
+      procedure Alerta(ACaption, ATitle, AText: String); overload;
+      procedure Alerta(AText: String); overload;
+      procedure Erro(AText: String);
   end;
 
 type
@@ -23,14 +31,18 @@ type
 
   TSistema = class
     private
+      FAdministrativo: TAdministrativo;
       FImage: TImages;
       FMessagem: TMensagem;
       FConfig: TConfig;
       FValidador: TValidador;
+      FLog: TLog;
     public
       destructor Destroy; override;
+      function Administrativo: TAdministrativo;
       function DiretorioUsuario: String;
       function Image: TImages;
+      function Log: TLog;
       function Mensagem: TMensagem;
       function Config: TConfig;
       function Validador: TValidador;
@@ -41,6 +53,30 @@ implementation
 uses utils, uconst;
 
 { TMensagem }
+
+procedure TMensagem.GenericTaskDialog(ACaption, ATitle, AText: String;
+  ACommonButtons: TTaskDialogCommonButtons; AIcon: TTaskDialogIcon);
+begin
+
+  with TTaskDialog.Create(nil) do
+  begin
+    try
+      Title := ATitle;
+      Caption := ACaption;
+      Text := AText;
+      CommonButtons := ACommonButtons;
+      with TTaskDialogButtonItem(Buttons.Add) do
+      begin
+        Caption := C_OK;
+      end;
+      MainIcon := AIcon;
+      Execute;
+    finally
+      Free;
+    end;
+  end;
+
+end;
 
 function TMensagem.Excluir: Boolean;
 begin
@@ -74,11 +110,27 @@ begin
 
 end;
 
+procedure TMensagem.Alerta(ACaption, ATitle, AText: String);
+begin
+  GenericTaskDialog(ACaption, ATitle, AText, [], tdiWarning);
+end;
+
+procedure TMensagem.Alerta(AText: String);
+begin
+  Alerta(C_APP_TITLE, C_ATENCAO, AText);
+end;
+
+procedure TMensagem.Erro(AText: String);
+begin
+  GenericTaskDialog(C_APP_TITLE, C_ERRO, AText, [], tdiError);
+end;
+
 { TSistema }
 
 destructor TSistema.Destroy;
 begin
-
+  if Assigned(FAdministrativo) then
+    FreeAndNil(FAdministrativo);
   if Assigned(FImage) then
     FreeAndNil(FImage);
   if Assigned(FMessagem) then
@@ -87,7 +139,16 @@ begin
     FreeAndNil(FConfig);
   if Assigned(FValidador) then
     FreeAndNil(FValidador);
+  if Assigned(FLog) then
+    FreeAndNil(FLog);
   inherited Destroy;
+end;
+
+function TSistema.Administrativo: TAdministrativo;
+begin
+  if not Assigned(FAdministrativo) then
+    FAdministrativo := TAdministrativo.Create;
+  Result := FAdministrativo;
 end;
 
 function TSistema.DiretorioUsuario: String;
@@ -102,6 +163,13 @@ begin
   if not Assigned(FImage) then
     FImage := TImages.Create;
   Result := FImage;
+end;
+
+function TSistema.Log: TLog;
+begin
+  if not Assigned(FLog) then
+    FLog := TLog.Create;
+  Result := FLog;
 end;
 
 function TSistema.Mensagem: TMensagem;

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, LCLType, uconst;
 
-
+// Imagens
 type
 
   TSVGImages = (svgNone, svgClose);

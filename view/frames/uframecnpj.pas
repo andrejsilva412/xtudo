@@ -29,7 +29,7 @@ type
 
 implementation
 
-uses controller.sistema, uconst;
+uses controller.sistema, uconst, ueditchangecolor;
 
 {$R *.lfm}
 
@@ -61,11 +61,22 @@ begin
 end;
 
 constructor TframeCNPJ.Create(TheOwner: TComponent);
+var
+  Sistema: TSistema;
 begin
-  inherited Create(TheOwner);
-  lblFrameCNPJ.Caption := '';
-  DBEditFrameCNPJ.EditMask := C_CNPJ_MASK;
-  DBEditFrameCNPJ.CustomEditMask := true;
+  Sistema := TSistema.Create;
+  try
+    inherited Create(TheOwner);
+    ParentColor := false;
+    lblFrameCNPJCheck.Caption := '';
+    DBEditFrameCNPJ.EditMask := C_CNPJ_MASK;
+    DBEditFrameCNPJ.CustomEditMask := true;
+    SpeedButton1.Flat := true;
+    Sistema.Image.SVG(SpeedButton1.Glyph, C_SVG_SEARCH, 16, 16);
+    TWinControlTrocaCor.RegisterEdit(DBEditFrameCNPJ);
+  finally
+    FreeAndNil(Sistema);
+  end;
 end;
 
 end.

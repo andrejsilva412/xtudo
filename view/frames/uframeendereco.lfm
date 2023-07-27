@@ -24,6 +24,7 @@ object FrameEndereco: TFrameEndereco
     EditMask = '99999-999;1;_'
     MaxLength = 9
     TabOrder = 0
+    OnKeyUp = LocalizarEndereco
   end
   object Label2: TLabel
     Left = 90
@@ -40,6 +41,7 @@ object FrameEndereco: TFrameEndereco
     Width = 256
     MaxLength = 0
     TabOrder = 1
+    OnKeyUp = LocalizarEndereco
   end
   object Label3: TLabel
     Left = 352
@@ -59,6 +61,7 @@ object FrameEndereco: TFrameEndereco
     Anchors = [akTop, akLeft, akRight]
     MaxLength = 0
     TabOrder = 2
+    OnKeyUp = LocalizarEndereco
   end
   object Label4: TLabel
     Left = 0
@@ -75,6 +78,7 @@ object FrameEndereco: TFrameEndereco
     Width = 84
     ItemHeight = 15
     MaxLength = 0
+    OnKeyUp = LocalizarEndereco
     TabOrder = 3
   end
   object Label5: TLabel
@@ -85,14 +89,6 @@ object FrameEndereco: TFrameEndereco
     Caption = 'Bairro'
     ParentColor = False
   end
-  object DBEdit4: TDBEdit
-    Left = 90
-    Height = 23
-    Top = 64
-    Width = 208
-    MaxLength = 0
-    TabOrder = 4
-  end
   object Label6: TLabel
     Left = 304
     Height = 15
@@ -102,27 +98,46 @@ object FrameEndereco: TFrameEndereco
     ParentColor = False
   end
   object DBComboBox2: TDBComboBox
-    AnchorSideRight.Control = SpeedButton1
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
     Left = 304
     Height = 23
     Top = 64
-    Width = 133
+    Width = 156
     Anchors = [akTop, akLeft, akRight]
     ItemHeight = 15
     MaxLength = 0
+    OnKeyUp = LocalizarEndereco
     TabOrder = 5
   end
-  object SpeedButton1: TSpeedButton
-    AnchorSideLeft.Control = DBComboBox2
-    AnchorSideTop.Control = DBComboBox2
-    AnchorSideRight.Control = Owner
-    AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = DBComboBox2
-    AnchorSideBottom.Side = asrBottom
-    Left = 437
+  object DBComboBox3: TDBComboBox
+    Left = 90
     Height = 23
     Top = 64
-    Width = 23
-    Anchors = [akTop, akRight, akBottom]
+    Width = 208
+    ItemHeight = 15
+    MaxLength = 0
+    OnKeyUp = LocalizarEndereco
+    TabOrder = 4
+  end
+  object Label7: TLabel
+    AnchorSideTop.Control = DBEdit2
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = DBEdit2
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = DBEdit2
+    Left = 183
+    Height = 10
+    Top = 6
+    Width = 163
+    Anchors = [akRight, akBottom]
+    Caption = 'Use CTRL+F para localizar um endereço'
+    Font.CharSet = ANSI_CHARSET
+    Font.Height = -8
+    Font.Name = 'Verdana'
+    Font.Pitch = fpVariable
+    Font.Quality = fqAntialiased
+    ParentColor = False
+    ParentFont = False
   end
 end

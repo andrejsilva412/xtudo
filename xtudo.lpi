@@ -15,9 +15,10 @@
         <TextDesc Value="Aplicativo para gerencimento de Restaurantes, Bares e Lanchonetes."/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="2">
+      <Resources Count="3">
         <Resource_0 FileName="resources\svg\closesvg.svg" Type="RCDATA" ResourceName="CLOSESVG"/>
         <Resource_1 FileName="resources\svg\printer.svg" Type="RCDATA" ResourceName="PRINTER"/>
+        <Resource_2 FileName="resources\svg\search.svg" Type="RCDATA" ResourceName="SEARCH"/>
       </Resources>
     </General>
     <VersionInfo>
@@ -37,6 +38,9 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="ACBrDiversos"/>
+      </Item>
       <Item>
         <PackageName Value="dcpcrypt"/>
       </Item>
@@ -111,7 +115,7 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="helpers\ustatus.pas"/>
+        <Filename Value="helpers\udbnotifier.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -167,7 +171,74 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="model\umodelnomefonetico.pas"/>
+        <Filename Value="model\model.dmmain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\controller.admin.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\controller.user.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\controller.crud.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\database\model.crud.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\administrativo\model.user.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\database\model.database.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\database\model.database.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\database\model.database.sqlite.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\controller.log.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.log.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.pais.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.cidade.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.uf.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\udatacollection.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.endereco.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.cep.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
@@ -180,7 +251,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database"/>
+      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\admin;model\administrativo"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

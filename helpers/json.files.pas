@@ -88,12 +88,22 @@ begin
     end else begin
       case VarType(Value) of
         varSmallInt, varInteger, varInt64:
-           JSON.Add(Ident, TJSONIntegerNumber(Int64(Value)));
+           {$ifdef CPU32}
+           JSON.Add(Ident, TJSONIntegerNumber(Integer(Value)));
+           {$endif}
+           {$ifdef CPU64}
+           JSON.Add(Ident, TJSONInt64Number(Int64(Value)));
+           {$endif}
         varDouble:
            JSON.Add(Ident, TJSONFloat(Value));
         varBoolean: begin
             Value := iif(Value = true, 1, 0);
-            JSON.Add(Ident, TJSONIntegerNumber(Int64(Value)));
+            {$ifdef CPU32}
+            JSON.Add(Ident, TJSONIntegerNumber(Integer(Value)));
+            {$endif}
+            {$ifdef CPU64}
+            JSON.Add(Ident, TJSONInt64Number(Int64(Value)));
+            {$endif}
             end;
         else
            JSON.Add(Ident, TJSONString(String(Value)));

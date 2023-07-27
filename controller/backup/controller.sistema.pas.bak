@@ -5,15 +5,23 @@ unit controller.sistema;
 interface
 
 uses
-  Classes, SysUtils, Dialogs, utema, uimage, json.files;
+  Classes, SysUtils, Controls, Dialogs, LMessages, uimage, controller.config,
+  uvalida;
 
 type
 
   { TMensagem }
 
   TMensagem = class
+      procedure GenericTaskDialog
+                (ACaption, ATitle, AText: String;
+                 ACommonButtons: TTaskDialogCommonButtons;
+                  AIcon: TTaskDialogIcon);
     public
       function Excluir: Boolean;
+      procedure Alerta(ACaption, ATitle, AText: String); overload;
+      procedure Alerta(AText: String); overload;
+      procedure Erro(AText: String);
   end;
 
 type
@@ -22,21 +30,17 @@ type
 
   TSistema = class
     private
-      FDefaultFileTheme: String;
-      FTema: TTema;
-      FFPJSON: TFPJson;
       FImage: TImages;
       FMessagem: TMensagem;
-      procedure ReadConfiFile;
+      FConfig: TConfig;
+      FValidador: TValidador;
     public
-      constructor Create;
       destructor Destroy; override;
       function DiretorioUsuario: String;
-      function Tema: TTema;
-      function JSON: TFPJson;
       function Image: TImages;
       function Mensagem: TMensagem;
-      property DefaultFileTheme: String read FDefaultFileTheme write FDefaultFileTheme;
+      function Config: TConfig;
+      function Validador: TValidador;
   end;
 
 implementation
@@ -44,6 +48,30 @@ implementation
 uses utils, uconst;
 
 { TMensagem }
+
+procedure TMensagem.GenericTaskDialog(ACaption, ATitle, AText: String;
+  ACommonButtons: TTaskDialogCommonButtons; AIcon: TTaskDialogIcon);
+begin
+
+  with TTaskDialog.Create(nil) do
+  begin
+    try
+      Title := ATitle;
+      Caption := ACaption;
+      Text := AText;
+      CommonButtons := ACommonButtons;
+      with TTaskDialogButtonItem(Buttons.Add) do
+      begin
+        Caption := C_OK;
+      end;
+      MainIcon := AIcon;
+      Execute;
+    finally
+      Free;
+    end;
+  end;
+
+end;
 
 function TMensagem.Excluir: Boolean;
 begin
@@ -77,41 +105,34 @@ begin
 
 end;
 
+procedure TMensagem.Alerta(ACaption, ATitle, AText: String);
+begin
+  GenericTaskDialog(ACaption, ATitle, AText, [], tdiWarning);
+end;
+
+procedure TMensagem.Alerta(AText: String);
+begin
+  Alerta(C_APP_TITLE, C_ATENCAO, AText);
+end;
+
+procedure TMensagem.Erro(AText: String);
+begin
+  GenericTaskDialog(C_APP_TITLE, C_ERRO, AText, [], tdiError);
+end;
+
 { TSistema }
-
-procedure TSistema.ReadConfiFile;
-begin
-
-  if not DirectoryExists('config') then
-    CreateDir('config');
-
-  Self.JSON.FileName := 'config\config.json';
-  if not FileExists(Self.JSON.FileName) then
-    Self.JSON.WriteString('theme', 'theme\default.json');
-  FDefaultFileTheme := Self.JSON.ReadString('theme', 'theme\default.json');
-
-end;
-
-constructor TSistema.Create;
-begin
-
-  // Se não existir cria o arquivo de configuração
-  ReadConfiFile;
-  Self.Tema.SetTheme(FDefaultFileTheme);
-
-end;
 
 destructor TSistema.Destroy;
 begin
 
-  if Assigned(FTema) then
-    FreeAndNil(FTema);
-  if Assigned(FFPJSON) then
-    FreeAndNil(FFPJSON);
   if Assigned(FImage) then
     FreeAndNil(FImage);
   if Assigned(FMessagem) then
     FreeAndNil(FMessagem);
+  if Assigned(FConfig) then
+    FreeAndNil(FConfig);
+  if Assigned(FValidador) then
+    FreeAndNil(FValidador);
   inherited Destroy;
 end;
 
@@ -119,24 +140,6 @@ function TSistema.DiretorioUsuario: String;
 begin
 
   Result := Path;
-
-end;
-
-function TSistema.Tema: TTema;
-begin
-
-  if not Assigned(FTema) then
-    FTema := TTema.Create;
-  Result := FTema;
-
-end;
-
-function TSistema.JSON: TFPJson;
-begin
-
-  if not Assigned(FFPJSON) then
-    FFPJSON := TFPJson.Create;
-  Result := FFPJSON;
 
 end;
 
@@ -152,6 +155,20 @@ begin
   if not Assigned(FMessagem) then
     FMessagem := TMensagem.Create;
   Result := FMessagem;
+end;
+
+function TSistema.Config: TConfig;
+begin
+  if not Assigned(FConfig) then
+    FConfig := TConfig.Create;
+  Result := FConfig;
+end;
+
+function TSistema.Validador: TValidador;
+begin
+  if not Assigned(FValidador) then
+    FValidador := TValidador.Create;
+  Result := FValidador;
 end;
 
 end.

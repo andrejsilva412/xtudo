@@ -76,6 +76,7 @@ type
 
   TConfigDatabase = class(TBaseConfig)
     private
+      FCacheDatabase: String;
       FCharSet: String;
       FCheckTransaction: Boolean;
       FDatabaseName: String;
@@ -90,7 +91,8 @@ type
       constructor Create;
       destructor Destroy; override;
       procedure Save;
-      function CheckDB: Boolean;
+      function CheckDBConnection: Boolean;
+      function CheckCacheConnection: Boolean;
       property CharSet: String read FCharSet;
       property CheckTransaction: Boolean read FCheckTransaction write FCheckTransaction;
       property DatabaseName: String read FDatabaseName write FDatabaseName;
@@ -99,6 +101,7 @@ type
       property Params: TStringList read FParams write FParams;
       property Username: String read FUsername write FUsername;
       property Password: String read FPassword write FPassword;
+      property CacheDatabase: String read FCacheDatabase;
   end;
 
 
@@ -116,7 +119,7 @@ type
 
 implementation
 
-uses utils, model.database;
+uses utils, uconst, model.crud;
 
 { TConfig }
 
@@ -348,6 +351,7 @@ begin
   if FDatabaseName = '' then
     SetConfig('database_filename', aDef);
   FDatabaseName := GetConfig('database_filename', aDef);
+  FHostName := GetConfig('database_hostname', 'localhost');
   FCharSet := GetConfig('database_charset', 'WIN1252');
   FCheckTransaction := GetConfig('database_checktransaction', false);
   FParams.Clear;
@@ -359,6 +363,15 @@ begin
   FPassword :=
     Cript.Sha256Decrypt(
         GetConfig('database_password', ''));
+
+  aDef := GetAppConfigDir(false);
+  if not DirectoryExists(aDef) then
+    CreateDir(aDef);
+
+  aDef := aDef + 'cache.db';
+
+  FCacheDatabase := aDef;
+
 end;
 
 constructor TConfigDatabase.Create;
@@ -384,20 +397,35 @@ begin
     Cript.Sha256Encrypt(FUsername));
   SetConfig('database_password', Cript.Sha256Encrypt(
     FPassword));
+  SetConfig('database_hostname', FHostName);
   Get;
 
 end;
 
-function TConfigDatabase.CheckDB: Boolean;
+function TConfigDatabase.CheckDBConnection: Boolean;
 var
-  FDB: TModelDataBase;
+  DB: TModelCRUD;
 begin
 
-  FDB := TModelDataBase.Create;
+  DB := TModelCRUD.Create;
   try
-    Result := FDB.Connected;
+    Result := DB.Connected(false);
   finally
-    FreeAndNil(FDB);
+    FreeAndNil(DB);
+  end;
+
+end;
+
+function TConfigDatabase.CheckCacheConnection: Boolean;
+var
+  DB: TModelCRUD;
+begin
+
+  DB := TModelCRUD.Create;
+  try
+    Result := DB.Connected(true);
+  finally
+    FreeAndNil(DB);
   end;
 
 end;

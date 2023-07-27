@@ -15,10 +15,11 @@ type
   TImages = class
     private
       function SetColor(aSVG: String; aCor: TColor): String;
+      procedure SVGToImage(aImage: TImage; SVG: String; W, H: Integer);
       procedure SVGToBitmap(aImage: TBitmap; aSVG: String; W, H: Integer);
     public
       procedure SVG(bmp: TBitmap; aSVG: String; W, H: Integer;
-        Cor: TColor = clBlack); overload;
+        Cor: TColor = clBlack; AResource: Boolean = true); overload;
       procedure SVG(Image: TImage; aSVG: String; W, H: Integer;
         Cor: TColor = clBlack); overload;
       procedure SVG(Image: TImage; aSVG: TSVGImages; W, H: Integer;
@@ -30,7 +31,7 @@ var
 
 implementation
 
-uses uhtmlutils;
+uses uhtmlutils, utils;
 
 { TImages }
 
@@ -50,21 +51,21 @@ begin
 
 end;
 
-procedure TImages.SVGToImage(aImage: TImage; aSVG: String; W, H: Integer);
+procedure TImages.SVGToImage(aImage: TImage; SVG: String; W, H: Integer);
 var
   bmp: TBGRABitmap;
-  BGRASVG: TBGRASVG;
+  StreamSVG: TBGRASVG;
 begin
 
   bmp := TBGRABitmap.Create;
-  BGRASVG := TBGRASVG.Create(TStringStream.Create(aSVG));
+  StreamSVG := TBGRASVG.Create(TStringStream.Create(svg));
   try
      bmp.SetSize(W, H);
-     BGRASVG.StretchDraw(bmp.Canvas2D, taCenter, tlCenter,
+     StreamSVG.StretchDraw(bmp.Canvas2D, taCenter, tlCenter,
        0, 0, W, H);
      aImage.Picture.Bitmap.Assign(bmp);
   finally
-    BGRASVG.Free;
+    StreamSVG.Free;
     bmp.Free;
   end;
 
@@ -72,26 +73,29 @@ end;
 
 procedure TImages.SVGToBitmap(aImage: TBitmap; aSVG: String; W, H: Integer);
 var
-  bmp: TBGRABitmap;
-  BGRASVG: TBGRASVG;
+  img: TImage;
+  bmp: TBitmap;
 begin
 
-  bmp := TBGRABitmap.Create;
-  BGRASVG := TBGRASVG.Create(TStringStream.Create(aSVG));
+  img := TImage.Create(nil);
+  bmp := TBitmap.Create;
   try
-     bmp.SetSize(W, H);
-     BGRASVG.StretchDraw(bmp.Canvas2D, taCenter, tlCenter,
-       0, 0, W, H);
-     aImage.Assign(bmp);
+    SVGToImage(img, SVG, W, H);
+    bmp.Assign(img.Picture.Bitmap);
+    aImage.Assign(bmp);
   finally
-    BGRASVG.Free;
     bmp.Free;
+    img.Free;
   end;
 
 end;
 
-procedure TImages.SVG(bmp: TBitmap; aSVG: String; W, H: Integer; Cor: TColor);
+procedure TImages.SVG(bmp: TBitmap; aSVG: String; W, H: Integer; Cor: TColor;
+  AResource: Boolean);
 begin
+
+  if AResource then
+    aSVG := GetResourceToString(aSVG);
 
   aSVG := SetColor(aSVG, Cor);
   SVGToBitmap(bmp, aSVG, W, H);

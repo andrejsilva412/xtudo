@@ -227,7 +227,8 @@ begin
   begin
     if (Components[i] is TBCButtonFocus) then
     begin
-      Sistema.Config.Theme.SetBcButtonStyle((Components[i] as TBCButtonFocus))
+      Sistema.Config.Theme.SetBcButtonStyle((Components[i] as TBCButtonFocus));
+      (Components[i] as TBCButtonFocus).Color := FBorderColor;
     end;
   end;
   inherited SetStyle;

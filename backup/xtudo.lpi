@@ -15,9 +15,10 @@
         <TextDesc Value="Aplicativo para gerencimento de Restaurantes, Bares e Lanchonetes."/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="2">
+      <Resources Count="3">
         <Resource_0 FileName="resources\svg\closesvg.svg" Type="RCDATA" ResourceName="CLOSESVG"/>
         <Resource_1 FileName="resources\svg\printer.svg" Type="RCDATA" ResourceName="PRINTER"/>
+        <Resource_2 FileName="resources\svg\search.svg" Type="RCDATA" ResourceName="SEARCH"/>
       </Resources>
     </General>
     <VersionInfo>
@@ -37,6 +38,15 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="ACBrDiversos"/>
+      </Item>
+      <Item>
+        <PackageName Value="dcpcrypt"/>
+      </Item>
+      <Item>
+        <PackageName Value="DateTimeCtrls"/>
+      </Item>
       <Item>
         <PackageName Value="rxnew"/>
       </Item>
@@ -130,6 +140,42 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
       </Unit>
+      <Unit>
+        <Filename Value="controller\controller.config.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\config\model.config.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\ucript.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframecnpj.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frameCNPJ"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframeendereco.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrameEndereco"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\uvalida.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\model.dmmain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmMain"/>
+        <ResourceBaseClass Value="DataModule"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -140,7 +186,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;helpers\windows;model;view\assistenteinicial;view\frames"/>
+      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

@@ -205,6 +205,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Caption = 'TabSheet1'
       ClientHeight = 304
       ClientWidth = 746
+      OnHide = TabSheet1Hide
+      OnShow = TabSheet1Show
       object Label6: TLabel
         AnchorSideLeft.Control = TabSheet2
         AnchorSideTop.Control = TabSheet2
@@ -271,7 +273,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Left = 296
         Height = 23
         Top = 56
-        Width = 80
+        Width = 88
         TabOrder = 2
         Text = 'admin'
       end
@@ -280,6 +282,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Caption = 'TabSheet3'
       ClientHeight = 304
       ClientWidth = 746
+      OnShow = TabSheet3Show
       object Label11: TLabel
         AnchorSideLeft.Control = TabSheet2
         AnchorSideTop.Control = TabSheet2
@@ -331,6 +334,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Height = 23
         Top = 56
         Width = 360
+        DataField = 'razaosocial'
+        DataSource = DataSource1
         MaxLength = 0
         TabOrder = 0
       end
@@ -339,6 +344,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Height = 23
         Top = 56
         Width = 272
+        DataField = 'nome'
+        DataSource = DataSource1
         MaxLength = 0
         TabOrder = 1
       end
@@ -347,6 +354,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Height = 23
         Top = 102
         Width = 168
+        DataField = 'inscricaoestadual'
+        DataSource = DataSource1
         MaxLength = 0
         TabOrder = 2
       end
@@ -356,8 +365,14 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Width = 480
         ClientWidth = 480
         TabOrder = 3
+        inherited DBEdit1: TDBEdit
+          DataField = 'cep'
+          DataSource = DataSource1
+        end
         inherited DBEdit2: TDBEdit
           Width = 272
+          DataField = 'endereco'
+          DataSource = DataSource1
         end
         inherited Label3: TLabel
           Left = 368
@@ -366,13 +381,21 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
           AnchorSideRight.Control = FrameEndereco1
           Left = 368
           Width = 112
+          DataField = 'numero'
+          DataSource = DataSource1
+        end
+        inherited DBComboBox1: TDBComboBox
+          DataField = 'complemento'
+          DataSource = DataSource1
         end
         inherited DBComboBox2: TDBComboBox
-          Width = 153
-        end
-        inherited SpeedButton1: TSpeedButton
           AnchorSideRight.Control = FrameEndereco1
-          Left = 457
+          Width = 176
+          DataField = 'cidade'
+          DataSource = DataSource1
+        end
+        inherited Label7: TLabel
+          Left = 199
         end
       end
       inline frameCNPJ1: TframeCNPJ
@@ -387,6 +410,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         end
         inherited DBEditFrameCNPJ: TDBEdit
           Width = 163
+          DataField = 'cnpj'
+          DataSource = DataSource1
         end
         inherited SpeedButton1: TSpeedButton
           AnchorSideRight.Control = frameCNPJ1
@@ -430,9 +455,173 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       OnExecute = acGenerico2Execute
     end
   end
-  object bdsEmpresa: TBufDataset[12]
-    FieldDefs = <>
-    Left = 494
-    Top = 192
+  object DataSource1: TDataSource[12]
+    DataSet = bdsEmpresa
+    Left = 608
+    Top = 200
+  end
+  object bdsEmpresa: TBufDataset[13]
+    FieldDefs = <    
+      item
+        Name = 'razaosocial'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'cnpj'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'nome'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'inscricaoestadual'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'cep'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'endereco'
+        DataType = ftString
+        Size = 60
+      end    
+      item
+        Name = 'numero'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'complemento'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'bairro'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'idcidade'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'cidade'
+        DataType = ftString
+        Size = 40
+      end>
+    Left = 485
+    Top = 208
+    object bdsEmpresarazaosocial: TStringField
+      FieldKind = fkData
+      FieldName = 'razaosocial'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object bdsEmpresacnpj: TStringField
+      FieldKind = fkData
+      FieldName = 'cnpj'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object bdsEmpresanome: TStringField
+      FieldKind = fkData
+      FieldName = 'nome'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object bdsEmpresainscricaoestadual: TStringField
+      FieldKind = fkData
+      FieldName = 'inscricaoestadual'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object bdsEmpresacep: TStringField
+      FieldKind = fkData
+      FieldName = 'cep'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object bdsEmpresaendereco: TStringField
+      FieldKind = fkData
+      FieldName = 'endereco'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object bdsEmpresanumero: TStringField
+      FieldKind = fkData
+      FieldName = 'numero'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object bdsEmpresacomplemento: TStringField
+      FieldKind = fkData
+      FieldName = 'complemento'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object bdsEmpresabairro: TStringField
+      FieldKind = fkData
+      FieldName = 'bairro'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object bdsEmpresaidcidade: TLongintField
+      FieldKind = fkData
+      FieldName = 'idcidade'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object bdsEmpresacidade: TStringField
+      FieldKind = fkData
+      FieldName = 'cidade'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
   end
 end

@@ -3,3 +3,5 @@
 /app/theme
 /app/*.exe
 /app/config
+/app/fbclient.dll
+/app/sqlite3.dll

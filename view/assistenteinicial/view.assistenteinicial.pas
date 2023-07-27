@@ -24,8 +24,20 @@ type
   { TfrmAssistenteInicial }
 
   TfrmAssistenteInicial = class(TfrmBasButtons)
-    bdsEmpresa: TBufDataset;
+    bdsEmpresabairro: TStringField;
+    bdsEmpresacep: TStringField;
+    bdsEmpresacidade: TStringField;
+    bdsEmpresacnpj: TStringField;
+    bdsEmpresacomplemento: TStringField;
+    bdsEmpresaendereco: TStringField;
+    bdsEmpresaidcidade: TLongintField;
+    bdsEmpresainscricaoestadual: TStringField;
+    bdsEmpresanome: TStringField;
+    bdsEmpresanumero: TStringField;
+    bdsEmpresarazaosocial: TStringField;
     btnServidorTeste: TButton;
+    bdsEmpresa: TBufDataset;
+    DataSource1: TDataSource;
     DBEdit1: TDBEdit;
     DBEdit2: TDBEdit;
     DBEdit3: TDBEdit;
@@ -63,8 +75,10 @@ type
     procedure acGenerico2Execute(Sender: TObject);
     procedure btnServidorTesteClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure TabSheet1Hide(Sender: TObject);
+    procedure TabSheet1Show(Sender: TObject);
+    procedure TabSheet3Show(Sender: TObject);
   private
-    FCheckClient: Boolean;
     FCheckServer: Boolean;
     procedure SetCheckServer(AValue: Boolean);
   protected
@@ -81,6 +95,8 @@ var
   frmAssistenteInicial: TfrmAssistenteInicial;
 
 implementation
+
+uses uconst;
 
 {$R *.lfm}
 
@@ -101,7 +117,8 @@ procedure TfrmAssistenteInicial.FormCreate(Sender: TObject);
 begin
 
   inherited;
-  PageControl1.ShowTabs := false;
+  PageControl1.ActivePage := TabSheet2;
+ // PageControl1.ShowTabs := false;
 
   acGenerico1.Caption := 'Avançar';
   acGenerico1.Visible := true;
@@ -112,6 +129,28 @@ begin
   acGenerico2.Enabled := false;
   CheckServer := false;
 
+end;
+
+procedure TfrmAssistenteInicial.TabSheet1Hide(Sender: TObject);
+begin
+  // Cadastra o administrador do sistema
+  Sistema.Administrativo.User.Nome := edAdminNome.Text;
+  Sistema.Administrativo.User.Username := edtAdminUsername.Text;
+  Sistema.Administrativo.User.Password := edAdminSenha.Text;
+  if Sistema.Administrativo.User.Post = 0 then
+  begin
+    Sistema.Mensagem.Erro('Falha ao cadastrar o usuário');
+  end;
+end;
+
+procedure TfrmAssistenteInicial.TabSheet1Show(Sender: TObject);
+begin
+  SetFocus(edAdminNome);
+end;
+
+procedure TfrmAssistenteInicial.TabSheet3Show(Sender: TObject);
+begin
+  bdsEmpresa.Open;
 end;
 
 procedure TfrmAssistenteInicial.SetCheckServer(AValue: Boolean);
@@ -138,6 +177,9 @@ begin
   edtPorta.Text := '3050';
   edHostName.Text := 'localhost';
   edtBancoDeDados.Text := Sistema.Config.Database.DatabaseName;
+  edAdminNome.Text := 'Administrador';
+  edtAdminUsername.Text := 'admin';
+  edAdminSenha.Text := 'admin';
 
 end;
 
@@ -161,8 +203,9 @@ begin
     UserName := edBdUserName.Text;
     Password := edBdPassword.Text;
     Save;
-    CheckServer := CheckDB;
+    CheckServer := CheckDBConnection;
   end;
+
 end;
 
 procedure TfrmAssistenteInicial.acGenerico1Execute(Sender: TObject);
@@ -172,6 +215,15 @@ begin
 
   end else begin
     acGenerico2.Enabled := PageControl1.TabIndex > 0;
+
+    if not CheckServer then
+    begin
+      Sistema.Mensagem.Alerta(SMSGFalhaConexaoBD);
+      exit;
+    end;
+
+    PageControl1.TabIndex := PageControl1.TabIndex + 1;
+
     if PageControl1.TabIndex = (PageControl1.PageCount -1) then
     begin
       acGenerico1.Caption := C_CONCLUIR;
