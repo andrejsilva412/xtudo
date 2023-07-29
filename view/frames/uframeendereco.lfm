@@ -24,7 +24,7 @@ object FrameEndereco: TFrameEndereco
     EditMask = '99999-999;1;_'
     MaxLength = 9
     TabOrder = 0
-    OnKeyUp = LocalizarEndereco
+    OnEditingDone = DBEdit1EditingDone
   end
   object Label2: TLabel
     Left = 90
@@ -41,7 +41,6 @@ object FrameEndereco: TFrameEndereco
     Width = 256
     MaxLength = 0
     TabOrder = 1
-    OnKeyUp = LocalizarEndereco
   end
   object Label3: TLabel
     Left = 352
@@ -61,7 +60,6 @@ object FrameEndereco: TFrameEndereco
     Anchors = [akTop, akLeft, akRight]
     MaxLength = 0
     TabOrder = 2
-    OnKeyUp = LocalizarEndereco
   end
   object Label4: TLabel
     Left = 0
@@ -78,7 +76,6 @@ object FrameEndereco: TFrameEndereco
     Width = 84
     ItemHeight = 15
     MaxLength = 0
-    OnKeyUp = LocalizarEndereco
     TabOrder = 3
   end
   object Label5: TLabel
@@ -107,7 +104,6 @@ object FrameEndereco: TFrameEndereco
     Anchors = [akTop, akLeft, akRight]
     ItemHeight = 15
     MaxLength = 0
-    OnKeyUp = LocalizarEndereco
     TabOrder = 5
   end
   object DBComboBox3: TDBComboBox
@@ -117,7 +113,6 @@ object FrameEndereco: TFrameEndereco
     Width = 208
     ItemHeight = 15
     MaxLength = 0
-    OnKeyUp = LocalizarEndereco
     TabOrder = 4
   end
   object Label7: TLabel

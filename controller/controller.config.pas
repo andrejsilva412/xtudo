@@ -107,7 +107,7 @@ type
 
 type
 
-  TConfig = class
+  TConfig = class(TBaseConfig)
     private
       FTheme: TConfigTheme;
       FDatabase: TConfigDatabase;
@@ -115,6 +115,8 @@ type
       destructor Destroy; override;
       function Theme: TConfigTheme;
       function Database: TConfigDatabase;
+      function ShowWizard: Boolean;
+      procedure WizardDone;
   end;
 
 implementation
@@ -149,6 +151,16 @@ begin
   Result := FDatabase;
 end;
 
+function TConfig.ShowWizard: Boolean;
+begin
+  Result := GetConfig('show_wizard', true);
+end;
+
+procedure TConfig.WizardDone;
+begin
+  SetConfig('show_wizard', false);
+end;
+
 { TConfigTheme }
 
 procedure TConfigTheme.Get;
@@ -162,32 +174,37 @@ begin
   FDefault := 'theme' + PathDelim + 'default.json';
   FFileTheme := GetConfig('theme', FDefault);
 
-  with FHTMLUtils do
+  if not FileExists(FFileTheme) then
   begin
-    FBackGround1 := HTMLToColor('#272727');
-    FBackGround2 := HTMLToColor('#2F0505');
-    FForeGround := HTMLToColor('#85311B');
-    FSecondary1 := HTMLToColor('#C1853B');
-    FSecondary2 := HTMLToColor('#DB9327');
-    FSecondary3 := HTMLToColor('#CC1B1B');
-    FSecondary4 := HTMLToColor('#9E9E9E');
-    FSecondary5 := HTMLToColor('#E2C52C');
-    FSecondary6 := HTMLToColor('#0CA147');
-    FSecondary7 := HTMLToColor('#F4F4F4');
 
-    Directory := 'theme';
-    FileName := 'default.json';
+    with FHTMLUtils do
+    begin
+      FBackGround1 := HTMLToColor('#272727');
+      FBackGround2 := HTMLToColor('#2F0505');
+      FForeGround := HTMLToColor('#85311B');
+      FSecondary1 := HTMLToColor('#C1853B');
+      FSecondary2 := HTMLToColor('#DB9327');
+      FSecondary3 := HTMLToColor('#CC1B1B');
+      FSecondary4 := HTMLToColor('#9E9E9E');
+      FSecondary5 := HTMLToColor('#E2C52C');
+      FSecondary6 := HTMLToColor('#0CA147');
+      FSecondary7 := HTMLToColor('#F4F4F4');
 
-    SetConfig('background1', ColorToHTML(FBackGround1));
-    SetConfig('background2', ColorToHTML(FBackGround2));
-    SetConfig('foreground', ColorToHTML(FForeGround));
-    SetConfig('secondary1', ColorToHTML(FSecondary1));
-    SetConfig('secondary2', ColorToHTML(FSecondary2));
-    SetConfig('secondary3', ColorToHTML(FSecondary3));
-    SetConfig('secondary4', ColorToHTML(FSecondary4));
-    SetConfig('secondary5', ColorToHTML(FSecondary5));
-    SetConfig('secondary6', ColorToHTML(FSecondary6));
-    SetConfig('secondary7', ColorToHTML(FSecondary7));
+      Directory := 'theme';
+      FileName := 'default.json';
+
+      SetConfig('background1', ColorToHTML(FBackGround1));
+      SetConfig('background2', ColorToHTML(FBackGround2));
+      SetConfig('foreground', ColorToHTML(FForeGround));
+      SetConfig('secondary1', ColorToHTML(FSecondary1));
+      SetConfig('secondary2', ColorToHTML(FSecondary2));
+      SetConfig('secondary3', ColorToHTML(FSecondary3));
+      SetConfig('secondary4', ColorToHTML(FSecondary4));
+      SetConfig('secondary5', ColorToHTML(FSecondary5));
+      SetConfig('secondary6', ColorToHTML(FSecondary6));
+      SetConfig('secondary7', ColorToHTML(FSecondary7));
+    end;
+
   end;
 
 end;

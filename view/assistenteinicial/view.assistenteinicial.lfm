@@ -6,6 +6,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
   Caption = 'Assistente de Inicialização'
   ClientHeight = 464
   ClientWidth = 774
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner

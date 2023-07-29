@@ -5,108 +5,110 @@ unit model.endereco;
 interface
 
 uses
-  Classes, SysUtils, udatacollection, model.cidade;
-
-type
-
-  TModelEndereco = class;
-
-type
-
-  { Endereco }
-
-  Endereco = class(TCollectionItem)
-    private
-      FEntitie: TModelEndereco;
-    public
-      constructor Create(ACollection: TCollection); override;
-      destructor Destroy; override;
-      function This: TModelEndereco;
-  end;
-
-type
-
-  { TData }
-
-  TData = class(specialize TDataCollecion<Endereco>)
-    public
-      function Add: Endereco;
-  end;
+  Classes, SysUtils, AcbrCEP, BufDataset, controller.endereco, model.crud;
 
 type
 
   { TModelEndereco }
 
-  TModelEndereco = class
+  TModelEndereco = class(TModelCRUD)
     private
-      FBairro: String;
-      FCEP: String;
-      FCidade: TModelCidade;
-      FComplemento: String;
-      FData: TData;
-      FLogradouro: String;
-      FNumero: String;
-      procedure SetCEP(AValue: String);
+      procedure CreateTableEndereco;
     public
-      constructor Create;
-      destructor Destroy; override;
-      procedure Get(ACEP: String);
-      property Logradouro: String read FLogradouro write FLogradouro;
-      property Complemento: String read FComplemento write FComplemento;
-      property Numero: String read FNumero write FNumero;
-      property Bairro: String read FBairro write FBairro;
-      property Cidade: TModelCidade read FCidade write FCidade;
-      property CEP: String read FCEP write SetCEP;
-      property Data: TData read FData;
+      function BuscaCEP(ACEP: String; AEndereco: TEndereco): Boolean;
   end;
 
 implementation
 
+uses uformats;
+
 { TModelEndereco }
 
-procedure TModelEndereco.SetCEP(AValue: String);
+procedure TModelEndereco.CreateTableEndereco;
 begin
-  if FCEP = AValue then Exit;
-  FCEP := AValue;
+
+  if not TableExists('endereco', true) then
+  begin
+    SQL.Clear;
+    SQL.Add('CREATE TABLE "endereco" (');
+    SQL.Add('"cep"	INTEGER NOT NULL UNIQUE,');
+    SQL.Add('"logradouro"	TEXT,');
+    SQL.Add('"complemento"	TEXT,');
+    SQL.Add('"bairro"	TEXT,');
+    SQL.Add('"municipio"	TEXT,');
+    SQL.Add('"municipio_ibge"	TEXT,');
+    SQL.Add('"uf"	TEXT,');
+    SQL.Add('"uf_ibge"	TEXT);');
+    StartTransaction(true);
+    ExecuteDirect(SQL, true);
+    Commit(true);
+  end;
+
 end;
 
-constructor TModelEndereco.Create;
+function TModelEndereco.BuscaCEP(ACEP: String; AEndereco: TEndereco): Boolean;
+var
+  ADataSet: TBufDataset;
+  ACBRCEP: TACBrCEP;
+  cache: Boolean;
 begin
-  FCidade := TModelCidade.Create;
-  FData := TData.Create;
-end;
 
-destructor TModelEndereco.Destroy;
-begin
-  FreeAndNil(FCidade);
-  FreeAndNil(FData);
-  inherited Destroy;
-end;
+  ADataSet := TBufDataset.Create(nil);
+  ACBRCEP := TACBrCEP.Create(nil);
+  try
+    Result := false;
+    cache := false;
+    ACEP := FormataCEP(ACEP);
+    CreateTableEndereco;
+    AEndereco.Clear;
+    Select('endereco', '*', 'where cep :cep', [ACEP], ADataSet, true);
+    if not ADataSet.IsEmpty then
+    begin
+      AEndereco.CEP := ADataSet.FieldByName('cep').AsString;
+      AEndereco.Logradouro := ADataSet.FieldByName('logradouro').AsString;
+      AEndereco.Complemento := ADataSet.FieldByName('complemento').AsString;
+      AEndereco.Bairro := ADataSet.FieldByName('bairro').AsString;
+      AEndereco.Cidade.Nome := ADataSet.FieldByName('municipio').AsString;
+      AEndereco.Cidade.IBGE := ADataSet.FieldByName('municipio_ibge').AsString;
+      AEndereco.Cidade.UF.Sigla := ADataSet.FieldByName('uf').AsString;
+      AEndereco.Cidade.UF.IBGE := ADataSet.FieldByName('uf_ibge').AsString;
+      cache := true;
+    end else begin
+      if ACBRCEP.BuscarPorCEP(ACEP) > 0 then
+      begin
+        with ACBRCEP.Enderecos[0] do
+        begin
+          AEndereco.CEP := CEP;
+          AEndereco.Logradouro := Tipo_Logradouro + ' ' + Logradouro;
+          AEndereco.Complemento := Complemento;
+          AEndereco.Bairro := Bairro;
+          AEndereco.Cidade.Nome := Municipio;
+          AEndereco.Cidade.IBGE := IBGE_Municipio;
+          AEndereco.Cidade.UF.Sigla := UF;
+          AEndereco.Cidade.UF.IBGE := IBGE_UF;
+        end;
+      end;
+    end;
+    if AEndereco.CEP <> '' then
+    begin
+      if not cache then
+      begin
+        Insert('endereco', 'cep = :cep, logradouro = :logradouro, '
+          + 'complemento = :complemento, bairro = :bairro, '
+          + 'municipio = :municipio, municipio_ibge = :municipio_ibge, '
+          + 'uf = :uf, uf_ibge = :uf_ibge', [AEndereco.CEP,
+           AEndereco.Logradouro, AEndereco.Complemento,
+           AEndereco.Bairro, AEndereco.Cidade.Nome,
+           AEndereco.Cidade.IBGE, AEndereco.Cidade.UF.Sigla,
+           AEndereco.Cidade.UF.IBGE], true);
+      end;
+      Result := true;
+    end;
+  finally
+    FreeAndNil(ACBRCEP);
+    FreeAndNil(ADataSet);
+  end;
 
-{ Endereco }
-
-constructor Endereco.Create(ACollection: TCollection);
-begin
-  inherited Create(ACollection);
-  FEntitie := TModelEndereco.Create;
-end;
-
-destructor Endereco.Destroy;
-begin
-  FreeAndNil(FEntitie);
-  inherited Destroy;
-end;
-
-function Endereco.This: TModelEndereco;
-begin
-  Result := FEntitie;
-end;
-
-{ TData }
-
-function TData.Add: Endereco;
-begin
-  Result := inherited Add as Endereco;
 end;
 
 end.

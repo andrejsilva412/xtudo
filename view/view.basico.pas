@@ -28,6 +28,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     FLeftMargin: Integer;
     FRightMargin: Integer;
@@ -110,6 +111,15 @@ begin
   Canvas.FillRect(FLeftMargin, FTopMargin, ClientWidth - FRightMargin,
     ClientHeight - FBottonMargin);
 
+end;
+
+procedure TfrmBasico.FormShow(Sender: TObject);
+begin
+  if Sistema.ShowWizard then
+  begin
+    Hide;
+    Sistema.Forms.ShowWizard;
+  end;
 end;
 
 procedure TfrmBasico.SetStyle;

@@ -27,7 +27,7 @@ type
         ACache: Boolean = false): Integer;
       function Delete(ATable, ACondicao: String; AParams: array of Variant;
         ACache: Boolean = false): Integer;
-      function GetGUID: String;
+      function NewGUID: String;
       function GetPasswordHash(APassword: String): String;
       function GetNextID(ATable, AIDField: String; ACache: Boolean): Integer; overload;
       function Update(ATable, AFields, Acondicao: String; AParams: array of Variant;
@@ -43,9 +43,11 @@ type
          AParams: array of Variant; ADefault: String; ACache: Boolean = false): String; overload;
       function Search(ATable, AField, ACondicao: String;
          AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
+      function Search(ATable, AField, ACondicao: String;
+         AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
       function TableExists(ATable: String; ACache: Boolean = false): Boolean;
       procedure ExecuteDirect(ASQL: String; ACache: Boolean = false);
-      procedure ExecuteDirect(ASQL: TStringList; ACache: Boolen = false);
+      procedure ExecuteDirect(ASQL: TStringList; ACache: Boolean = false);
       function DateTimeToCacheDateTime(ADateTime: TDateTime): String;
       property SQL: TStringList read FSQL;
     public
@@ -74,6 +76,9 @@ function TModelCRUD.Database: TModelFirebird;
 begin
   if not Assigned(FDatabase) then
     FDatabase := TModelFirebird.Create;
+  FDatabase.OnDatabaseNotify := @DoDataBaseNotify;
+  FDatabase.OnProgress := @DoProgress;
+  FDatabase.OnStatus := @DoStatus;
   Result := FDatabase;
 end;
 
@@ -81,6 +86,9 @@ function TModelCRUD.DatabaseCache: TModelSQLite;
 begin
   if not Assigned(FDatabaseCache) then
       FDatabaseCache := TModelSQLite.Create;
+  FDatabaseCache.OnDatabaseNotify := @DoDataBaseNotify;
+  FDatabaseCache.OnProgress := @DoProgress;
+  FDatabaseCache.OnStatus := @DoStatus;
   Result := FDatabaseCache;
 end;
 
@@ -126,7 +134,7 @@ begin
     Result := Database.Delete(ATable, ACondicao, AParams);
 end;
 
-function TModelCRUD.GetGUID: String;
+function TModelCRUD.NewGUID: String;
 begin
   Result := TGuid.NewGuid.ToString();
   Result := StringReplace(Result, '{', '', [rfReplaceAll]);
@@ -228,6 +236,15 @@ begin
     Result := FDatabase.Search(ATable, AField, ACondicao, AParams, ADefault);
 end;
 
+function TModelCRUD.Search(ATable, AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Integer; ACache: Boolean): Integer;
+begin
+  if ACache then
+    Result := FDatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
+  else
+    Result := FDatabase.Search(ATable, AField, ACondicao, AParams, ADefault);
+end;
+
 function TModelCRUD.TableExists(ATable: String; ACache: Boolean): Boolean;
 begin
   if ACache then
@@ -246,7 +263,7 @@ begin
 
 end;
 
-procedure TModelCRUD.ExecuteDirect(ASQL: TStringList; ACache: Boolen);
+procedure TModelCRUD.ExecuteDirect(ASQL: TStringList; ACache: Boolean);
 begin
   ExecuteDirect(ASQL.Text, ACache);
 end;

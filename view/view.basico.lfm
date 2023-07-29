@@ -6,6 +6,7 @@ object frmBasico: TfrmBasico
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnPaint = FormPaint
+  OnShow = FormShow
   SessionProperties = 'Height;Width;Top;Left'
   LCLVersion = '3.0.0.1'
   object JSONPropStorage1: TJSONPropStorage

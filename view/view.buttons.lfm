@@ -9,6 +9,7 @@ inherited frmBasButtons: TfrmBasButtons
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnMouseUp = FormMouseUp
+  OnShow = nil
   object BCButtonFocus1: TBCButtonFocus[0]
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom

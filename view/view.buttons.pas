@@ -231,7 +231,6 @@ begin
       (Components[i] as TBCButtonFocus).Color := FBorderColor;
     end;
   end;
-  inherited SetStyle;
 
 end;
 

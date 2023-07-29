@@ -14,9 +14,10 @@ uses
   uhtmlutils, utypes, view.bascadastro, udbnotifier, ustrutils,
   view.assistenteinicial, uframetitulo, controller.config, model.config, ucript,
   uframecnpj, uframeendereco, uvalida, model.dmmain, controller.admin,
-  controller.user, controller.crud, model.crud, model.user, model.database,
-  model.database.sqlite, controller.log, model.log, model.pais, model.cidade,
-  model.uf, udatacollection, model.endereco, model.cep;
+  controller.user, controller.crud, model.crud, model.user,
+  model.database.sqlite, controller.log, model.log, udatacollection,
+  model.endereco, controller.endereco, uformats, view.main, controller.forms,
+  model.pessoa, controller.pessoa, model.empresa, controller.empresa;
 
 
 {$R *.res}
@@ -27,7 +28,7 @@ begin
   Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TdmMain, dmMain);
-  Application.CreateForm(TfrmAssistenteInicial, frmAssistenteInicial);
+  Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.
 

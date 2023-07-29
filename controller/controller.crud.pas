@@ -5,13 +5,13 @@ unit controller.crud;
 interface
 
 uses
-  Classes, SysUtils, uvalida, udbstatus;
+  Classes, SysUtils, uvalida, udbnotifier;
 
 type
 
   { TControllerCRUD }
 
-  TControllerCRUD = class(TDBStatus)
+  TControllerCRUD = class(TDBNotifier)
     private
       FValidador: TValidador;
     protected

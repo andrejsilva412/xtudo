@@ -74,6 +74,7 @@ type
     procedure acGenerico1Execute(Sender: TObject);
     procedure acGenerico2Execute(Sender: TObject);
     procedure btnServidorTesteClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure TabSheet1Hide(Sender: TObject);
     procedure TabSheet1Show(Sender: TObject);
@@ -96,7 +97,7 @@ var
 
 implementation
 
-uses uconst;
+uses uconst, utypes;
 
 {$R *.lfm}
 
@@ -137,6 +138,7 @@ begin
   Sistema.Administrativo.User.Nome := edAdminNome.Text;
   Sistema.Administrativo.User.Username := edtAdminUsername.Text;
   Sistema.Administrativo.User.Password := edAdminSenha.Text;
+  Sistema.Administrativo.User.UserType := utAdmin;
   if Sistema.Administrativo.User.Post = 0 then
   begin
     Sistema.Mensagem.Erro('Falha ao cadastrar o usuário');
@@ -208,11 +210,19 @@ begin
 
 end;
 
+procedure TfrmAssistenteInicial.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  if Sistema.ShowWizard then
+    Sistema.Finaliza;
+  inherited;
+end;
+
 procedure TfrmAssistenteInicial.acGenerico1Execute(Sender: TObject);
 begin
   if acGenerico1.Caption = C_CONCLUIR then
   begin
-
+    Sistema.WizardDone;
   end else begin
     acGenerico2.Enabled := PageControl1.TabIndex > 0;
 

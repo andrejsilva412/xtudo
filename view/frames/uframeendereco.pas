@@ -5,7 +5,7 @@ unit uframeendereco;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, DBCtrls, Dialogs, Buttons;
+  Classes, SysUtils, Forms, db, Controls, StdCtrls, DBCtrls, Dialogs;
 
 type
 
@@ -25,36 +25,50 @@ type
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
-    procedure LocalizarEndereco(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-  private
-    procedure InternalLocalizarEndereco;
+    procedure DBEdit1EditingDone(Sender: TObject);
   public
     constructor Create(TheOwner: TComponent); override;
   end;
 
 implementation
 
-uses ueditchangecolor;
+uses ueditchangecolor, controller.endereco;
 
 {$R *.lfm}
 
 { TFrameEndereco }
 
-procedure TFrameEndereco.LocalizarEndereco(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TFrameEndereco.DBEdit1EditingDone(Sender: TObject);
+var
+  Endereco: TEndereco;
+  ds: TDataSource;
 begin
-  if (Shift = [ssCtrl]) and (Key = 70) then
+
+  if not Assigned(DBEdit1.DataSource) then
+    exit;
+
+  ds := DBEdit1.DataSource;
+
+  if ds.State in [dsInsert, dsEdit] then
   begin
-    Key := 0;
-    InternalLocalizarEndereco;
+    Endereco := TEndereco.Create;
+    try
+      if Endereco.BuscaCEP(DBEdit1.Text) then
+      begin
+       ds.DataSet.FieldByName('endereco').AsString :=
+         Endereco.Logradouro;
+       ds.DataSet.FieldByName('complemento').AsString :=
+         Endereco.Complemento;
+       ds.DataSet.FieldByName('bairro').AsString :=
+         Endereco.Bairro;
+       ds.DataSet.FieldByName('cidade').AsString :=
+         Endereco.Cidade.Nome + ' (' +
+         Endereco.Cidade.UF.Sigla + ')';
+      end;
+    finally
+      FreeAndNil(Endereco);
+    end;
   end;
-end;
-
-procedure TFrameEndereco.InternalLocalizarEndereco;
-begin
-
-  ShowMessage('Localizar Endereço');
 
 end;
 
@@ -63,6 +77,7 @@ var
   i: Integer;
 begin
   inherited Create(TheOwner);
+  Label7.Visible := false;
   ParentColor := false;
   for i := 0 to ComponentCount -1 do
   begin

@@ -9,6 +9,8 @@ uses
 
 function DelChars(const S: string; Chr: Char): string; overload;
 function DelChars(const S: string; Chr: String): string; overload;
+// Remove todos os caracteres deixando apenas os números
+function RemoveChar(const Texto: String): String;
 procedure Split(const Delimiter: Char; Input: String;
   const Strings: TStrings);
 function TextoEntre(Texto,
@@ -35,6 +37,25 @@ begin
   Result := S;
   for i := Length(Result) downto 1 do
       if Result[i] = Chr then Delete(Result, I, 1);
+
+end;
+
+function RemoveChar(const Texto: String): String;
+var
+   I: Integer;
+   S: String;
+begin
+
+   S := '';
+   for I := 1 To Length(Texto) Do
+   begin
+      if (Texto[I] in ['0'..'9']) then
+      begin
+        S := S + Copy(Texto, I, 1);
+      end;
+   end;
+
+   Result := S;
 
 end;
 

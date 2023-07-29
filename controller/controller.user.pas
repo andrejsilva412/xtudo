@@ -5,7 +5,7 @@ unit controller.user;
 interface
 
 uses
-  Classes, SysUtils, controller.crud;
+  Classes, SysUtils, controller.crud, utypes;
 
 type
 
@@ -17,17 +17,21 @@ type
       FNome: String;
       FPassword: String;
       FUsername: String;
+      FUserType: TUserType;
     protected
       procedure Valida; override;
     public
+      constructor Create;
       function Delete: Integer; override;
       function Post: Integer; override;
       procedure Get(AUserName: String);
       procedure GetPage(APage: Integer = 1); override;
+      function AdministradorCadastrado: Boolean;
       property GUID: String read FGUID write FGUID;
       property Nome: String read FNome write FNome;
       property Username: String read FUsername write FUsername;
       property Password: String read FPassword write FPassword;
+      property UserType: TUserType read FUserType write FUserType;
   end;
 
 implementation
@@ -44,6 +48,11 @@ begin
     raise Exception.Create(Format(SMSGCampoObrigatorio, ['Username']));
   if not Validador.MinPasswordLength(FPassword) then
     raise Exception.Create(SMSGSenhaTamanhoMinimo);
+end;
+
+constructor TUser.Create;
+begin
+  FUserType := utNormal;
 end;
 
 function TUser.Delete: Integer;
@@ -81,6 +90,11 @@ end;
 procedure TUser.GetPage(APage: Integer);
 begin
   inherited GetPage(APage);
+end;
+
+function TUser.AdministradorCadastrado: Boolean;
+begin
+
 end;
 
 end.

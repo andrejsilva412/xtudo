@@ -5,8 +5,8 @@ unit controller.sistema;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, LMessages, uimage, controller.config,
-  controller.admin, controller.log, uvalida;
+  Classes, SysUtils, Controls, Dialogs, Forms, LMessages, uimage, controller.config,
+  controller.admin, controller.log, uvalida, controller.forms;
 
 type
 
@@ -37,6 +37,7 @@ type
       FConfig: TConfig;
       FValidador: TValidador;
       FLog: TLog;
+      FForms: TForms;
     public
       destructor Destroy; override;
       function Administrativo: TAdministrativo;
@@ -46,6 +47,10 @@ type
       function Mensagem: TMensagem;
       function Config: TConfig;
       function Validador: TValidador;
+      function ShowWizard: Boolean;
+      procedure WizardDone;
+      function Forms: TForms;
+      procedure Finaliza;
   end;
 
 implementation
@@ -141,6 +146,8 @@ begin
     FreeAndNil(FValidador);
   if Assigned(FLog) then
     FreeAndNil(FLog);
+  if Assigned(FForms) then
+    FreeAndNil(FForms);
   inherited Destroy;
 end;
 
@@ -191,6 +198,45 @@ begin
   if not Assigned(FValidador) then
     FValidador := TValidador.Create;
   Result := FValidador;
+end;
+
+function TSistema.ShowWizard: Boolean;
+begin
+  Result := Self.Config.ShowWizard;
+end;
+
+procedure TSistema.WizardDone;
+var
+  wd: Boolean;
+begin
+
+  wd := true;
+
+  if not Self.Administrativo.User.AdministradorCadastrado then
+    wd := false;
+
+  Self.Administrativo.Empresa.Get;
+  if Self.Administrativo.Empresa.GUID = '' then
+    wd := false;
+
+  if wd then
+  begin
+    Self.Config.WizardDone;
+    Self.Forms.CloseWizard;
+  end else Finaliza;
+
+end;
+
+function TSistema.Forms: TForms;
+begin
+  if not Assigned(FForms) then
+    FForms := TForms.Create;
+  Result := FForms;
+end;
+
+procedure TSistema.Finaliza;
+begin
+  Application.Terminate;
 end;
 
 end.

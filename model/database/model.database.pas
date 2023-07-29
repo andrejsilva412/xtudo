@@ -12,7 +12,7 @@ type
 
   { TModelDatabase }
 
-  generic TModelDatabase<T> = class(TDBStatus)
+  generic TModelDatabase<T> = class(TDBNotifier)
     private
       FDatabase: T;
       FConfig: TConfig;
@@ -39,6 +39,7 @@ type
       function Connected: Boolean;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String): String; overload;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean): Boolean; overload;
+      function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer): Integer; overload;
       constructor Create;
       destructor Destroy; override;
   end;
@@ -287,9 +288,18 @@ var
 begin
 
   LBoolean := Search(ATable, AField, ACondicao, AParams, '');
-  if LBoolean = '' then
-    Result := ADefault
-  else Result := true;
+  Result := iif(LBoolean = '', ADefault, true);
+
+end;
+
+function TModelDatabase.Search(ATable, AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Integer): Integer;
+var
+  LInteger: String;
+begin
+
+  LInteger := Search(ATable, AField, ACondicao, AParams, '');
+  Result := iif(LInteger = '', ADefault, StrToIntDef(LInteger, ADefault));
 
 end;
 

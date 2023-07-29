@@ -1,0 +1,12 @@
+inherited frmMain: TfrmMain
+  OnShow = FormShow
+  object Label1: TLabel[0]
+    Left = 208
+    Height = 15
+    Top = 136
+    Width = 31
+    Caption = 'MAIN'
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[1]
+  end
+end

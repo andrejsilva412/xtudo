@@ -31,27 +31,21 @@ begin
 end;
 
 constructor TModelLog.Create;
-var
-  SQL: TStringList;
 begin
 
   FTableLog := 'log';
   if not TableExists(FTableLog, true) then
   begin
-    SQL := TStringList.Create;
-    try
-      SQL.Add('CREATE TABLE "log" (');
-      SQL.Add('"id"	INTEGER NOT NULL UNIQUE,');
-      SQL.Add('"data"	TEXT NOT NULL,');
-      SQL.Add('"descricao"	TEXT NOT NULL,');
-      SQL.Add('PRIMARY KEY("id"));');
-      // Cria a tabela Log
-      StartTransaction(true);
-      ExecuteDirect(SQL.Text, true);
-      Commit(true);
-    finally
-      FreeAndNil(SQL);
-    end;
+    SQL.Clear;
+    SQL.Add('CREATE TABLE "log" (');
+    SQL.Add('"id"	INTEGER NOT NULL UNIQUE,');
+    SQL.Add('"data"	TEXT NOT NULL,');
+    SQL.Add('"descricao"	TEXT NOT NULL,');
+    SQL.Add('PRIMARY KEY("id"));');
+    // Cria a tabela Log
+    StartTransaction(true);
+    ExecuteDirect(SQL, true);
+    Commit(true);
   end;
 
 end;

@@ -22,16 +22,19 @@ type
 
 implementation
 
+uses utypes;
+
 { TModelUser }
 
 function TModelUser.Insert(AUSer: TUser): Integer;
 begin
 
-  AUSer.GUID := GetGUID;
+  AUSer.GUID := NewGUID;
   AUSer.Password := GetPasswordHash(AUSer.Password);
   Result := inherited Insert('usuario', 'guid = :guid, nome = :nome, '
-    + 'username = :username, senha = :senha',
-    [AUSer.GUID, AUSer.Nome, AUSer.Username, AUSer.Password]);
+    + 'username = :username, senha = :senha, tipo = :tipo',
+    [AUSer.GUID, AUSer.Nome, AUSer.Username, AUSer.Password,
+     UserTypeToInteger(AUSer.UserType)]);
 
 end;
 
@@ -39,8 +42,9 @@ function TModelUser.Update(AUSer: TUser): Integer;
 begin
 
   Result := inherited Update('usuario', 'nome = :nome, username = :username, '
-    + 'senha = :senha', 'where guid = :guid',
-    [AUSer.Nome, AUSer.Username, AUSer.Password, AUSer.GUID]);
+    + 'senha = :senha, tipo = :tipo', 'where guid = :guid',
+    [AUSer.Nome, AUSer.Username, AUSer.Password,
+    UserTypeToInteger(AUSer.UserType), AUSer.GUID]);
 
 end;
 
@@ -58,6 +62,7 @@ begin
       AUser.GUID := ADataSet.FieldByName('guid').AsString;
       AUser.Username := ADataSet.FieldByName('username').AsString;
       AUser.Password := ADataSet.FieldByName('senha').AsString;
+      AUser.UserType := IntegerToUserType(ADataSet.FieldByName('tipo').AsInteger);
     end;
     ADataSet.Close;
   finally
