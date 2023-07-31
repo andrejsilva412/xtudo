@@ -15,7 +15,6 @@ type
     private
       procedure BeforeConnect(Sender: TObject); override;
     public
-      function TableExists(ATable: String): Boolean;
       function SQLLiteDataTimeToDateTime(ADateTime: String): TDateTime;
       function DateTimeToSQLiteDateTime(ADataTime: TDateTime): String;
   end;
@@ -35,14 +34,6 @@ begin
   FDataBase.Params.Clear;
   FDataBase.Password := '';
   FDataBase.UserName := '';
-
-end;
-
-function TModelSQLite.TableExists(ATable: String): Boolean;
-begin
-
-  Result := Search('sqlite_master', 'name', 'where name=:name',
-    [ATable], false);
 
 end;
 

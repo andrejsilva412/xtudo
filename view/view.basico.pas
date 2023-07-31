@@ -93,6 +93,7 @@ begin
   Caption := C_APP_TITLE + ' ' + Caption ;
   JSONPropStorage1.JSONFileName := Path + C_INI_FORM;
   JSONPropStorage1.Active := true;
+  Sistema.Config.Inicializa;
   FBorderColor := Sistema.Config.Theme.BackGround2;
   FLeftMargin := 8;
   FRightMargin := 8;

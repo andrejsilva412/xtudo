@@ -11,7 +11,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos Y="34"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="128"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.basico.pas"/>
@@ -20,9 +20,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="82"/>
-        <CursorPos X="21" Y="3"/>
-        <UsageCount Value="122"/>
+        <TopLine Value="85"/>
+        <CursorPos Y="96"/>
+        <UsageCount Value="128"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -32,7 +32,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="3" Y="39"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="128"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\utils.pas"/>
@@ -40,7 +40,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <CursorPos Y="38"/>
-        <UsageCount Value="122"/>
+        <UsageCount Value="128"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.buttons.pas"/>
@@ -48,10 +48,12 @@
         <ComponentName Value="frmBasButtons"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="98"/>
-        <CursorPos X="9" Y="112"/>
-        <UsageCount Value="115"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="19"/>
+        <CursorPos X="43" Y="227"/>
+        <UsageCount Value="121"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uimage.pas"/>
@@ -59,15 +61,16 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="66"/>
         <CursorPos X="25" Y="83"/>
-        <UsageCount Value="107"/>
+        <UsageCount Value="113"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uhtmlutils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="238"/>
-        <CursorPos Y="258"/>
-        <UsageCount Value="107"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="226"/>
+        <CursorPos Y="238"/>
+        <UsageCount Value="113"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\utypes.pas"/>
@@ -75,7 +78,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="66"/>
         <CursorPos X="39" Y="81"/>
-        <UsageCount Value="106"/>
+        <UsageCount Value="112"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.bascadastro.pas"/>
@@ -86,7 +89,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="56"/>
         <CursorPos X="15" Y="59"/>
-        <UsageCount Value="102"/>
+        <UsageCount Value="108"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\udbnotifier.pas"/>
@@ -94,7 +97,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos X="38" Y="57"/>
-        <UsageCount Value="99"/>
+        <UsageCount Value="105"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\ustrutils.pas"/>
@@ -102,7 +105,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos X="15" Y="50"/>
-        <UsageCount Value="98"/>
+        <UsageCount Value="104"/>
       </Unit>
       <Unit>
         <Filename Value="view\assistenteinicial\view.assistenteinicial.pas"/>
@@ -110,10 +113,12 @@
         <ComponentName Value="frmAssistenteInicial"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="126"/>
-        <CursorPos Y="127"/>
-        <UsageCount Value="97"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="16"/>
+        <CursorPos Y="124"/>
+        <UsageCount Value="103"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="view\frames\uframetitulo.pas"/>
@@ -124,25 +129,24 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="12"/>
         <CursorPos X="3" Y="14"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="103"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.config.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="142"/>
-        <CursorPos X="42" Y="149"/>
-        <UsageCount Value="94"/>
+        <TopLine Value="143"/>
+        <CursorPos Y="156"/>
+        <UsageCount Value="100"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="model\config\model.config.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="76"/>
-        <CursorPos X="3" Y="14"/>
-        <UsageCount Value="93"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="25"/>
+        <CursorPos Y="31"/>
+        <UsageCount Value="99"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -151,7 +155,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="48"/>
         <CursorPos Y="69"/>
-        <UsageCount Value="86"/>
+        <UsageCount Value="92"/>
       </Unit>
       <Unit>
         <Filename Value="view\frames\uframecnpj.pas"/>
@@ -162,7 +166,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos Y="80"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="89"/>
       </Unit>
       <Unit>
         <Filename Value="view\frames\uframeendereco.pas"/>
@@ -173,7 +177,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos X="34" Y="69"/>
-        <UsageCount Value="82"/>
+        <UsageCount Value="88"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uvalida.pas"/>
@@ -181,7 +185,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos Y="59"/>
-        <UsageCount Value="81"/>
+        <UsageCount Value="87"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.admin.pas"/>
@@ -189,7 +193,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="27"/>
         <CursorPos Y="49"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="81"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.user.pas"/>
@@ -197,24 +201,25 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="76"/>
         <CursorPos X="3" Y="61"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="81"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.crud.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="47"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="38"/>
         <CursorPos X="44" Y="59"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="81"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="model\database\model.crud.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="250"/>
-        <CursorPos X="3" Y="254"/>
-        <UsageCount Value="74"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="276"/>
+        <CursorPos Y="282"/>
+        <UsageCount Value="80"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -223,41 +228,42 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="66"/>
         <CursorPos X="11" Y="70"/>
-        <UsageCount Value="74"/>
+        <UsageCount Value="80"/>
       </Unit>
       <Unit>
         <Filename Value="model\database\model.database.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="7"/>
-        <CursorPos X="37" Y="14"/>
-        <UsageCount Value="72"/>
+        <EditorIndex Value="12"/>
+        <TopLine Value="275"/>
+        <CursorPos Y="293"/>
+        <UsageCount Value="78"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="model\database\model.database.sqlite.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="28"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="23"/>
         <CursorPos Y="33"/>
-        <UsageCount Value="71"/>
+        <UsageCount Value="77"/>
+        <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.log.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="9"/>
-        <TopLine Value="36"/>
+        <EditorIndex Value="13"/>
+        <TopLine Value="20"/>
         <CursorPos X="22" Y="29"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.log.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="10"/>
-        <TopLine Value="16"/>
+        <EditorIndex Value="14"/>
+        <TopLine Value="6"/>
         <CursorPos X="17" Y="20"/>
-        <UsageCount Value="69"/>
+        <UsageCount Value="75"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -266,7 +272,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3"/>
         <CursorPos X="29" Y="45"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="66"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.endereco.pas"/>
@@ -274,7 +280,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="44" Y="59"/>
-        <UsageCount Value="56"/>
+        <UsageCount Value="62"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.endereco.pas"/>
@@ -282,14 +288,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="164"/>
         <CursorPos Y="185"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="63"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uformats.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="6" Y="14"/>
-        <UsageCount Value="54"/>
+        <UsageCount Value="60"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.main.pas"/>
@@ -298,7 +304,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <CursorPos Y="3"/>
-        <UsageCount Value="52"/>
+        <UsageCount Value="58"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -308,7 +314,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="19"/>
         <CursorPos Y="29"/>
-        <UsageCount Value="51"/>
+        <UsageCount Value="57"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.pessoa.pas"/>
@@ -316,7 +322,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="24"/>
         <CursorPos X="3" Y="14"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="55"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.pessoa.pas"/>
@@ -324,7 +330,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos Y="82"/>
-        <UsageCount Value="49"/>
+        <UsageCount Value="55"/>
       </Unit>
       <Unit>
         <Filename Value="model\administrativo\model.empresa.pas"/>
@@ -332,7 +338,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="8"/>
         <CursorPos X="16" Y="20"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="54"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.empresa.pas"/>
@@ -340,7 +346,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="38"/>
         <CursorPos X="3" Y="40"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="54"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.pessoajuridica.pas"/>
@@ -348,7 +354,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos Y="36"/>
-        <UsageCount Value="32"/>
+        <UsageCount Value="38"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.dmmain.pas"/>
@@ -358,60 +364,60 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="14"/>
         <CursorPos Y="30"/>
-        <UsageCount Value="70"/>
+        <UsageCount Value="69"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\utema.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="129"/>
         <CursorPos X="50" Y="176"/>
-        <UsageCount Value="82"/>
+        <UsageCount Value="81"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.sqldb.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="22" Y="40"/>
-        <UsageCount Value="60"/>
+        <UsageCount Value="59"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.database.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="40" Y="8"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="57"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.pais.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos Y="30"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.cidade.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos X="17" Y="37"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.uf.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="168"/>
         <CursorPos X="21" Y="172"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="20"/>
       </Unit>
       <Unit>
         <Filename Value="model\model.cep.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="17"/>
       </Unit>
       <Unit>
         <Filename Value="model\umodelnomefonetico.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="12" Y="12"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\windows\uimmersivecolors.pas"/>
@@ -419,21 +425,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1303"/>
         <CursorPos X="27" Y="1314"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="15"/>
       </Unit>
       <Unit>
         <Filename Value="controller\controller.sistema.pas"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="23"/>
-        <CursorPos X="3" Y="32"/>
-        <UsageCount Value="39"/>
+        <TopLine Value="178"/>
+        <CursorPos Y="194"/>
+        <UsageCount Value="42"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\uwindows.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="5" Y="13"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win64\classes.pp"/>
@@ -441,28 +447,28 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="29"/>
         <CursorPos X="10" Y="41"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\win\wininc\base.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="638"/>
         <CursorPos X="6" Y="650"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\windows\uwindows.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="15"/>
         <CursorPos X="7" Y="34"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\windows\ImmersiveColors.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="66"/>
         <CursorPos X="3" Y="78"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="C:\Users\andre\AppData\Local\lazarus\onlinepackagemanager\packages\bgracontrols-master\bcbutton.pas"/>
@@ -470,7 +476,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="364"/>
         <CursorPos X="14" Y="373"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="C:\Users\andre\AppData\Local\lazarus\onlinepackagemanager\packages\bgracontrols-master\bctypes.pas"/>
@@ -478,28 +484,28 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="207"/>
         <CursorPos X="14" Y="217"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\json.files.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="39"/>
         <CursorPos X="60" Y="44"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-json\src\fpjson.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="402"/>
         <CursorPos X="3" Y="404"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="C:\Users\andre\AppData\Local\lazarus\onlinepackagemanager\packages\bgrabitmap-master\bgrabitmap\bgragraphics.pas"/>
         <UnitName Value="BGRAGraphics"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="133"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit>
       <Unit>
         <Filename Value="C:\Users\andre\AppData\Local\lazarus\onlinepackagemanager\packages\bgrabitmap-master\bgrabitmap\bgrabitmaptypes.pas"/>
@@ -507,7 +513,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="279"/>
         <CursorPos X="5" Y="284"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\db.pas"/>
@@ -515,7 +521,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="37"/>
         <CursorPos X="47" Y="49"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="datamodule\udmmain.pas"/>
@@ -523,7 +529,7 @@
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="12"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\dialogs.pp"/>
@@ -531,7 +537,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="536"/>
         <CursorPos X="53" Y="554"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\lazutils\uitypes.pas"/>
@@ -539,7 +545,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="3" Y="39"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\system.uitypes.pp"/>
@@ -547,14 +553,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="187"/>
         <CursorPos X="3" Y="203"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="helpers\ueditchangecolor.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="180"/>
         <CursorPos Y="186"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -562,21 +568,20 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="645"/>
         <CursorPos X="15" Y="661"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3200"/>
         <CursorPos Y="3210"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="model\database\model.database.firebird.pas"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="38"/>
-        <CursorPos X="3" Y="45"/>
-        <UsageCount Value="18"/>
+        <EditorIndex Value="11"/>
+        <CursorPos Y="35"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -585,7 +590,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="264"/>
         <CursorPos Y="277"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit>
       <Unit>
@@ -594,41 +599,41 @@
         <ResourceBaseClass Value="DataModule"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="80" Y="16"/>
-        <UsageCount Value="14"/>
+        <UsageCount Value="13"/>
       </Unit>
       <Unit>
         <Filename Value="model\database\model.sqldb.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="32" Y="14"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3592"/>
         <CursorPos Y="3602"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\rtl\inc\objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="194"/>
         <CursorPos X="23" Y="206"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\components\acbr\Fontes\ACBrTCP\ACBrCEP.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="102"/>
         <CursorPos X="3" Y="112"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\lcl\include\customframe.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="137"/>
         <CursorPos Y="146"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit>
       <Unit>
         <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\fcl-db\src\base\bufdataset.pas"/>
@@ -636,129 +641,129 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1620"/>
         <CursorPos X="36" Y="1624"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="158" TopLine="148"/>
+        <Caret Line="355" TopLine="342"/>
       </Position>
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="164" TopLine="158"/>
+        <Caret Line="356" TopLine="342"/>
       </Position>
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="185" TopLine="176"/>
+        <Caret Line="354" TopLine="342"/>
       </Position>
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="290" TopLine="282"/>
+        <Caret Line="356" TopLine="342"/>
+      </Position>
+      <Position>
+        <Filename Value="model\database\model.database.pas"/>
+        <Caret Line="289" TopLine="275"/>
+      </Position>
+      <Position>
+        <Filename Value="model\database\model.database.pas"/>
+        <Caret Line="290" TopLine="275"/>
+      </Position>
+      <Position>
+        <Filename Value="model\database\model.database.pas"/>
+        <Caret Line="291" TopLine="275"/>
+      </Position>
+      <Position>
+        <Filename Value="model\database\model.database.pas"/>
+        <Caret Line="292" TopLine="275"/>
+      </Position>
+      <Position>
+        <Filename Value="model\database\model.database.pas"/>
+        <Caret Line="293" TopLine="275"/>
       </Position>
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="301" TopLine="295"/>
+        <Caret Line="389" TopLine="377"/>
       </Position>
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="304" Column="19" TopLine="289"/>
+        <Caret Line="391" TopLine="377"/>
       </Position>
       <Position>
         <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="20" Column="14" TopLine="112"/>
+        <Caret Line="392" TopLine="377"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="395" TopLine="377"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="389" TopLine="377"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="398" TopLine="378"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="354" TopLine="342"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="355" TopLine="342"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="356" TopLine="342"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="387" TopLine="375"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="400" TopLine="389"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="387" TopLine="375"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="400" TopLine="389"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="387" TopLine="375"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="398" Column="38" TopLine="389"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="155" TopLine="143"/>
+      </Position>
+      <Position>
+        <Filename Value="controller\controller.config.pas"/>
+        <Caret Line="156" TopLine="143"/>
+      </Position>
+      <Position>
+        <Filename Value="model\database\model.database.sqlite.pas"/>
+        <Caret Line="33" TopLine="23"/>
       </Position>
       <Position>
         <Filename Value="model\database\model.crud.pas"/>
-        <Caret Line="52" Column="30" TopLine="45"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="121" Column="19" TopLine="111"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="304" Column="3" TopLine="295"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="20" Column="18" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="9" Column="53"/>
-      </Position>
-      <Position>
-        <Filename Value="model\config\model.config.pas"/>
-        <Caret Line="16" Column="29" TopLine="5"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.log.pas"/>
-        <Caret Line="29" Column="22" TopLine="36"/>
-      </Position>
-      <Position>
-        <Filename Value="model\config\model.config.pas"/>
-        <Caret Line="18" Column="18" TopLine="12"/>
-      </Position>
-      <Position>
-        <Filename Value="model\config\model.config.pas"/>
-        <Caret Line="47" Column="14" TopLine="34"/>
+        <Caret Line="278" TopLine="276"/>
       </Position>
       <Position>
         <Filename Value="model\database\model.crud.pas"/>
-        <Caret Line="49" TopLine="42"/>
+        <Caret Line="280" TopLine="276"/>
       </Position>
       <Position>
         <Filename Value="model\database\model.crud.pas"/>
-        <Caret Line="254" Column="3" TopLine="250"/>
-      </Position>
-      <Position>
-        <Filename Value="model\database\model.database.firebird.pas"/>
-        <Caret Line="18" Column="16" TopLine="8"/>
-      </Position>
-      <Position>
-        <Filename Value="model\config\model.config.pas"/>
-        <Caret Line="76" Column="3" TopLine="66"/>
-      </Position>
-      <Position>
-        <Filename Value="model\config\model.config.pas"/>
-        <Caret Line="19" Column="66" TopLine="9"/>
-      </Position>
-      <Position>
-        <Filename Value="model\config\model.config.pas"/>
-        <Caret Line="85" Column="13" TopLine="76"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="22" Column="74" TopLine="17"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="24" Column="74" TopLine="12"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="120" Column="33" TopLine="115"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="152" TopLine="145"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="29" Column="20" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="299" Column="26" TopLine="288"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="294" Column="35" TopLine="288"/>
-      </Position>
-      <Position>
-        <Filename Value="controller\controller.config.pas"/>
-        <Caret Line="120" Column="33" TopLine="110"/>
+        <Caret Line="281" TopLine="276"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -780,28 +785,105 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="model\config\model.config.pas"/>
+        <Line Value="75"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="model\config\model.config.pas"/>
+        <Line Value="86"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="view\assistenteinicial\view.assistenteinicial.pas"/>
+        <Line Value="187"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="view\assistenteinicial\view.assistenteinicial.pas"/>
+        <Line Value="124"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="view\view.buttons.pas"/>
+        <Line Value="226"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="controller\controller.config.pas"/>
+        <Line Value="179"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="controller\controller.config.pas"/>
+        <Line Value="197"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="model\database\model.crud.pas"/>
+        <Line Value="278"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="view\view.basico.pas"/>
+        <Line Value="89"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="model\config\model.config.pas"/>
         <Line Value="31"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="model\config\model.config.pas"/>
-        <Line Value="70"/>
+        <Source Value="controller\controller.config.pas"/>
+        <Line Value="301"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="model\config\model.config.pas"/>
-        <Line Value="76"/>
+        <Source Value="controller\controller.config.pas"/>
+        <Line Value="317"/>
       </Item>
       <Item>
         <Kind Value="bpkSource"/>
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
-        <Source Value="model\config\model.config.pas"/>
-        <Line Value="87"/>
+        <Source Value="controller\controller.config.pas"/>
+        <Line Value="132"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="model\database\model.crud.pas"/>
+        <Line Value="280"/>
+      </Item>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="controller\controller.config.pas"/>
+        <Line Value="365"/>
       </Item>
     </BreakPoints>
   </Debugging>

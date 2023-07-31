@@ -12,19 +12,19 @@ type
   { TModelConfig }
 
   TModelConfig = class(TModelCRUD)
-    private
-      procedure CreateTable;
     public
       constructor Create;
+      procedure CreateConfigTable;
       function GetConfig(AConfig: String; Global: Boolean): String;
       procedure SetConfig(AConfig: String; AValue: String; Global: Boolean);
+      function Connected(ACache: Boolean): Boolean;
   end;
 
 implementation
 
 { TModelConfig }
 
-procedure TModelConfig.CreateTable;
+procedure TModelConfig.CreateConfigTable;
 begin
 
   // Cria a tabela de configuração no cache
@@ -44,7 +44,7 @@ begin
     ExecuteDirect(SQL, true);
     Commit(true);
   end;
-  if not TableExists('config') then
+  if not TableExists('config', false) then
   begin
     SQL.Clear;
     SQL.Add('CREATE TABLE CONFIG (');
@@ -67,7 +67,6 @@ end;
 constructor TModelConfig.Create;
 begin
   inherited;
-  CreateTable;
 end;
 
 function TModelConfig.GetConfig(AConfig: String; Global: Boolean): String;
@@ -113,6 +112,11 @@ begin
     end;
   end;
 
+end;
+
+function TModelConfig.Connected(ACache: Boolean): Boolean;
+begin
+  Result := DatabaseConnected(ACache);
 end;
 
 end.

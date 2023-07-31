@@ -46,21 +46,21 @@ type
          AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
       function Search(ATable, AField, ACondicao: String;
          AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
-      function TableExists(ATable: String; ACache: Boolean = false): Boolean;
       procedure ExecuteDirect(ASQL: String; ACache: Boolean = false);
       procedure ExecuteDirect(ASQL: TStringList; ACache: Boolean = false);
       function DateTimeToCacheDateTime(ADateTime: TDateTime): String;
+      function TableExists(ATable: String; ACache: Boolean): Boolean;
       function Validador: TValidador;
       property SQL: TStringList read FSQL;
+      function DatabaseConnected(ACache: Boolean): Boolean;
     public
       constructor Create;
       destructor Destroy; override;
-      function Connected(ACache: Boolean): Boolean;
   end;
 
 implementation
 
-uses ucript;
+uses ucript, utils;
 
 { TModelCRUD }
 
@@ -249,14 +249,6 @@ begin
     Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
 end;
 
-function TModelCRUD.TableExists(ATable: String; ACache: Boolean): Boolean;
-begin
-  if ACache then
-    Result := DatabaseCache.TableExists(ATable)
-  else
-    Result := Database.TableExists(ATable);
-end;
-
 procedure TModelCRUD.ExecuteDirect(ASQL: String; ACache: Boolean);
 begin
 
@@ -277,6 +269,31 @@ begin
   Result := DatabaseCache.DateTimeToSQLiteDateTime(ADateTime);
 end;
 
+function TModelCRUD.TableExists(ATable: String; ACache: Boolean): Boolean;
+var
+  lResult: String;
+  ADataSet: TBufDataset;
+begin
+
+  if not ACache then
+  begin
+    ADataSet := TBufDataset.Create(nil);
+    try
+      Database.Select('RDB$RELATIONS', '1', 'RDB$RELATION_NAME = :name',
+        [ATable], ADataSet);
+      Result := not ADataSet.IsEmpty;
+      ADataSet.Close;
+    finally
+      FreeAndNil(ADataSet);
+    end;
+  end else begin
+    lResult := DatabaseCache.Search('sqlite_master', 'name', 'WHERE type=:tipo AND name=:name',
+      ['table', ATable], '');
+    Result := iif(lResult = '', false, true);
+  end;
+
+end;
+
 function TModelCRUD.Validador: TValidador;
 begin
   if not Assigned(FValida) then
@@ -289,7 +306,7 @@ begin
   FSQL := TStringList.Create;
 end;
 
-function TModelCRUD.Connected(ACache: Boolean): Boolean;
+function TModelCRUD.DatabaseConnected(ACache: Boolean): Boolean;
 begin
   if ACache then
     Result := DatabaseCache.Connected
