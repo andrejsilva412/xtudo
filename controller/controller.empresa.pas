@@ -5,18 +5,18 @@ unit controller.empresa;
 interface
 
 uses
-  Classes, SysUtils, controller.pessoa;
+  Classes, SysUtils, db, controller.pessoajuridica;
 
 type
 
   { TEmpresa }
 
-  TEmpresa = class(TPessoa)
+  TEmpresa = class(TPessoaJuridica)
     protected
       procedure Valida; override;
     public
       function Post: Integer; override;
-      procedure Get;
+      function Get: Boolean;
   end;
 
 implementation
@@ -29,7 +29,7 @@ procedure TEmpresa.Valida;
 begin
   if Nome = '' then
     raise Exception.Create(Format(SMSGCampoObrigatorio, ['Razão Social']));
-  if Fantasia = '' then
+  if NomeFantasia = '' then
     raise Exception.Create(Format(SMSGCampoObrigatorio, ['Nome Fantasia']));
 end;
 
@@ -40,6 +40,7 @@ begin
 
   MEmpresa := TModelEmpresa.Create;
   try
+    inherited Post;
     Result := MEmpresa.Post(Self);
   finally
     FreeAndNil(MEmpresa);
@@ -47,14 +48,14 @@ begin
 
 end;
 
-procedure TEmpresa.Get;
+function TEmpresa.Get: Boolean;
 var
   MEmpresa: TModelEmpresa;
 begin
 
   MEmpresa := TModelEmpresa.Create;
   try
-    MEmpresa.Get(Self);
+    Result := MEmpresa.Get(Self);
   finally
     FreeAndNil(MEmpresa);
   end;

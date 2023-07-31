@@ -1,6 +1,6 @@
 unit view.basico;
 
-{$mode delphi}
+{$mode ObjFPC}{$H+}
 
 interface
 
@@ -87,6 +87,7 @@ procedure TfrmBasico.FormCreate(Sender: TObject);
 begin
 
   Sistema := TSistema.Create;
+  Application.OnException := @Sistema.Log.OnException;
   Application.Title := C_APP_TITLE;
   Icon := Application.Icon;
   Caption := C_APP_TITLE + ' ' + Caption ;

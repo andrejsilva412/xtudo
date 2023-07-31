@@ -32,12 +32,9 @@ type
   TPessoa = class(TControllerCRUD)
     private
       FContato: TContato;
-      FCPFCNPJ: String;
       FEndereco: TEndereco;
-      FFantasia: String;
       FGUID: String;
       FNome: String;
-      FRGInscricaoEstadual: String;
       FTipoContato: TTipoContato;
     public
       constructor Create;
@@ -45,9 +42,6 @@ type
       procedure Clear; virtual;
       property GUID: String read FGUID write FGUID;
       property Nome: String read FNome write FNome;
-      property Fantasia: String read FFantasia write FFantasia;
-      property CPFCNPJ: String read FCPFCNPJ write FCPFCNPJ;
-      property RGInscricaoEstadual: String read FRGInscricaoEstadual write FRGInscricaoEstadual;
       property Endereco: TEndereco read FEndereco;
       property TipoContato: TTipoContato read FTipoContato write FTipoContato;
       property Contato: TContato read FContato;
@@ -82,9 +76,6 @@ begin
 
   FGUID := '';
   FNome := '';
-  FFantasia := '';
-  FCPFCNPJ := '';
-  FRGInscricaoEstadual := '';
   FEndereco.Clear;
   FContato.Clear;
 

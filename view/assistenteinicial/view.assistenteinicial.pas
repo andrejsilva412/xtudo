@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, StdCtrls,
-  ExtCtrls, EditBtn, MaskEdit, DBCtrls, uframetitulo, view.buttons,
+  ExtCtrls, EditBtn, MaskEdit, DBCtrls, rxmemds, uframetitulo, view.buttons,
   uframeendereco, uframecnpj, BufDataset, DB;
 
 type
@@ -24,19 +24,7 @@ type
   { TfrmAssistenteInicial }
 
   TfrmAssistenteInicial = class(TfrmBasButtons)
-    bdsEmpresabairro: TStringField;
-    bdsEmpresacep: TStringField;
-    bdsEmpresacidade: TStringField;
-    bdsEmpresacnpj: TStringField;
-    bdsEmpresacomplemento: TStringField;
-    bdsEmpresaendereco: TStringField;
-    bdsEmpresaidcidade: TLongintField;
-    bdsEmpresainscricaoestadual: TStringField;
-    bdsEmpresanome: TStringField;
-    bdsEmpresanumero: TStringField;
-    bdsEmpresarazaosocial: TStringField;
     btnServidorTeste: TButton;
-    bdsEmpresa: TBufDataset;
     DataSource1: TDataSource;
     DBEdit1: TDBEdit;
     DBEdit2: TDBEdit;
@@ -67,6 +55,19 @@ type
     Label8: TLabel;
     Label9: TLabel;
     lblServidorTesteConexao: TLabel;
+    mdEmpresa: TRxMemoryData;
+    mdEmpresabairro: TStringField;
+    mdEmpresacep: TStringField;
+    mdEmpresacidade: TStringField;
+    mdEmpresacnpj: TStringField;
+    mdEmpresacomplemento: TStringField;
+    mdEmpresaendereco: TStringField;
+    mdEmpresafantasia: TStringField;
+    mdEmpresaguid: TStringField;
+    mdEmpresainscricaoestadual: TStringField;
+    mdEmpresanumero: TStringField;
+    mdEmpresarazaosocial: TStringField;
+    mdEmpresauf: TStringField;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
@@ -78,10 +79,12 @@ type
     procedure FormCreate(Sender: TObject);
     procedure TabSheet1Hide(Sender: TObject);
     procedure TabSheet1Show(Sender: TObject);
+    procedure TabSheet2Show(Sender: TObject);
     procedure TabSheet3Show(Sender: TObject);
   private
     FCheckServer: Boolean;
     procedure SetCheckServer(AValue: Boolean);
+    procedure LoadEmpresa;
   protected
     procedure Clear; override;
   public
@@ -119,7 +122,7 @@ begin
 
   inherited;
   PageControl1.ActivePage := TabSheet2;
- // PageControl1.ShowTabs := false;
+  PageControl1.ShowTabs := false;
 
   acGenerico1.Caption := 'Avançar';
   acGenerico1.Visible := true;
@@ -129,6 +132,8 @@ begin
   acGenerico2.Visible := true;
   acGenerico2.Enabled := false;
   CheckServer := false;
+
+  ShowInTaskBar := stAlways;
 
 end;
 
@@ -147,12 +152,21 @@ end;
 
 procedure TfrmAssistenteInicial.TabSheet1Show(Sender: TObject);
 begin
+  acGenerico2.Enabled := true;
   SetFocus(edAdminNome);
+end;
+
+procedure TfrmAssistenteInicial.TabSheet2Show(Sender: TObject);
+begin
+  acGenerico2.Enabled := false;
 end;
 
 procedure TfrmAssistenteInicial.TabSheet3Show(Sender: TObject);
 begin
-  bdsEmpresa.Open;
+  LoadEmpresa;
+  acGenerico2.Enabled := true;
+  acGenerico1.Caption := C_CONCLUIR;
+  SetFocus(DBEdit1);
 end;
 
 procedure TfrmAssistenteInicial.SetCheckServer(AValue: Boolean);
@@ -166,6 +180,41 @@ begin
     lblServidorTesteConexao.Caption := 'Ok';
     lblServidorTesteConexao.Font.Color := clGreen;
   end;
+end;
+
+procedure TfrmAssistenteInicial.LoadEmpresa;
+begin
+  mdEmpresa.CloseOpen;
+  if Sistema.Administrativo.Empresa.Get then
+  begin
+    mdEmpresa.Insert;
+    mdEmpresaguid.AsString :=
+      Sistema.Administrativo.Empresa.GUID;
+    mdEmpresarazaosocial.AsString :=
+      Sistema.Administrativo.Empresa.Nome;
+    mdEmpresafantasia.AsString :=
+      Sistema.Administrativo.Empresa.NomeFantasia;
+    mdEmpresacnpj.AsString :=
+      Sistema.Administrativo.Empresa.CNPJ;
+    mdEmpresainscricaoestadual.AsString :=
+      Sistema.Administrativo.Empresa.InscricaoEstadual;
+    mdEmpresacep.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.CEP;
+    mdEmpresaendereco.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.Logradouro;
+    mdEmpresanumero.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.Numero;
+    mdEmpresacomplemento.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.Complemento;
+    mdEmpresabairro.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.Bairro;
+    mdEmpresacidade.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.Cidade.Nome;
+    mdEmpresauf.AsString :=
+      Sistema.Administrativo.Empresa.Endereco.Cidade.UF.Sigla;
+    mdEmpresa.Post;
+  end;
+
 end;
 
 procedure TfrmAssistenteInicial.Clear;
@@ -222,7 +271,33 @@ procedure TfrmAssistenteInicial.acGenerico1Execute(Sender: TObject);
 begin
   if acGenerico1.Caption = C_CONCLUIR then
   begin
-    Sistema.WizardDone;
+    if mdEmpresa.State in dsEditModes then
+      mdEmpresa.Post;
+    Sistema.Administrativo.Empresa.Nome :=
+      mdEmpresarazaosocial.AsString;
+    Sistema.Administrativo.Empresa.NomeFantasia :=
+      mdEmpresafantasia.AsString;
+    Sistema.Administrativo.Empresa.CNPJ :=
+      mdEmpresacnpj.AsString;
+    Sistema.Administrativo.Empresa.InscricaoEstadual :=
+      mdEmpresainscricaoestadual.AsString;
+    Sistema.Administrativo.Empresa.Endereco.CEP :=
+      mdEmpresacep.AsString;
+    Sistema.Administrativo.Empresa.Endereco.Logradouro :=
+      mdEmpresaendereco.AsString;
+    Sistema.Administrativo.Empresa.Endereco.Numero :=
+      mdEmpresanumero.AsString;
+    Sistema.Administrativo.Empresa.Endereco.Complemento :=
+      mdEmpresacomplemento.AsString;
+    Sistema.Administrativo.Empresa.Endereco.Bairro :=
+      mdEmpresabairro.AsString;
+    Sistema.Administrativo.Empresa.Endereco.Cidade.Nome :=
+      mdEmpresacidade.AsString;
+    Sistema.Administrativo.Empresa.Endereco.Cidade.UF.Sigla :=
+      mdEmpresauf.AsString;
+    if Sistema.Administrativo.Empresa.Post > 0 then
+      Sistema.WizardDone
+    else Sistema.Finaliza;
   end else begin
     acGenerico2.Enabled := PageControl1.TabIndex > 0;
 

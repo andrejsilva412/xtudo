@@ -203,6 +203,10 @@ end;
 function TSistema.ShowWizard: Boolean;
 begin
   Result := Self.Config.ShowWizard;
+  if not Self.Administrativo.User.AdministradorCadastrado then
+    Result := true;
+  if not Self.Administrativo.Empresa.Get then
+    Result := true;
 end;
 
 procedure TSistema.WizardDone;

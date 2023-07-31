@@ -13,11 +13,12 @@ uses
   Forms, datetimectrls, rxnew, view.basico, uconst, utils, view.buttons, uimage,
   uhtmlutils, utypes, view.bascadastro, udbnotifier, ustrutils,
   view.assistenteinicial, uframetitulo, controller.config, model.config, ucript,
-  uframecnpj, uframeendereco, uvalida, model.dmmain, controller.admin,
+  uframecnpj, uframeendereco, uvalida, controller.admin,
   controller.user, controller.crud, model.crud, model.user,
   model.database.sqlite, controller.log, model.log, udatacollection,
   model.endereco, controller.endereco, uformats, view.main, controller.forms,
-  model.pessoa, controller.pessoa, model.empresa, controller.empresa;
+  model.pessoa, controller.pessoa, model.empresa, controller.empresa, 
+controller.pessoajuridica;
 
 
 {$R *.res}
@@ -27,7 +28,6 @@ begin
   Application.Title := 'X-Tudo';
   Application.Scaled := True;
   Application.Initialize;
-  Application.CreateForm(TdmMain, dmMain);
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.

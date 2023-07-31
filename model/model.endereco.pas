@@ -55,13 +55,20 @@ begin
 
   ADataSet := TBufDataset.Create(nil);
   ACBRCEP := TACBrCEP.Create(nil);
+
+  // Provedor de pesquisa ACBRCep
+  ACBRCEP.WebService := wsViaCep;
+
   try
     Result := false;
     cache := false;
     ACEP := FormataCEP(ACEP);
+    if not Validador.CEP(ACEP) then
+      exit;
+
     CreateTableEndereco;
     AEndereco.Clear;
-    Select('endereco', '*', 'where cep :cep', [ACEP], ADataSet, true);
+    Select('endereco', '*', 'where cep = :cep', [ACEP], ADataSet, true);
     if not ADataSet.IsEmpty then
     begin
       AEndereco.CEP := ADataSet.FieldByName('cep').AsString;
@@ -73,6 +80,7 @@ begin
       AEndereco.Cidade.UF.Sigla := ADataSet.FieldByName('uf').AsString;
       AEndereco.Cidade.UF.IBGE := ADataSet.FieldByName('uf_ibge').AsString;
       cache := true;
+      Result := true;
     end else begin
       if ACBRCEP.BuscarPorCEP(ACEP) > 0 then
       begin
@@ -89,10 +97,10 @@ begin
         end;
       end;
     end;
-    if AEndereco.CEP <> '' then
+    if (AEndereco.CEP <> '') and (not cache) then
     begin
-      if not cache then
-      begin
+      StartTransaction(true);
+      try
         Insert('endereco', 'cep = :cep, logradouro = :logradouro, '
           + 'complemento = :complemento, bairro = :bairro, '
           + 'municipio = :municipio, municipio_ibge = :municipio_ibge, '
@@ -101,8 +109,15 @@ begin
            AEndereco.Bairro, AEndereco.Cidade.Nome,
            AEndereco.Cidade.IBGE, AEndereco.Cidade.UF.Sigla,
            AEndereco.Cidade.UF.IBGE], true);
+        Commit(true);
+        Result := true;
+      except
+        on E: Exception do
+        begin
+          RollBack();
+          raise Exception.Create(E.Message);
+        end;
       end;
-      Result := true;
     end;
   finally
     FreeAndNil(ACBRCEP);

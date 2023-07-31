@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, BCButton, BCTypes, BCButtonFocus,
-  BGRABitmapTypes, uhtmlutils, ucript, json.files;
+  BGRABitmapTypes, uhtmlutils, ucript;
 
 type
 
@@ -15,19 +15,15 @@ type
   TBaseConfig = class
   private
     FCript: TCript;
-    FDirectory: String;
-    FFileName: String;
-    FJSON: TFPJson;
-    procedure SetFileName(AValue: String);
   protected
-    function GetConfig(AConfig: String; ADefault: String): String; overload;
-    function GetConfig(AConfig: String; ADefault: Boolean): Boolean; overload;
-    procedure SetConfig(AConfig: String; AValue: String); overload;
-    procedure SetConfig(AConfig: String; AValue: Boolean); overload;
+    function GetConfig(AConfig: String; ADefault: String; Global: Boolean): String; overload;
+    function GetConfig(AConfig: String; ADefault: Boolean; Global: Boolean): Boolean; overload;
+    function GetConfig(AConfig: String; ADefault: Integer; Global: Boolean): Integer;
+    procedure SetConfig(AConfig: String; AValue: String; Global: Boolean); overload;
+    procedure SetConfig(AConfig: String; AValue: Boolean; Global: Boolean); overload;
+    procedure SetConfig(AConfig: String; AValue: Integer; Global: Boolean); overload;
     procedure Get; virtual;
     function Cript: TCript;
-    property FileName: String read FFileName write SetFileName;
-    property Directory: String read FDirectory write FDirectory;
   public
     constructor Create;
     destructor Destroy; override;
@@ -121,7 +117,7 @@ type
 
 implementation
 
-uses utils, uconst, model.crud;
+uses utils, uconst, model.config;
 
 { TConfig }
 
@@ -164,34 +160,27 @@ end;
 { TConfigTheme }
 
 procedure TConfigTheme.Get;
-var
-  FDefault: String;
 begin
 
-  Directory := '';
-  FileName := '';
-
-  FDefault := 'theme' + PathDelim + 'default.json';
-  FFileTheme := GetConfig('theme', FDefault);
+  with FHTMLUtils do
+  begin
+    FBackGround1 := HTMLToColor('#272727');
+    FBackGround2 := HTMLToColor('#2F0505');
+    FForeGround := HTMLToColor('#85311B');
+    FSecondary1 := HTMLToColor('#C1853B');
+    FSecondary2 := HTMLToColor('#DB9327');
+    FSecondary3 := HTMLToColor('#CC1B1B');
+    FSecondary4 := HTMLToColor('#9E9E9E');
+    FSecondary5 := HTMLToColor('#E2C52C');
+    FSecondary6 := HTMLToColor('#0CA147');
+    FSecondary7 := HTMLToColor('#F4F4F4');
+  end;
 
   if not FileExists(FFileTheme) then
   begin
 
     with FHTMLUtils do
     begin
-      FBackGround1 := HTMLToColor('#272727');
-      FBackGround2 := HTMLToColor('#2F0505');
-      FForeGround := HTMLToColor('#85311B');
-      FSecondary1 := HTMLToColor('#C1853B');
-      FSecondary2 := HTMLToColor('#DB9327');
-      FSecondary3 := HTMLToColor('#CC1B1B');
-      FSecondary4 := HTMLToColor('#9E9E9E');
-      FSecondary5 := HTMLToColor('#E2C52C');
-      FSecondary6 := HTMLToColor('#0CA147');
-      FSecondary7 := HTMLToColor('#F4F4F4');
-
-      Directory := 'theme';
-      FileName := 'default.json';
 
       SetConfig('background1', ColorToHTML(FBackGround1));
       SetConfig('background2', ColorToHTML(FBackGround2));
@@ -205,14 +194,39 @@ begin
       SetConfig('secondary7', ColorToHTML(FSecondary7));
     end;
 
+  end else begin
+    with FHTMLUtils do
+    begin
+      FBackGround1 := HTMLToColor(GetConfig(
+        'background1', ColorToHTML(FBackGround1)));
+      FBackGround2 := HTMLToColor(GetConfig(
+        'background2', ColorToHTML(FBackGround2)));
+      FForeGround := HTMLToColor(GetConfig(
+        'foreground',  ColorToHTML(FForeGround)));
+      FSecondary1 := HTMLToColor(GetConfig(
+        'secondary1',  ColorToHTML(FSecondary1)));
+      FSecondary2 := HTMLToColor(GetConfig(
+        'secondary2',  ColorToHTML(FSecondary2)));
+      FSecondary3 := HTMLToColor(GetConfig(
+         'secondary3', ColorToHTML(FSecondary3)));
+      FSecondary4 := HTMLToColor(GetConfig(
+         'secondary4', ColorToHTML(FSecondary4)));
+      FSecondary5 := HTMLToColor(GetConfig(
+         'secondary5', ColorToHTML(FSecondary5)));
+      FSecondary6 := HTMLToColor(GetConfig(
+         'secondary6', ColorToHTML(FSecondary6)));
+      FSecondary7 := HTMLToColor(GetConfig(
+         'secondary7',  ColorToHTML(FSecondary7)));
+    end;
+
   end;
 
 end;
 
 constructor TConfigTheme.Create;
 begin
-  inherited;
   FHTMLUtils := THTMLUtils.Create;
+  inherited;
 end;
 
 destructor TConfigTheme.Destroy;
@@ -273,9 +287,7 @@ end;
 constructor TBaseConfig.Create;
 begin
 
-  FJSON := TFPJson.Create;
-  FileName := '';
-  Directory := '';
+  FModelConfig := TModelConfig.Create;
   Get;
 
 end;
@@ -284,39 +296,12 @@ destructor TBaseConfig.Destroy;
 begin
   if Assigned(FCript) then
     FreeAndNil(FCript);
-  FreeAndNil(FJSON);
+  FreeAndNil(FModelConfig);
   inherited Destroy;
 end;
 
-procedure TBaseConfig.SetFileName(AValue: String);
-var
-  AFile: TStringList;
-begin
-
-  if FDirectory = '' then
-    FDirectory := {$ifdef windows} 'config' {$else} '.config' {$endif};
-  if not DirectoryExists(FDirectory) then
-    CreateDir(FDirectory);
-
-  if AValue = '' then
-    AValue := 'config.json';
-
-  FFileName := AValue;
-
-  FFileName := FDirectory + PathDelim + FFileName;
-  if not FileExists(FFileName) then
-  begin
-    AFile := TStringList.Create;
-    try
-      AFile.SaveToFile(FFileName);
-    finally
-      FreeAndNil(AFile);
-    end;
-  end;
-
-end;
-
-function TBaseConfig.GetConfig(AConfig: String; ADefault: String): String;
+function TBaseConfig.GetConfig(AConfig: String; ADefault: String;
+  Global: Boolean): String;
 begin
 
   FJSON.FileName := FFileName;
@@ -324,13 +309,22 @@ begin
 
 end;
 
-function TBaseConfig.GetConfig(AConfig: String; ADefault: Boolean): Boolean;
+function TBaseConfig.GetConfig(AConfig: String; ADefault: Boolean;
+  Global: Boolean): Boolean;
 begin
   FJSON.FileName := FFileName;
   Result := FJSON.ReadBoolean(AConfig, ADefault);
 end;
 
-procedure TBaseConfig.SetConfig(AConfig: String; AValue: String);
+function TBaseConfig.GetConfig(AConfig: String; ADefault: Integer;
+  Global: Boolean): Integer;
+begin
+  FJSON.FileName := FFileName;
+  Result := FJSON.ReadInteger(AConfig, ADefault);
+end;
+
+procedure TBaseConfig.SetConfig(AConfig: String; AValue: String; Global: Boolean
+  );
 begin
 
   FJSON.FileName := FFileName;
@@ -338,10 +332,18 @@ begin
 
 end;
 
-procedure TBaseConfig.SetConfig(AConfig: String; AValue: Boolean);
+procedure TBaseConfig.SetConfig(AConfig: String; AValue: Boolean;
+  Global: Boolean);
 begin
   FJSON.FileName := FFileName;
   FJSON.WriteBoolean(AConfig, AValue);
+end;
+
+procedure TBaseConfig.SetConfig(AConfig: String; AValue: Integer;
+  Global: Boolean);
+begin
+  FJSON.FileName := FFileName;
+  FJSON.WriteInteger(AConfig, AValue);
 end;
 
 procedure TBaseConfig.Get;

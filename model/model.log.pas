@@ -14,6 +14,7 @@ uses
     TModelLog = class(TModelCRUD)
       private
          FTableLog: String;
+         procedure CreateLogTable;
       protected
         function GetNextID: Integer; overload;
       public
@@ -25,15 +26,8 @@ implementation
 
 { TModelLog }
 
-function TModelLog.GetNextID: Integer;
+procedure TModelLog.CreateLogTable;
 begin
-  Result := inherited GetNextID(FTableLog, 'id', true);
-end;
-
-constructor TModelLog.Create;
-begin
-
-  FTableLog := 'log';
   if not TableExists(FTableLog, true) then
   begin
     SQL.Clear;
@@ -47,6 +41,19 @@ begin
     ExecuteDirect(SQL, true);
     Commit(true);
   end;
+end;
+
+function TModelLog.GetNextID: Integer;
+begin
+  Result := inherited GetNextID(FTableLog, 'id', true);
+end;
+
+constructor TModelLog.Create;
+begin
+
+  inherited;
+  FTableLog := 'log';
+  CreateLogTable;
 
 end;
 

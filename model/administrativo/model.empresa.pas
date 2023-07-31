@@ -16,7 +16,7 @@ type
       function Insert(AEmpresa: TEmpresa): Integer;
       function Update(AEmpresa: TEmpresa): Integer;
     public
-      procedure Get(AEmpresa: TEmpresa);
+      function Get(AEmpresa: TEmpresa): Boolean;
       function Post(AEmpresa: TEmpresa): Integer;
   end;
 
@@ -36,10 +36,10 @@ begin
   Result := inherited Insert(
     'empresa', 'guid = :guid, nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
     + 'inscricaoestadual = :ie, endereco = :endereco, numero = :numero, '
-    + 'bairro = :bairro, cidade = :cidade, uf = :uf',
-    [AEmpresa.GUID, AEmpresa.Nome, AEmpresa.Fantasia, AEmpresa.CPFCNPJ,
-    AEmpresa.RGInscricaoEstadual, AEmpresa.Endereco.Logradouro,
-    AEmpresa.Endereco.Numero, AEmpresa.Endereco.Bairro,
+    + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf',
+    [AEmpresa.GUID, AEmpresa.Nome, AEmpresa.NomeFantasia, AEmpresa.CNPJ,
+    AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
+    AEmpresa.Endereco.Numero, AEmpresa.Endereco.Complemento, AEmpresa.Endereco.Bairro,
     AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla]);
 
 end;
@@ -50,21 +50,22 @@ begin
   Result := inherited Update(
     'empresa', 'nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
     + 'inscricaoestadual = :ie, endereco = :endereco, numero = :numero, '
-    + 'bairro = :bairro, cidade = :cidade, uf = :uf',
+    + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf',
     'where guid = :guid',
-    [AEmpresa.Nome, AEmpresa.Fantasia, AEmpresa.CPFCNPJ,
-    AEmpresa.RGInscricaoEstadual, AEmpresa.Endereco.Logradouro,
-    AEmpresa.Endereco.Numero, AEmpresa.Endereco.Bairro,
+    [AEmpresa.Nome, AEmpresa.NomeFantasia, AEmpresa.CNPJ,
+    AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
+    AEmpresa.Endereco.Numero, AEmpresa.Endereco.Complemento, AEmpresa.Endereco.Bairro,
     AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla, AEmpresa.GUID]);
 
 end;
 
-procedure TModelEmpresa.Get(AEmpresa: TEmpresa);
+function TModelEmpresa.Get(AEmpresa: TEmpresa): Boolean;
 var
   ADataSet: TBufDataset;
 begin
 
   ADataSet := TBufDataset.Create(nil);
+  Result := false;
   try
     Select('empresa', '*', '', [], ADataSet);
     AEmpresa.Clear;
@@ -72,15 +73,16 @@ begin
     begin
       AEmpresa.GUID := ADataSet.FieldByName('guid').AsString;
       AEmpresa.Nome := ADataSet.FieldByName('nome').AsString;
-      AEmpresa.Fantasia := ADataSet.FieldByName('fantasia').AsString;
-      AEmpresa.CPFCNPJ := ADataSet.FieldByName('cnpj').AsString;
-      AEmpresa.RGInscricaoEstadual := ADataSet.FieldByName('inscricaoestadual').AsString;
+      AEmpresa.NomeFantasia := ADataSet.FieldByName('fantasia').AsString;
+      AEmpresa.CNPJ := ADataSet.FieldByName('cnpj').AsString;
+      AEmpresa.InscricaoEstadual := ADataSet.FieldByName('inscricaoestadual').AsString;
       AEmpresa.Endereco.Logradouro := ADataSet.FieldByName('endereco').AsString;
       AEmpresa.Endereco.Numero := ADataSet.FieldByName('numero').AsString;
       AEmpresa.Endereco.Complemento := ADataSet.FieldByName('complemento').AsString;
       AEmpresa.Endereco.Bairro := ADataSet.FieldByName('bairro').AsString;
       AEmpresa.Endereco.Cidade.Nome := ADataSet.FieldByName('cidade').AsString;
-      AEmpresa.Endereco.Cidade.UF.Sigla := ADataSet.FieldByName('sigla').AsString;
+      AEmpresa.Endereco.Cidade.UF.Sigla := ADataSet.FieldByName('uf').AsString;
+      Result := true;
     end;
     inherited Get(tcEmpresa, AEmpresa.Contato);
   finally
@@ -95,9 +97,9 @@ begin
   StartTransaction();
   try
     if AEmpresa.GUID = '' then
-      Insert(AEmpresa)
+      Result := Insert(AEmpresa)
     else
-      Update(AEmpresa);
+      Result := Update(AEmpresa);
     inherited Post(AEmpresa.TipoContato, AEmpresa.Contato);
     Commit();
   except

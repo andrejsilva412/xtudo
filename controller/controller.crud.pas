@@ -5,7 +5,7 @@ unit controller.crud;
 interface
 
 uses
-  Classes, SysUtils, uvalida, udbnotifier;
+  Classes, SysUtils, DB, uvalida, udbnotifier;
 
 type
 
@@ -49,7 +49,7 @@ end;
 
 function TControllerCRUD.Delete: Integer;
 begin
-
+  Result := 0;
 end;
 
 function TControllerCRUD.Post: Integer;

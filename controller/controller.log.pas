@@ -5,7 +5,7 @@ unit controller.log;
 interface
 
 uses
-  Classes, SysUtils, controller.crud;
+  Classes, Forms, SysUtils, controller.crud;
 
 type
 
@@ -18,6 +18,7 @@ type
       FID: Integer;
     public
       function Post: Integer; override;
+      procedure OnException(Sender: TObject; E: Exception);
       property ID: Integer read FID;
       property Date: TDateTime read FDate;
       property Descricao: String read FDescricao write FDescricao;
@@ -29,6 +30,11 @@ uses model.log;
 
 { TLog }
 
+procedure TLog.OnException(Sender: TObject; E: Exception);
+begin
+  // Teste
+end;
+
 function TLog.Post: Integer;
 var
   MLog: TModelLog;
@@ -36,10 +42,12 @@ begin
 
   MLog := TModelLog.Create;
   try
-    MLog.Post(Self);
+    Result := MLog.Post(Self);
   finally
     FreeAndNil(MLog);
   end;
+
+  Application.OnException := @OnException;
 
 end;
 

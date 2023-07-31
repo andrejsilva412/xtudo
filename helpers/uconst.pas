@@ -36,6 +36,7 @@ resourcestring
 
   // Validação
   SMSGCampoObrigatorio = 'Desculpe, mas o campo %s, é obrigatário.';
+  SMSGFieldNotFoundInDataSet = 'Field %s not found in DataSet.';
   SMSGSenhaTamanhoMinimo = 'A senha deve ter no mínimo ' + C_MIN_PASSWORD_LENGHT + ' caracteres.';
 
   // Banco de dados

@@ -36,6 +36,7 @@ begin
     Hide;
     Sistema.Forms.ShowWizard;
   end;
+  WindowState := wsMaximized;
 end;
 
 end.

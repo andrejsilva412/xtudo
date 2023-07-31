@@ -21,6 +21,7 @@ object FrameEndereco: TFrameEndereco
     Height = 23
     Top = 16
     Width = 84
+    CustomEditMask = True
     EditMask = '99999-999;1;_'
     MaxLength = 9
     TabOrder = 0
@@ -100,8 +101,7 @@ object FrameEndereco: TFrameEndereco
     Left = 304
     Height = 23
     Top = 64
-    Width = 156
-    Anchors = [akTop, akLeft, akRight]
+    Width = 111
     ItemHeight = 15
     MaxLength = 0
     TabOrder = 5
@@ -134,5 +134,24 @@ object FrameEndereco: TFrameEndereco
     Font.Quality = fqAntialiased
     ParentColor = False
     ParentFont = False
+  end
+  object Label8: TLabel
+    Left = 421
+    Height = 15
+    Top = 47
+    Width = 14
+    Caption = 'UF'
+  end
+  object DBComboBox4: TDBComboBox
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 421
+    Height = 23
+    Top = 64
+    Width = 39
+    Anchors = [akTop, akLeft, akRight]
+    ItemHeight = 15
+    MaxLength = 0
+    TabOrder = 6
   end
 end

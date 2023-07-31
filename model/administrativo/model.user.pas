@@ -16,6 +16,8 @@ type
       function Insert(AUSer: TUser): Integer;
       function Update(AUSer: TUser): Integer;
     public
+      constructor Create;
+      function AdministradorCadastrado: Boolean;
       procedure Get(AUserName: String; AUser: TUser);
       function Post(AUser: TUser): Integer;
   end;
@@ -45,6 +47,19 @@ begin
     + 'senha = :senha, tipo = :tipo', 'where guid = :guid',
     [AUSer.Nome, AUSer.Username, AUSer.Password,
     UserTypeToInteger(AUSer.UserType), AUSer.GUID]);
+
+end;
+
+constructor TModelUser.Create;
+begin
+  inherited;
+end;
+
+function TModelUser.AdministradorCadastrado: Boolean;
+begin
+
+  Result := Search('usuario', 'guid', 'where tipo = :tipo',
+    [1], false);
 
 end;
 

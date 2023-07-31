@@ -15,6 +15,7 @@ type
     DBComboBox1: TDBComboBox;
     DBComboBox2: TDBComboBox;
     DBComboBox3: TDBComboBox;
+    DBComboBox4: TDBComboBox;
     DBEdit1: TDBEdit;
     DBEdit2: TDBEdit;
     DBEdit3: TDBEdit;
@@ -25,6 +26,7 @@ type
     Label5: TLabel;
     Label6: TLabel;
     Label7: TLabel;
+    Label8: TLabel;
     procedure DBEdit1EditingDone(Sender: TObject);
   public
     constructor Create(TheOwner: TComponent); override;
@@ -62,8 +64,9 @@ begin
        ds.DataSet.FieldByName('bairro').AsString :=
          Endereco.Bairro;
        ds.DataSet.FieldByName('cidade').AsString :=
-         Endereco.Cidade.Nome + ' (' +
-         Endereco.Cidade.UF.Sigla + ')';
+         Endereco.Cidade.Nome;
+       ds.DataSet.FieldByName('uf').AsString :=
+         Endereco.Cidade.UF.Sigla;
       end;
     finally
       FreeAndNil(Endereco);
@@ -86,6 +89,7 @@ begin
       TWinControlTrocaCor.RegisterEdit(Components[i] as TWinControl);
     end;
   end;
+
 end;
 
 end.

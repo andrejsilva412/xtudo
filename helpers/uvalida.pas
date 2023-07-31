@@ -18,6 +18,7 @@ type
       constructor Create;
       destructor Destroy; override;
       function CNPJ(AString: String): Boolean;
+      function CEP(AString: String): Boolean;
       function MinPasswordLength(APassword: String): Boolean;
   end;
 
@@ -41,6 +42,13 @@ end;
 function TValidador.CNPJ(AString: String): Boolean;
 begin
   FValidador.TipoDocto := docCNPJ;
+  FValidador.Documento := AString;
+  Result := FValidador.Validar;
+end;
+
+function TValidador.CEP(AString: String): Boolean;
+begin
+  FValidador.TipoDocto := docCEP;
   FValidador.Documento := AString;
   Result := FValidador.Validar;
 end;

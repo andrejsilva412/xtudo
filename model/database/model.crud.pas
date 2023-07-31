@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, BufDataset, model.database.firebird, model.database.sqlite,
-  udbnotifier;
+  udbnotifier, uvalida;
 
 type
 
@@ -17,6 +17,7 @@ type
       FDatabaseCache: TModelSQLite;
       FDatabase: TModelFirebird;
       FSQL: TStringList;
+      FValida: TValidador;
       function Database: TModelFirebird;
       function DatabaseCache: TModelSQLite;
     protected
@@ -49,6 +50,7 @@ type
       procedure ExecuteDirect(ASQL: String; ACache: Boolean = false);
       procedure ExecuteDirect(ASQL: TStringList; ACache: Boolean = false);
       function DateTimeToCacheDateTime(ADateTime: TDateTime): String;
+      function Validador: TValidador;
       property SQL: TStringList read FSQL;
     public
       constructor Create;
@@ -68,6 +70,8 @@ begin
     FreeAndNil(FDatabase);
   if Assigned(FDatabaseCache) then
     FreeAndNil(FDatabaseCache);
+  if Assigned(FValida) then
+    FreeAndNil(FValida);
   FreeAndNil(FSQL);
   inherited Destroy;
 end;
@@ -222,27 +226,27 @@ function TModelCRUD.Search(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: String; ACache: Boolean): String;
 begin
   if ACache then
-    Result := FDatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
+    Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
   else
-    Result := FDatabase.Search(ATable, AField, ACondicao, AParams, ADefault);
+    Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
 end;
 
 function TModelCRUD.Search(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: Boolean; ACache: Boolean): Boolean;
 begin
   if ACache then
-    Result := FDatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
+    Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
   else
-    Result := FDatabase.Search(ATable, AField, ACondicao, AParams, ADefault);
+    Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
 end;
 
 function TModelCRUD.Search(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: Integer; ACache: Boolean): Integer;
 begin
   if ACache then
-    Result := FDatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
+    Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
   else
-    Result := FDatabase.Search(ATable, AField, ACondicao, AParams, ADefault);
+    Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
 end;
 
 function TModelCRUD.TableExists(ATable: String; ACache: Boolean): Boolean;
@@ -271,6 +275,13 @@ end;
 function TModelCRUD.DateTimeToCacheDateTime(ADateTime: TDateTime): String;
 begin
   Result := DatabaseCache.DateTimeToSQLiteDateTime(ADateTime);
+end;
+
+function TModelCRUD.Validador: TValidador;
+begin
+  if not Assigned(FValida) then
+     FValida := TValidador.Create;
+  Result := FValida;
 end;
 
 constructor TModelCRUD.Create;

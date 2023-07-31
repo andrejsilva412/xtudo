@@ -22,6 +22,7 @@ type
       procedure Valida; override;
     public
       constructor Create;
+      procedure Clear;
       function Delete: Integer; override;
       function Post: Integer; override;
       procedure Get(AUserName: String);
@@ -55,6 +56,17 @@ begin
   FUserType := utNormal;
 end;
 
+procedure TUser.Clear;
+begin
+
+  FGUID := '';
+  FNome := '';
+  FUsername := '';
+  FPassword := '';
+  FUserType := utNormal;
+
+end;
+
 function TUser.Delete: Integer;
 begin
   Result := inherited Delete;
@@ -66,7 +78,7 @@ var
 begin
   MUser := TModelUser.Create;
   try
-    inherited Post;
+    Valida;
     Result := MUser.Post(Self);
   finally
     FreeAndNil(MUser);
@@ -93,7 +105,16 @@ begin
 end;
 
 function TUser.AdministradorCadastrado: Boolean;
+var
+  MUser: TModelUser;
 begin
+
+  MUser := TModelUser.Create;
+  try
+    Result := MUser.AdministradorCadastrado;
+  finally
+    FreeAndNil(MUser);
+  end;
 
 end;
 

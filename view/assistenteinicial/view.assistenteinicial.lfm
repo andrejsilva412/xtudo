@@ -63,6 +63,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Caption = 'TabSheet2'
       ClientHeight = 304
       ClientWidth = 746
+      OnShow = TabSheet2Show
       object Label1: TLabel
         Left = 8
         Height = 15
@@ -345,7 +346,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Height = 23
         Top = 56
         Width = 272
-        DataField = 'nome'
+        DataField = 'fantasia'
         DataSource = DataSource1
         MaxLength = 0
         TabOrder = 1
@@ -358,14 +359,14 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         DataField = 'inscricaoestadual'
         DataSource = DataSource1
         MaxLength = 0
-        TabOrder = 2
+        TabOrder = 3
       end
       inline FrameEndereco1: TFrameEndereco
         Left = 8
         Top = 131
         Width = 480
         ClientWidth = 480
-        TabOrder = 3
+        TabOrder = 4
         inherited DBEdit1: TDBEdit
           DataField = 'cep'
           DataSource = DataSource1
@@ -391,12 +392,22 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         end
         inherited DBComboBox2: TDBComboBox
           AnchorSideRight.Control = FrameEndereco1
-          Width = 176
+          Width = 112
           DataField = 'cidade'
+          DataSource = DataSource1
+        end
+        inherited DBComboBox3: TDBComboBox
+          DataField = 'bairro'
           DataSource = DataSource1
         end
         inherited Label7: TLabel
           Left = 199
+        end
+        inherited DBComboBox4: TDBComboBox
+          AnchorSideRight.Control = FrameEndereco1
+          Width = 59
+          DataField = 'uf'
+          DataSource = DataSource1
         end
       end
       inline frameCNPJ1: TframeCNPJ
@@ -404,7 +415,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Top = 85
         Width = 186
         ClientWidth = 186
-        TabOrder = 4
+        TabOrder = 2
         inherited lblFrameCNPJ: TLabel
           AnchorSideLeft.Control = frameCNPJ1
           AnchorSideTop.Control = frameCNPJ1
@@ -457,14 +468,19 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     end
   end
   object DataSource1: TDataSource[12]
-    DataSet = bdsEmpresa
+    DataSet = mdEmpresa
     Left = 608
     Top = 200
   end
-  object bdsEmpresa: TBufDataset[13]
+  object mdEmpresa: TRxMemoryData[13]
     FieldDefs = <    
       item
         Name = 'razaosocial'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'fantasia'
         DataType = ftString
         Size = 40
       end    
@@ -474,14 +490,9 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Size = 20
       end    
       item
-        Name = 'nome'
-        DataType = ftString
-        Size = 40
-      end    
-      item
         Name = 'inscricaoestadual'
         DataType = ftString
-        Size = 40
+        Size = 20
       end    
       item
         Name = 'cep'
@@ -509,17 +520,24 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Size = 40
       end    
       item
-        Name = 'idcidade'
-        DataType = ftInteger
+        Name = 'cidade'
+        DataType = ftString
+        Size = 60
       end    
       item
-        Name = 'cidade'
+        Name = 'uf'
+        DataType = ftString
+        Size = 2
+      end    
+      item
+        Name = 'guid'
         DataType = ftString
         Size = 40
       end>
-    Left = 485
-    Top = 208
-    object bdsEmpresarazaosocial: TStringField
+    PacketRecords = 0
+    Left = 533
+    Top = 200
+    object mdEmpresarazaosocial: TStringField
       FieldKind = fkData
       FieldName = 'razaosocial'
       Index = 0
@@ -529,26 +547,26 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Required = False
       Size = 40
     end
-    object bdsEmpresacnpj: TStringField
+    object mdEmpresafantasia: TStringField
       FieldKind = fkData
-      FieldName = 'cnpj'
+      FieldName = 'fantasia'
       Index = 1
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-    end
-    object bdsEmpresanome: TStringField
-      FieldKind = fkData
-      FieldName = 'nome'
-      Index = 2
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 40
     end
-    object bdsEmpresainscricaoestadual: TStringField
+    object mdEmpresacnpj: TStringField
+      FieldKind = fkData
+      FieldName = 'cnpj'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresainscricaoestadual: TStringField
       FieldKind = fkData
       FieldName = 'inscricaoestadual'
       Index = 3
@@ -556,9 +574,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
     end
-    object bdsEmpresacep: TStringField
+    object mdEmpresacep: TStringField
       FieldKind = fkData
       FieldName = 'cep'
       Index = 4
@@ -567,7 +584,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       ReadOnly = False
       Required = False
     end
-    object bdsEmpresaendereco: TStringField
+    object mdEmpresaendereco: TStringField
       FieldKind = fkData
       FieldName = 'endereco'
       Index = 5
@@ -577,7 +594,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Required = False
       Size = 60
     end
-    object bdsEmpresanumero: TStringField
+    object mdEmpresanumero: TStringField
       FieldKind = fkData
       FieldName = 'numero'
       Index = 6
@@ -586,7 +603,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       ReadOnly = False
       Required = False
     end
-    object bdsEmpresacomplemento: TStringField
+    object mdEmpresacomplemento: TStringField
       FieldKind = fkData
       FieldName = 'complemento'
       Index = 7
@@ -595,7 +612,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       ReadOnly = False
       Required = False
     end
-    object bdsEmpresabairro: TStringField
+    object mdEmpresabairro: TStringField
       FieldKind = fkData
       FieldName = 'bairro'
       Index = 8
@@ -605,19 +622,30 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       Required = False
       Size = 40
     end
-    object bdsEmpresaidcidade: TLongintField
+    object mdEmpresacidade: TStringField
       FieldKind = fkData
-      FieldName = 'idcidade'
+      FieldName = 'cidade'
       Index = 9
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      Size = 60
     end
-    object bdsEmpresacidade: TStringField
+    object mdEmpresauf: TStringField
       FieldKind = fkData
-      FieldName = 'cidade'
+      FieldName = 'uf'
       Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 2
+    end
+    object mdEmpresaguid: TStringField
+      FieldKind = fkData
+      FieldName = 'guid'
+      Index = 11
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False

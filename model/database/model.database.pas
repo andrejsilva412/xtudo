@@ -5,8 +5,7 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, sqldb, BufDataset, controller.config,
-  Math, udbnotifier;
+  Classes, SysUtils, sqldb, BufDataset, controller.config, Math, udbnotifier;
 
 type
 
@@ -18,30 +17,31 @@ type
       FConfig: TConfig;
       FTransact: TSQLTransaction;
       function AddLimit(OffSet: Integer): String;
-      procedure  BeforeConnect(Sender: TObject); virtual;
+      procedure BeforeConnect(Sender: TObject); virtual;
       function ClearWhereFromCondition(ACondition: String): String;
       function Execute(const SQL: String; ADataSet: TBufDataset;
         AParams: array of Variant): Integer;
-      procedure SQLQueryToBufDataSet(InDataSet: TSQLQuery; OutDataSet: TBufDataset);
     public
-      procedure StartTransaction;
+      constructor Create;
+      destructor Destroy; override;
+
       procedure Commit;
-      procedure RollBack;
+      function Connected: Boolean;
       procedure ExecuteDirect(ASQL: String);
-      function Insert(ATable, AFields: String; AParams: array of Variant): Integer;
       function Delete(ATable, ACondicao: String; AParams: array of Variant): Integer;
-      function Update(ATable, AFields, Acondicao: String; AParams: array of Variant): Integer;
+      function Insert(ATable, AFields: String; AParams: array of Variant): Integer;
       function Select(ATable, AFields, ACondicao: String;
         AParams: array of Variant; ACount: String; AFieldCount: String;
         APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer; overload;
       function Select(ATable, AFields, ACondicao: String;
         AParams: array of Variant; ADataSet: TBufDataset): Integer; overload;
-      function Connected: Boolean;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String): String; overload;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean): Boolean; overload;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer): Integer; overload;
-      constructor Create;
-      destructor Destroy; override;
+      procedure StartTransaction;
+      function Update(ATable, AFields, Acondicao: String; AParams: array of Variant): Integer;
+      procedure RollBack;
+
   end;
 
 const
@@ -93,33 +93,13 @@ begin
       Result := ASQLQuery.RowsAffected;
     end else begin
       ASQLQuery.Open;
-      SQLQueryToBufDataSet(ASQLQuery, ADataSet);
+      ADataSet.CopyFromDataset(ASQLQuery);
       Result := 0;
     end;
     ASQLQuery.Close;
   finally
     FreeAndNil(ASQLQuery);
   end;
-
-end;
-
-procedure TModelDatabase.SQLQueryToBufDataSet(InDataSet: TSQLQuery;
-  OutDataSet: TBufDataset);
-var
-  MemoryStream: TMemoryStream;
-begin
-
-  if OutDataSet.ClassType = TBufDataset then
-  begin
-    MemoryStream := TMemoryStream.Create;
-    try
-      InDataSet.SaveToStream(MemoryStream, dfBinary);
-      OutDataSet.LoadFromStream(MemoryStream, dfBinary);
-    finally
-      FreeAndNil(MemoryStream);
-    end;
-  end else
-    raise Exception.Create('Informe um dataset do tipo TBufDataSet');
 
 end;
 
@@ -258,7 +238,7 @@ end;
 
 procedure TModelDatabase.ExecuteDirect(ASQL: String);
 begin
-  TSQLConnector(FDatabase).ExecuteDirect(ASQL);
+  FDatabase.ExecuteDirect(ASQL);
 end;
 
 function TModelDatabase.Search(ATable, AField, ACondicao: String;
@@ -269,7 +249,7 @@ begin
 
   ADataSet := TBufDataset.Create(nil);
   try
-      Select(ATable, AField, ACondicao,
+    Select(ATable, AField, ACondicao,
       AParams, ADataSet);
     if ADataSet.IsEmpty then
       Result := ADefault
