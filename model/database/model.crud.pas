@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, BufDataset, model.database.firebird, model.database.sqlite,
-  udbnotifier, uvalida;
+  udbnotifier, uvalida, ucript;
 
 type
 
@@ -18,9 +18,11 @@ type
       FDatabase: TModelFirebird;
       FSQL: TStringList;
       FValida: TValidador;
+      FCrip: TCript;
       function Database: TModelFirebird;
       function DatabaseCache: TModelSQLite;
     protected
+      function Cript: TCript;
       procedure StartTransaction(ACache: Boolean = false);
       procedure Commit(ACache: Boolean = false);
       procedure RollBack(ACache: Boolean = false);
@@ -60,12 +62,14 @@ type
 
 implementation
 
-uses ucript, utils;
+uses utils;
 
 { TModelCRUD }
 
 destructor TModelCRUD.Destroy;
 begin
+  if Assigned(FCrip) then
+    FreeAndNil(FCrip);
   if Assigned(FDatabase) then
     FreeAndNil(FDatabase);
   if Assigned(FDatabaseCache) then
@@ -94,6 +98,13 @@ begin
   FDatabaseCache.OnProgress := @DoProgress;
   FDatabaseCache.OnStatus := @DoStatus;
   Result := FDatabaseCache;
+end;
+
+function TModelCRUD.Cript: TCript;
+begin
+  if not Assigned(FCrip) then
+    FCrip := TCript.Create;
+  Result := FCrip;
 end;
 
 procedure TModelCRUD.StartTransaction(ACache: Boolean);
@@ -146,16 +157,9 @@ begin
 end;
 
 function TModelCRUD.GetPasswordHash(APassword: String): String;
-var
-  Cript: TCript;
 begin
 
-  Cript := TCript.Create;
-  try
-    Result := Cript.GetHash(APassword);
-  finally
-    FreeAndNil(Cript);
-  end;
+  Result := Cript.GetHash(APassword);
 
 end;
 

@@ -223,10 +223,11 @@ begin
   inherited Clear;
   edtBancoDeDados.Clear;
   lblServidorTesteConexao.Caption := '';
-  edBdUserName.Caption := 'SYSDBA';
-  edBdPassword.Caption := 'masterkey';
-  edtPorta.Text := '3050';
-  edHostName.Text := 'localhost';
+  Sistema.Config.Database.Get;
+  edBdUserName.Caption := Sistema.Config.Database.Username;
+  edBdPassword.Caption := Sistema.Config.Database.Password;
+  edtPorta.Text := Sistema.Config.Database.Port.ToString;
+  edHostName.Text := Sistema.Config.Database.HostName;
   edtBancoDeDados.Text := Sistema.Config.Database.DatabaseName;
   edAdminNome.Text := 'Administrador';
   edtAdminUsername.Text := 'admin';
@@ -254,6 +255,7 @@ begin
     UserName := edBdUserName.Text;
     Password := edBdPassword.Text;
     Save;
+    Sistema.Config.Database.CreateConfigTable(true);
     CheckServer := CheckDBConnection;
   end;
 

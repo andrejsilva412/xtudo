@@ -18,7 +18,7 @@ uses
   model.database.sqlite, controller.log, model.log, udatacollection,
   model.endereco, controller.endereco, uformats, view.main, controller.forms,
   model.pessoa, controller.pessoa, model.empresa, controller.empresa, 
-controller.pessoajuridica;
+  controller.pessoajuridica, controller.sistema;
 
 
 {$R *.res}

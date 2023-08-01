@@ -202,7 +202,10 @@ end;
 
 function TSistema.ShowWizard: Boolean;
 begin
+  Self.Config.Get;
   Result := Self.Config.ShowWizard;
+  if Result = true then
+    exit;
   if not Self.Administrativo.User.AdministradorCadastrado then
     Result := true;
   if not Self.Administrativo.Empresa.Get then

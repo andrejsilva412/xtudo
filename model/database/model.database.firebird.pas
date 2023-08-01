@@ -23,6 +23,7 @@ implementation
 
 procedure TModelFirebird.BeforeConnect(Sender: TObject);
 begin
+  FConfig.Database.Get;
   FDatabase.CharSet := FConfig.Database.CharSet;
   FDataBase.CheckTransactionParams := FConfig.Database.CheckTransaction;
   FDataBase.DatabaseName := FConfig.Database.DatabaseName;

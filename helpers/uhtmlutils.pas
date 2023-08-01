@@ -26,7 +26,7 @@ type
     private
       function TranslateColorName(Name: String): Integer;
     public
-      function HTMLToColor(const HTML: String): Integer;
+      function HTMLToColor(const HTML: String): TColor;
       function ColorToHTML(Color: TColor): String;
   end;
 
@@ -201,7 +201,7 @@ begin
 
 end;
 
-function THTMLUtils.HTMLToColor(const HTML: String): Integer;
+function THTMLUtils.HTMLToColor(const HTML: String): TColor;
 var
   Offset: Integer;
 begin

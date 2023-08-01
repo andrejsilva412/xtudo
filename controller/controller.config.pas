@@ -5,7 +5,7 @@ unit controller.config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, BCButton, BCTypes, BCButtonFocus,
+  Classes, SysUtils, Graphics, BCTypes, BCButtonFocus,
   BGRABitmapTypes, ucript;
 
 type
@@ -13,18 +13,10 @@ type
   { TBaseConfig }
 
   TBaseConfig = class
-  private
-    FCript: TCript;
-  protected
-    function Cript: TCript;
-    function GetConfig(AConfig: String; ADefault: String; Global: Boolean = false): String; overload;
-    function GetConfig(AConfig: String; ADefault: Boolean; Global: Boolean = false): Boolean; overload;
-    procedure SetConfig(AConfig: String; AValue: String; Global: Boolean = false); overload;
-    procedure SetConfig(AConfig: String; AValue: Boolean; Global: Boolean = false); overload;
-    procedure Get; virtual;
-  public
-    constructor Create;
-    destructor Destroy; override;
+    protected
+      function GetConfigFolder: String;
+    public
+      procedure CreateConfigFolder;
   end;
 
 type
@@ -43,20 +35,19 @@ type
       FSecondary5: TColor;
       FSecondary6: TColor;
       FSecondary7: TColor;
-    protected
-      procedure Get; override;
     public
+      constructor Create;
       procedure SetBcButtonStyle(Button: TBCButtonFocus);
-      property BackGround1: TColor read FBackGround1;
-      property BackGround2: TColor read FBackGround2;
-      property ForeGround: TColor read FForeGround;
-      property Secondary1: TColor read FSecondary1;
-      property Secondary2: TColor read FSecondary2;
-      property Secondary3: TColor read FSecondary3;
-      property Secondary4: TColor read FSecondary4;
-      property Secondary5: TColor read FSecondary5;
-      property Secondary6: TColor read FSecondary6;
-      property Secondary7: TColor read FSecondary7;
+      property BackGround1: TColor read FBackGround1 write FBackGround1;
+      property BackGround2: TColor read FBackGround2 write FBackGround2;
+      property ForeGround: TColor read FForeGround write FForeGround;
+      property Secondary1: TColor read FSecondary1 write FSecondary1;
+      property Secondary2: TColor read FSecondary2 write FSecondary2;
+      property Secondary3: TColor read FSecondary3 write FSecondary3;
+      property Secondary4: TColor read FSecondary4 write FSecondary4;
+      property Secondary5: TColor read FSecondary5 write FSecondary5;
+      property Secondary6: TColor read FSecondary6 write FSecondary6;
+      property Secondary7: TColor read FSecondary7 write FSecondary7;
   end;
 
 type
@@ -74,15 +65,15 @@ type
       FPassword: String;
       FPort: Integer;
       FUsername: String;
-    protected
-      procedure Get; override;
     public
       constructor Create;
       destructor Destroy; override;
+      procedure Get;
       procedure Save;
       function CheckDBConnection: Boolean;
       function CheckCacheConnection: Boolean;
-      property CharSet: String read FCharSet;
+      procedure CreateConfigTable(Global: Boolean);
+      property CharSet: String read FCharSet write FCharSet;
       property CheckTransaction: Boolean read FCheckTransaction write FCheckTransaction;
       property DatabaseName: String read FDatabaseName write FDatabaseName;
       property HostName: String read FHostName write FHostName;
@@ -93,25 +84,25 @@ type
       property CacheDatabase: String read FCacheDatabase;
   end;
 
-
 type
 
   TConfig = class(TBaseConfig)
     private
+      FShowWizard: Boolean;
       FTheme: TConfigTheme;
       FDatabase: TConfigDatabase;
     public
       destructor Destroy; override;
-      procedure Inicializa;
+      procedure Get;
       function Theme: TConfigTheme;
       function Database: TConfigDatabase;
-      function ShowWizard: Boolean;
       procedure WizardDone;
-  end;
+      property ShowWizard: Boolean read FShowWizard write FShowWizard;
+    end;
 
 implementation
 
-uses utils, uhtmlutils, uconst, model.config;
+uses utils,  model.config;
 
 { TConfig }
 
@@ -124,14 +115,14 @@ begin
   inherited Destroy;
 end;
 
-procedure TConfig.Inicializa;
+procedure TConfig.Get;
 var
   MConfig: TModelConfig;
 begin
 
   MConfig := TModelConfig.Create;
   try
-    MConfig.CreateConfigTable;
+    MConfig.Get(Self);
   finally
     FreeAndNil(MConfig);
   end;
@@ -151,252 +142,128 @@ function TConfig.Database: TConfigDatabase;
 begin
   if not Assigned(FDatabase) then
     FDatabase := TConfigDatabase.Create;
-
   Result := FDatabase;
-end;
-
-function TConfig.ShowWizard: Boolean;
-begin
-
-  Result := GetConfig('show_wizard', false);
 
 end;
 
 procedure TConfig.WizardDone;
-begin
-
-  SetConfig('show_wizard', false, false);
-
-end;
-
-{ TConfigTheme }
-
-procedure TConfigTheme.Get;
 var
-  FHTMLUtils: THTMLUtils;
+  MConfig: TModelConfig;
 begin
 
-  FHTMLUtils := THTMLUtils.Create;
+  MConfig := TModelConfig.Create;
   try
-
-    with FHTMLUtils do
-    begin
-      // Seta os valores Default
-
-      FBackGround1 := HTMLToColor('#272727');
-      FBackGround2 := HTMLToColor('#2F0505');
-      FForeGround := HTMLToColor('#85311B');
-      FSecondary1 := HTMLToColor('#C1853B');
-      FSecondary2 := HTMLToColor('#DB9327');
-      FSecondary3 := HTMLToColor('#CC1B1B');
-      FSecondary4 := HTMLToColor('#9E9E9E');
-      FSecondary5 := HTMLToColor('#E2C52C');
-      FSecondary6 := HTMLToColor('#0CA147');
-      FSecondary7 := HTMLToColor('#F4F4F4');
-
-      FBackGround1 := HTMLToColor(GetConfig(
-        'background1', ColorToHTML(FBackGround1)));
-      FBackGround2 := HTMLToColor(GetConfig(
-        'background2', ColorToHTML(FBackGround2)));
-      FForeGround := HTMLToColor(GetConfig(
-        'foreground',  ColorToHTML(FForeGround)));
-      FSecondary1 := HTMLToColor(GetConfig(
-        'secondary1',  ColorToHTML(FSecondary1)));
-      FSecondary2 := HTMLToColor(GetConfig(
-        'secondary2',  ColorToHTML(FSecondary2)));
-      FSecondary3 := HTMLToColor(GetConfig(
-         'secondary3', ColorToHTML(FSecondary3)));
-      FSecondary4 := HTMLToColor(GetConfig(
-         'secondary4', ColorToHTML(FSecondary4)));
-      FSecondary5 := HTMLToColor(GetConfig(
-         'secondary5', ColorToHTML(FSecondary5)));
-      FSecondary6 := HTMLToColor(GetConfig(
-         'secondary6', ColorToHTML(FSecondary6)));
-      FSecondary7 := HTMLToColor(GetConfig(
-         'secondary7',  ColorToHTML(FSecondary7)));
-    end;
-
+    MConfig.WizardDone;
   finally
-    FreeAndNil(FHTMLUtils);
-  end;
-
-end;
-
-procedure TConfigTheme.SetBcButtonStyle(Button: TBCButtonFocus);
-var
-  FHTMLUtils: THTMLUtils;
-begin
-
-  FHTMLUtils := THTMLUtils.Create;
-  try
-    with Button do
-    begin
-      with StateNormal do
-      begin
-        with Background do
-        begin
-          Style := bbsColor;
-          Color := FHTMLUtils.HTMLToColor('#85311B');
-        end;
-        with Border do
-        begin
-          Style := bboSolid;
-          Color := Background.Color;
-        end;
-        with FontEx do
-        begin
-          Color := InvertColor(Background.Color);
-          FontQuality := fqSystemClearType;
-        end;
-      end;
-
-      with StateHover do
-      begin
-        with Background do
-        begin
-          Style := bbsColor;
-          Color := FHTMLUtils.HTMLToColor('#85311B');
-          ColorOpacity := 235;
-        end;
-        with Border do
-        begin
-          Style := bboSolid;
-          Color := Background.Color;
-        end;
-        with FontEx do
-        begin
-          FontQuality := fqSystemClearType;
-        end;
-      end;
-      StateClicked.Assign(StateNormal);
-    end;
-  finally
-    FreeAndNil(FHTMLUtils);
+    FreeAndNil(MConfig);
   end;
 
 end;
 
 { TBaseConfig }
 
-destructor TBaseConfig.Destroy;
+function TBaseConfig.GetConfigFolder: String;
 begin
-  if Assigned(FCript) then
-    FreeAndNil(FCript);
-  inherited Destroy;
+  Result := GetAppConfigDir(true);
+  if not DirectoryExists(Result) then
+  begin
+    if not CreateDir(Result) then
+    begin
+      Result := Path + PathDelim + {$ifdef windows} 'config'; {$else} '.config'; {$endif}
+      CreateDir(Result);
+    end;
+  end
 end;
 
-function TBaseConfig.Cript: TCript;
+procedure TBaseConfig.CreateConfigFolder;
 begin
-  if not Assigned(FCript) then
-    FCript := TCript.Create;
-  Result := FCript;
+  CreateDir(GetConfigFolder);
 end;
 
-function TBaseConfig.GetConfig(AConfig: String; ADefault: String;
-  Global: Boolean): String;
+{ TConfigTheme }
+
+constructor TConfigTheme.Create;
 var
   MConfig: TModelConfig;
 begin
 
   MConfig := TModelConfig.Create;
   try
-    Result := MConfig.GetConfig(ADefault, Global);
-    Result := iif(Result = '', ADefault, Result);
+    MConfig.Get(Self);
   finally
     FreeAndNil(MConfig);
   end;
 
 end;
 
-procedure TBaseConfig.SetConfig(AConfig: String; AValue: String; Global: Boolean
-  );
-var
-  MConfig: TModelConfig;
+procedure TConfigTheme.SetBcButtonStyle(Button: TBCButtonFocus);
 begin
 
-  MConfig := TModelConfig.Create;
-  try
-    MConfig.SetConfig(AConfig, AValue, Global);
-  finally
-    FreeAndNil(MConfig);
+  with Button do
+  begin
+    with StateNormal do
+    begin
+      with Background do
+      begin
+        Style := bbsColor;
+        Color := Self.ForeGround;
+      end;
+      with Border do
+      begin
+        Style := bboSolid;
+        Color := Background.Color;
+      end;
+      with FontEx do
+      begin
+        Color := InvertColor(Background.Color);
+        FontQuality := fqSystemClearType;
+      end;
+    end;
+
+    with StateHover do
+    begin
+      with Background do
+      begin
+        Style := bbsColor;
+        Color := Self.ForeGround;
+        ColorOpacity := 235;
+      end;
+      with Border do
+      begin
+        Style := bboSolid;
+        Color := Background.Color;
+      end;
+      with FontEx do
+      begin
+        FontQuality := fqSystemClearType;
+      end;
+    end;
+    StateClicked.Assign(StateNormal);
   end;
 
-end;
-
-procedure TBaseConfig.SetConfig(AConfig: String; AValue: Boolean;
-  Global: Boolean);
-var
-  lBoolean: String;
-begin
-
-  lBoolean := iif(AValue = true, '1', '0');
-  SetConfig(AConfig, lBoolean, Global);
-
-end;
-
-function TBaseConfig.GetConfig(AConfig: String; ADefault: Boolean;
-  Global: Boolean): Boolean;
-var
-  lResult: String;
-begin
-
-  lResult := GetConfig(AConfig, '', Global);
-  Result := iif(lResult = '', ADefault, true);
-
-end;
-
-procedure TBaseConfig.Get;
-begin
-
-end;
-
-constructor TBaseConfig.Create;
-begin
-  inherited;
 end;
 
 { TConfigDatabase }
 
 procedure TConfigDatabase.Get;
 var
-  aDef: String;
+  MConfig: TModelConfig;
 begin
 
-  aDef := Path + 'database' + PathDelim + 'XTUDO.FDB';
-  FDatabaseName := GetConfig('database_filename', '');
-  if FDatabaseName = '' then
-    SetConfig('database_filename', aDef);
-  FDatabaseName := GetConfig('database_filename', aDef);
-  FHostName := GetConfig('database_hostname', 'localhost');
-  FCharSet := GetConfig('database_charset', 'WIN1252');
-  FCheckTransaction := GetConfig('database_checktransaction', false);
-  FParams.Clear;
-  FParams.DelimitedText :=
-    GetConfig('database_params', 'isc_tpb_read_committed');
-  FUsername :=
-    Cript.Sha256Decrypt(
-        GetConfig('database_username', ''));
-  FPassword :=
-    Cript.Sha256Decrypt(
-        GetConfig('database_password', ''));
+  MConfig := TModelConfig.Create;
+  try
+    MConfig.Get(Self);
+  finally
+    FreeAndNil(MConfig);
+  end;
+
 end;
 
 constructor TConfigDatabase.Create;
-var
-  FConfigFolder: String;
 begin
-
   FParams := TStringList.Create;
-
-  FConfigFolder := GetAppConfigDir(false);
-  if not DirectoryExists(FConfigFolder) then
-    CreateDir(FConfigFolder);
-
-  FConfigFolder := FConfigFolder + 'cache.db';
-
-  FCacheDatabase := FConfigFolder;
+  FCacheDatabase := GetConfigFolder + 'cache.db';
   inherited;
-
 end;
 
 destructor TConfigDatabase.Destroy;
@@ -406,18 +273,17 @@ begin
 end;
 
 procedure TConfigDatabase.Save;
+var
+  MConfig: TModelConfig;
 begin
 
-  SetConfig('database_filename', FDatabaseName);
-  SetConfig('database_charset', FCharSet);
-  SetConfig('database_checktransaction', FCheckTransaction);
-  SetConfig('database_params', FParams.DelimitedText);
-  SetConfig('database_username',
-    Cript.Sha256Encrypt(FUsername));
-  SetConfig('database_password', Cript.Sha256Encrypt(
-    FPassword));
-  SetConfig('database_hostname', FHostName);
-  Get;
+  MConfig := TModelConfig.Create;
+  try
+    MConfig.Save(Self);
+    Get;
+  finally
+    FreeAndNil(MConfig);
+  end;
 
 end;
 
@@ -443,6 +309,23 @@ begin
   MConfig := TModelConfig.Create;
   try
     Result := MConfig.Connected(true);
+  finally
+    FreeAndNil(MConfig);
+  end;
+
+end;
+
+procedure TConfigDatabase.CreateConfigTable(Global: Boolean);
+var
+  MConfig: TModelConfig;
+begin
+
+  MConfig := TModelConfig.Create;
+  try
+    if Global then
+      MConfig.CreateConfigTable(false)
+    else
+      MConfig.CreateConfigTable(true);
   finally
     FreeAndNil(MConfig);
   end;

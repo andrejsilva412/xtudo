@@ -1,4 +1,5 @@
 inherited frmMain: TfrmMain
+  OnCreate = FormCreate
   OnShow = FormShow
   object Label1: TLabel[0]
     Left = 208

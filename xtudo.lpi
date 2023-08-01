@@ -279,6 +279,9 @@
       <Item>
         <Name Value="EFOpenError"/>
       </Item>
+      <Item>
+        <Name Value="EIBDatabaseError"/>
+      </Item>
     </Exceptions>
   </Debugging>
 </CONFIG>

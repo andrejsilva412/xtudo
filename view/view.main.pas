@@ -13,6 +13,7 @@ type
 
   TfrmMain = class(TfrmBasico)
     Label1: TLabel;
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
 
@@ -24,6 +25,8 @@ var
   frmMain: TfrmMain;
 
 implementation
+
+uses controller.sistema;
 
 {$R *.lfm}
 
@@ -37,6 +40,21 @@ begin
     Sistema.Forms.ShowWizard;
   end;
   WindowState := wsMaximized;
+end;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+var
+  LSistema: TSistema;
+begin
+
+  LSistema := TSistema.Create;
+  try
+    LSistema.Config.CreateConfigFolder;
+    LSistema.Config.Database.CreateConfigTable(false);
+    inherited;
+  finally
+    FreeAndNil(LSistema);
+  end;
 end;
 
 end.

@@ -17,6 +17,7 @@ type
     public
       constructor Create;
       destructor Destroy; override;
+      function GetSha256(AString: String): String;
       function Sha256Encrypt(AString: String): String;
       function Sha256Decrypt(AStrCript: String): String;
       function GetHash(const AString: String): String;
@@ -38,6 +39,34 @@ destructor TCript.Destroy;
 begin
   FreeAndNil(FCipher);
   inherited Destroy;
+end;
+
+function TCript.GetSha256(AString: String): String;
+var
+  Hash: TDCP_sha256;
+  Digest: array[0..31] of byte;  // sha256 produces a 256bit digest (32bytes)
+  i: integer;
+  str1: string;
+begin
+
+  Result := AString;
+
+  if AString <> '' then
+  begin
+    Hash := TDCP_sha256.Create(nil);
+    try
+      Hash.Init;
+      Hash.UpdateStr(AString);
+      Hash.Final(Digest);
+      str1 := '';
+      for i := 0 to 31 do
+        str1 := str1 + IntToHex(Digest[i], 2);
+      Result := str1;
+    finally
+      FreeAndNil(Hash);
+    end;
+  end;
+
 end;
 
 function TCript.Sha256Encrypt(AString: String): String;
