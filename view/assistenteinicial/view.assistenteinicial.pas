@@ -255,7 +255,6 @@ begin
     UserName := edBdUserName.Text;
     Password := edBdPassword.Text;
     Save;
-    Sistema.Config.Database.CreateConfigTable(true);
     CheckServer := CheckDBConnection;
   end;
 

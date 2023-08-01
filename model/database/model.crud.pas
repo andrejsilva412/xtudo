@@ -159,7 +159,7 @@ end;
 function TModelCRUD.GetPasswordHash(APassword: String): String;
 begin
 
-  Result := Cript.GetHash(APassword);
+  Result := Cript.GetPassHASH(APassword);
 
 end;
 

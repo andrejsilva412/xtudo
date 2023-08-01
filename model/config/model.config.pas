@@ -14,14 +14,13 @@ type
   TModelConfig = class(TModelCRUD)
     private
       procedure CreateCacheConfigTable;
-      procedure CreateGlobalConfigTable;
       function GetConfig(AConfig: String; ADefault: String; Global: Boolean = false): String;
       function GetConfig(AConfig: String; ADefault: Boolean; Global: Boolean = false): Boolean;
       procedure SetConfig(AConfig: String; AValue: String; Global: Boolean = false);
       procedure SetConfig(AConfig: String; AValue: Boolean; Global: Boolean = false);
     public
       constructor Create;
-      procedure CreateConfigTable(ACache: Boolean);
+      procedure CreateConfigTable;
       function Connected(ACache: Boolean): Boolean;
       procedure Get(AConfig: TConfigTheme);
       procedure Get(AConfig: TConfigDatabase);
@@ -36,20 +35,17 @@ uses utils, ucript, uhtmlutils;
 
 { TModelConfig }
 
-procedure TModelConfig.CreateConfigTable(ACache: Boolean);
+procedure TModelConfig.CreateConfigTable;
 begin
 
-  if ACache then
-    CreateCacheConfigTable
-  else
-    CreateGlobalConfigTable;
+  CreateCacheConfigTable
 
 end;
 
 procedure TModelConfig.CreateCacheConfigTable;
 begin
 
-    // Cria a tabela de configuração no cache
+  // Cria a tabela de configuração no cache
   if not TableExists('config', true) then
   begin
     SQL.Clear;
@@ -65,29 +61,6 @@ begin
     SQL.Add('"nome");');
     ExecuteDirect(SQL, true);
     Commit(true);
-  end;
-
-end;
-
-procedure TModelConfig.CreateGlobalConfigTable;
-begin
-
-  if not TableExists('config', false) then
-  begin
-    SQL.Clear;
-    SQL.Add('CREATE TABLE CONFIG (');
-    SQL.Add('ID     INTEGER NOT NULL,');
-    SQL.Add('NOME   VARCHAR(255) NOT NULL,');
-    SQL.Add('VALOR  VARCHAR(1000) NOT NULL);');
-    StartTransaction();
-    ExecuteDirect(SQL);
-    SQL.Clear;
-    SQL.Add('ALTER TABLE CONFIG ADD CONSTRAINT PK_CONFIG PRIMARY KEY (ID);');
-    ExecuteDirect(SQL);
-    SQL.Clear;
-    SQL.Add('CREATE UNIQUE INDEX CONFIG_IDX1 ON CONFIG (NOME);');
-    ExecuteDirect(SQL);
-    Commit();
   end;
 
 end;
@@ -117,7 +90,7 @@ var
 begin
 
   lResult := GetConfig(AConfig, '', Global);
-  Result := iif(lResult = '', ADefault, true);
+  Result := StrToBoolDef(lResult, ADefault);
 
 end;
 
@@ -174,7 +147,7 @@ var
   lBoolean: String;
 begin
 
-  lBoolean := iif(AValue = true, '1', '0');
+  lBoolean := BoolToStr(AValue);
   SetConfig(AConfig, lBoolean, Global);
 
 end;

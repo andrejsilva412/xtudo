@@ -49,8 +49,8 @@ begin
 
   LSistema := TSistema.Create;
   try
-    LSistema.Config.CreateConfigFolder;
-    LSistema.Config.Database.CreateConfigTable(false);
+    LSistema.Config.CreateGlobalConfigFolder;
+    LSistema.Config.Database.CreateConfigTable;
     inherited;
   finally
     FreeAndNil(LSistema);

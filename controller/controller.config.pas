@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Graphics, BCTypes, BCButtonFocus,
-  BGRABitmapTypes, ucript;
+  BGRABitmapTypes;
 
 type
 
@@ -14,9 +14,9 @@ type
 
   TBaseConfig = class
     protected
-      function GetConfigFolder: String;
+      function GetGlobalConfigFolder: String;
     public
-      procedure CreateConfigFolder;
+      procedure CreateGlobalConfigFolder;
   end;
 
 type
@@ -72,7 +72,7 @@ type
       procedure Save;
       function CheckDBConnection: Boolean;
       function CheckCacheConnection: Boolean;
-      procedure CreateConfigTable(Global: Boolean);
+      procedure CreateConfigTable;
       property CharSet: String read FCharSet write FCharSet;
       property CheckTransaction: Boolean read FCheckTransaction write FCheckTransaction;
       property DatabaseName: String read FDatabaseName write FDatabaseName;
@@ -162,7 +162,7 @@ end;
 
 { TBaseConfig }
 
-function TBaseConfig.GetConfigFolder: String;
+function TBaseConfig.GetGlobalConfigFolder: String;
 begin
   Result := GetAppConfigDir(true);
   if not DirectoryExists(Result) then
@@ -175,9 +175,9 @@ begin
   end
 end;
 
-procedure TBaseConfig.CreateConfigFolder;
+procedure TBaseConfig.CreateGlobalConfigFolder;
 begin
-  CreateDir(GetConfigFolder);
+  CreateDir(GetGlobalConfigFolder);
 end;
 
 { TConfigTheme }
@@ -262,7 +262,7 @@ end;
 constructor TConfigDatabase.Create;
 begin
   FParams := TStringList.Create;
-  FCacheDatabase := GetConfigFolder + 'cache.db';
+  FCacheDatabase := GetGlobalConfigFolder + 'cache.db';
   inherited;
 end;
 
@@ -315,17 +315,14 @@ begin
 
 end;
 
-procedure TConfigDatabase.CreateConfigTable(Global: Boolean);
+procedure TConfigDatabase.CreateConfigTable;
 var
   MConfig: TModelConfig;
 begin
 
   MConfig := TModelConfig.Create;
   try
-    if Global then
-      MConfig.CreateConfigTable(false)
-    else
-      MConfig.CreateConfigTable(true);
+    MConfig.CreateConfigTable;
   finally
     FreeAndNil(MConfig);
   end;

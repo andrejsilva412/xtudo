@@ -17,7 +17,7 @@ type
     public
       constructor Create;
       destructor Destroy; override;
-      function GetSha256(AString: String): String;
+      function GetPassHASH(AString: String): String;
       function Sha256Encrypt(AString: String): String;
       function Sha256Decrypt(AStrCript: String): String;
       function GetHash(const AString: String): String;
@@ -41,7 +41,7 @@ begin
   inherited Destroy;
 end;
 
-function TCript.GetSha256(AString: String): String;
+function TCript.GetPassHASH(AString: String): String;
 var
   Hash: TDCP_sha256;
   Digest: array[0..31] of byte;  // sha256 produces a 256bit digest (32bytes)
@@ -61,7 +61,7 @@ begin
       str1 := '';
       for i := 0 to 31 do
         str1 := str1 + IntToHex(Digest[i], 2);
-      Result := str1;
+      Result := MD5Print(MD5String(str1));
     finally
       FreeAndNil(Hash);
     end;
