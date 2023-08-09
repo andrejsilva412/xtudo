@@ -31,6 +31,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     FLeftMargin: Integer;
+    FPaintBorder: Boolean;
     FRightMargin: Integer;
     FTopMargin: Integer;
     FBottonMargin: Integer;
@@ -39,6 +40,7 @@ type
     Sistema: TSistema;
     procedure SetStyle; virtual;
     procedure Clear; virtual;
+    property PaintBorder: Boolean read FPaintBorder write FPaintBorder;
   public
 
   end;
@@ -100,17 +102,21 @@ begin
   FBottonMargin := 48;
   SetStyle;
   Clear;
+  FPaintBorder := true;
 
 end;
 
 procedure TfrmBasico.FormPaint(Sender: TObject);
 begin
 
-  Color := FBorderColor;
-  Canvas.Brush.Color := clDefault;
-  Canvas.Brush.Style := bsSolid;
-  Canvas.FillRect(FLeftMargin, FTopMargin, ClientWidth - FRightMargin,
-    ClientHeight - FBottonMargin);
+  if FPaintBorder then
+  begin
+    Color := FBorderColor;
+    Canvas.Brush.Color := clDefault;
+    Canvas.Brush.Style := bsSolid;
+    Canvas.FillRect(FLeftMargin, FTopMargin, ClientWidth - FRightMargin,
+      ClientHeight - FBottonMargin);
+  end;
 
 end;
 

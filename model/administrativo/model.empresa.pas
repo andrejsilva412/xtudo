@@ -36,11 +36,12 @@ begin
   Result := inherited Insert(
     'empresa', 'guid = :guid, nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
     + 'inscricaoestadual = :ie, endereco = :endereco, numero = :numero, '
-    + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf',
-    [AEmpresa.GUID, AEmpresa.Nome, AEmpresa.NomeFantasia, AEmpresa.CNPJ,
-    AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
+    + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf, '
+    + 'cep = :cep', [AEmpresa.GUID, AEmpresa.Nome, AEmpresa.NomeFantasia,
+    AEmpresa.CNPJ, AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
     AEmpresa.Endereco.Numero, AEmpresa.Endereco.Complemento, AEmpresa.Endereco.Bairro,
-    AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla]);
+    AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla,
+    AEmpresa.Endereco.CEP]);
 
 end;
 
@@ -50,12 +51,14 @@ begin
   Result := inherited Update(
     'empresa', 'nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
     + 'inscricaoestadual = :ie, endereco = :endereco, numero = :numero, '
-    + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf',
+    + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, '
+    + 'uf = :uf, cep = :cep',
     'where guid = :guid',
     [AEmpresa.Nome, AEmpresa.NomeFantasia, AEmpresa.CNPJ,
     AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
     AEmpresa.Endereco.Numero, AEmpresa.Endereco.Complemento, AEmpresa.Endereco.Bairro,
-    AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla, AEmpresa.GUID]);
+    AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla,
+    AEmpresa.Endereco.CEP, AEmpresa.GUID]);
 
 end;
 
@@ -82,6 +85,7 @@ begin
       AEmpresa.Endereco.Bairro := ADataSet.FieldByName('bairro').AsString;
       AEmpresa.Endereco.Cidade.Nome := ADataSet.FieldByName('cidade').AsString;
       AEmpresa.Endereco.Cidade.UF.Sigla := ADataSet.FieldByName('uf').AsString;
+      AEmpresa.Endereco.CEP := ADataSet.FieldByName('cep').AsString;
       Result := true;
     end;
     inherited Get(tcEmpresa, AEmpresa.Contato);

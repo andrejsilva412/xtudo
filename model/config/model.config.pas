@@ -14,10 +14,12 @@ type
   TModelConfig = class(TModelCRUD)
     private
       procedure CreateCacheConfigTable;
-      function GetConfig(AConfig: String; ADefault: String; Global: Boolean = false): String;
-      function GetConfig(AConfig: String; ADefault: Boolean; Global: Boolean = false): Boolean;
-      procedure SetConfig(AConfig: String; AValue: String; Global: Boolean = false);
-      procedure SetConfig(AConfig: String; AValue: Boolean; Global: Boolean = false);
+      function GetConfig(AConfig: String; ADefault: String; Global: Boolean = false): String; overload;
+      function GetConfig(AConfig: String; ADefault: Boolean; Global: Boolean = false): Boolean; overload;
+      function GetConfig(AConfig: String; ADefault: Integer; Global: Boolean = false): Integer; overload;
+      procedure SetConfig(AConfig: String; AValue: String; Global: Boolean = false); overload;
+      procedure SetConfig(AConfig: String; AValue: Boolean; Global: Boolean = false); overload;
+      procedure SetConfig(AConfig: String; AValue: Integer; Global: Boolean = false); overload;
     public
       constructor Create;
       procedure CreateConfigTable;
@@ -94,6 +96,17 @@ begin
 
 end;
 
+function TModelConfig.GetConfig(AConfig: String; ADefault: Integer;
+  Global: Boolean): Integer;
+var
+  lResult: String;
+begin
+
+  lResult := GetConfig(AConfig, '', Global);
+  Result := StrToIntDef(lResult, ADefault);
+
+end;
+
 procedure TModelConfig.SetConfig(AConfig: String; AValue: String;
   Global: Boolean);
 var
@@ -149,6 +162,17 @@ begin
 
   lBoolean := BoolToStr(AValue);
   SetConfig(AConfig, lBoolean, Global);
+
+end;
+
+procedure TModelConfig.SetConfig(AConfig: String; AValue: Integer;
+  Global: Boolean);
+var
+  lInteger: String;
+begin
+
+  lInteger := IntToStr(AValue);
+  SetConfig(AConfig, lInteger, Global);
 
 end;
 
@@ -224,6 +248,7 @@ begin
     Username := iif(aDef <> '', Cript.Sha256Decrypt(aDef), 'SYSDBA');
     aDef := GetConfig('database_password', '');
     Password := iif(aDef <> '', Cript.Sha256Decrypt(aDef), 'masterkey');
+    Port := GetConfig('database_port', 3050, false);
   end;
 
 end;
@@ -249,6 +274,7 @@ begin
     SetConfig('database_password', Cript.Sha256Encrypt(
       Password));
     SetConfig('database_hostname', HostName);
+    SetConfig('database_port', AConfig.Port);
   end;
 
 end;
