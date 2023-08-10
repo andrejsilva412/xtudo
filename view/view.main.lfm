@@ -4969,8 +4969,8 @@ inherited frmMain: TfrmMain
           FontEx.ShadowOffsetY = 5
           FontEx.Style = []
           ParentBackground = False
-          Rounding.RoundX = 4
-          Rounding.RoundY = 4
+          Rounding.RoundX = 15
+          Rounding.RoundY = 15
           TabOrder = 0
           object Label3: TLabel
             Left = 139

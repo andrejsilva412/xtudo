@@ -43,6 +43,7 @@ end;
 function TModelUser.Update(AUSer: TUser): Integer;
 begin
 
+  AUSer.Password := GetPasswordHash(AUSer.Password);
   Result := inherited Update('usuario', 'nome = :nome, username = :username, '
     + 'senha = :senha, tipo = :tipo', 'where guid = :guid',
     [AUSer.Nome, AUSer.Username, AUSer.Password,
@@ -76,7 +77,6 @@ begin
     begin
       AUser.GUID := ADataSet.FieldByName('guid').AsString;
       AUser.Username := ADataSet.FieldByName('username').AsString;
-      AUser.Password := ADataSet.FieldByName('senha').AsString;
       AUser.UserType := IntegerToUserType(ADataSet.FieldByName('tipo').AsInteger);
     end;
     ADataSet.Close;
