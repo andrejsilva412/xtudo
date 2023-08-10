@@ -64,8 +64,8 @@ uses uconst, controller.sistema;
 procedure TPageControl.AdjustClientRect(var ARect: TRect);
 begin
   inherited AdjustClientRect(ARect);
-  ARect.Top := ARect.Top -1;
-  ARect.Left := ARect.Left -4;
+  ARect.Top := ARect.Top -2;
+  ARect.Left := ARect.Left -6;
   ARect.Bottom := ARect.Bottom +4;
   ARect.Right := ARect.Right +4;
 end;
@@ -80,7 +80,9 @@ begin
     Sistema.Forms.ShowWizard;
   end;
   WindowState := wsMaximized;
+  {$ifdef windows}
   SetFocus(Edit1);
+  {$endif}
 end;
 
 procedure TfrmMain.Panel1Resize(Sender: TObject);

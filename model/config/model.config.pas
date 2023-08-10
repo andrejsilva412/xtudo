@@ -234,7 +234,7 @@ procedure TModelConfig.Get(AConfig: TConfigDatabase);
 var
   aDef: String;
 begin
-  aDef := Path + 'database' + PathDelim + 'XTUDO.FDB';
+  aDef := Path + 'database' + PathDelim + 'xtudo.fdb';
   with AConfig do
   begin
     DatabaseName := GetConfig('database_filename', aDef);

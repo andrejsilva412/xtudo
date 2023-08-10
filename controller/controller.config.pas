@@ -262,7 +262,7 @@ end;
 constructor TConfigDatabase.Create;
 begin
   FParams := TStringList.Create;
-  FCacheDatabase := GetGlobalConfigFolder + 'cache.db';
+  FCacheDatabase := GetGlobalConfigFolder + PathDelim + 'cache.db';
   inherited;
 end;
 

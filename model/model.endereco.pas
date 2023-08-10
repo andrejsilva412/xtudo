@@ -5,7 +5,7 @@ unit model.endereco;
 interface
 
 uses
-  Classes, SysUtils, AcbrCEP, BufDataset, controller.endereco, model.crud;
+  Classes, SysUtils, ACBrCEP, BufDataset, controller.endereco, model.crud;
 
 type
 

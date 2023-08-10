@@ -17,8 +17,8 @@ inherited frmMain: TfrmMain
     TabOrder = 0
     object tbLogin: TTabSheet
       Caption = 'tbLogin'
-      ClientHeight = 506
-      ClientWidth = 878
+      ClientHeight = 500
+      ClientWidth = 876
       object Panel1: TPanel
         Left = 0
         Height = 506

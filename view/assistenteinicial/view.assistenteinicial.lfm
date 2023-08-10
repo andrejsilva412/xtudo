@@ -61,20 +61,20 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     TabOrder = 8
     object TabSheet2: TTabSheet
       Caption = 'TabSheet2'
-      ClientHeight = 304
-      ClientWidth = 746
+      ClientHeight = 301
+      ClientWidth = 744
       OnShow = TabSheet2Show
       object Label1: TLabel
         Left = 8
-        Height = 15
+        Height = 17
         Top = 39
-        Width = 83
+        Width = 93
         Caption = 'Database Name'
         ParentColor = False
       end
       object edtBancoDeDados: TFileNameEdit
         Left = 8
-        Height = 23
+        Height = 34
         Top = 58
         Width = 296
         FileName = 'edtBancoDeDados'
@@ -89,32 +89,32 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object Label2: TLabel
         Left = 8
-        Height = 15
-        Top = 139
-        Width = 40
+        Height = 17
+        Top = 145
+        Width = 47
         Caption = 'Usuário'
         ParentColor = False
       end
       object edBdUserName: TEdit
         Left = 8
-        Height = 23
-        Top = 155
+        Height = 34
+        Top = 161
         Width = 128
         TabOrder = 3
         Text = 'SYSDBA'
       end
       object Label3: TLabel
         Left = 144
-        Height = 15
-        Top = 139
-        Width = 32
+        Height = 17
+        Top = 145
+        Width = 37
         Caption = 'Senha'
         ParentColor = False
       end
       object edBdPassword: TEdit
         Left = 144
-        Height = 23
-        Top = 155
+        Height = 34
+        Top = 161
         Width = 160
         EchoMode = emPassword
         PasswordChar = '*'
@@ -127,9 +127,9 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         AnchorSideRight.Control = TabSheet2
         AnchorSideRight.Side = asrBottom
         Left = 0
-        Height = 30
+        Height = 25
         Top = 2
-        Width = 746
+        Width = 744
         Alignment = taCenter
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 2
@@ -145,8 +145,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object btnServidorTeste: TButton
         Left = 8
-        Height = 25
-        Top = 192
+        Height = 33
+        Top = 198
         Width = 107
         AutoSize = True
         Caption = 'Testar Conexão'
@@ -160,9 +160,9 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         AnchorSideBottom.Control = btnServidorTeste
         AnchorSideBottom.Side = asrBottom
         Left = 119
-        Height = 25
-        Top = 192
-        Width = 129
+        Height = 33
+        Top = 198
+        Width = 148
         Anchors = [akTop, akLeft, akBottom]
         BorderSpacing.Left = 4
         Caption = 'lblServidorTesteConexao'
@@ -171,32 +171,32 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object Label9: TLabel
         Left = 8
-        Height = 15
-        Top = 90
-        Width = 57
+        Height = 17
+        Top = 93
+        Width = 62
         Caption = 'HostName'
         ParentColor = False
       end
       object edHostName: TEdit
         Left = 8
-        Height = 23
-        Top = 106
+        Height = 34
+        Top = 109
         Width = 208
         TabOrder = 1
         Text = 'Localhost'
       end
       object Label5: TLabel
         Left = 224
-        Height = 15
-        Top = 90
-        Width = 28
+        Height = 17
+        Top = 93
+        Width = 32
         Caption = 'Porta'
         ParentColor = False
       end
       object edtPorta: TEdit
         Left = 224
-        Height = 23
-        Top = 106
+        Height = 34
+        Top = 109
         Width = 80
         NumbersOnly = True
         TabOrder = 2
@@ -205,8 +205,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     end
     object TabSheet1: TTabSheet
       Caption = 'TabSheet1'
-      ClientHeight = 304
-      ClientWidth = 746
+      ClientHeight = 301
+      ClientWidth = 744
       OnHide = TabSheet1Hide
       OnShow = TabSheet1Show
       object Label6: TLabel
@@ -215,9 +215,9 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         AnchorSideRight.Control = TabSheet2
         AnchorSideRight.Side = asrBottom
         Left = 0
-        Height = 30
+        Height = 25
         Top = 2
-        Width = 746
+        Width = 744
         Alignment = taCenter
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 2
@@ -233,15 +233,15 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object Label7: TLabel
         Left = 16
-        Height = 15
+        Height = 17
         Top = 40
-        Width = 33
+        Width = 35
         Caption = 'Nome'
         ParentColor = False
       end
       object edAdminNome: TEdit
         Left = 16
-        Height = 23
+        Height = 34
         Top = 56
         Width = 152
         TabOrder = 0
@@ -249,15 +249,15 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object Label8: TLabel
         Left = 176
-        Height = 15
+        Height = 17
         Top = 40
-        Width = 92
+        Width = 105
         Caption = 'Nome de Usuário'
         ParentColor = False
       end
       object edtAdminUsername: TEdit
         Left = 176
-        Height = 23
+        Height = 34
         Top = 56
         Width = 112
         TabOrder = 1
@@ -265,15 +265,15 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object Label10: TLabel
         Left = 296
-        Height = 15
+        Height = 17
         Top = 40
-        Width = 32
+        Width = 37
         Caption = 'Senha'
         ParentColor = False
       end
       object edAdminSenha: TEdit
         Left = 296
-        Height = 23
+        Height = 34
         Top = 56
         Width = 88
         TabOrder = 2
@@ -282,8 +282,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     end
     object TabSheet3: TTabSheet
       Caption = 'TabSheet3'
-      ClientHeight = 304
-      ClientWidth = 746
+      ClientHeight = 301
+      ClientWidth = 744
       OnShow = TabSheet3Show
       object Label11: TLabel
         AnchorSideLeft.Control = TabSheet2
@@ -291,9 +291,9 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         AnchorSideRight.Control = TabSheet2
         AnchorSideRight.Side = asrBottom
         Left = 0
-        Height = 30
+        Height = 25
         Top = 2
-        Width = 746
+        Width = 744
         Alignment = taCenter
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Top = 2
@@ -309,31 +309,31 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object Label12: TLabel
         Left = 8
-        Height = 15
+        Height = 17
         Top = 40
-        Width = 65
+        Width = 76
         Caption = 'Razão Social'
         ParentColor = False
       end
       object Label13: TLabel
         Left = 376
-        Height = 15
+        Height = 17
         Top = 40
-        Width = 79
+        Width = 89
         Caption = 'Nome Fantasia'
         ParentColor = False
       end
       object Label15: TLabel
         Left = 200
-        Height = 15
+        Height = 17
         Top = 85
-        Width = 94
+        Width = 110
         Caption = 'Inscrição Estadual'
         ParentColor = False
       end
       object DBEdit1: TDBEdit
         Left = 8
-        Height = 23
+        Height = 34
         Top = 56
         Width = 360
         DataField = 'razaosocial'
@@ -343,7 +343,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object DBEdit2: TDBEdit
         Left = 376
-        Height = 23
+        Height = 34
         Top = 56
         Width = 272
         DataField = 'fantasia'
@@ -353,7 +353,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
       end
       object DBEdit3: TDBEdit
         Left = 200
-        Height = 23
+        Height = 34
         Top = 102
         Width = 168
         DataField = 'inscricaoestadual'
@@ -367,47 +367,84 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Width = 480
         ClientWidth = 480
         TabOrder = 4
+        inherited Label1: TLabel
+          Height = 17
+          Width = 22
+        end
         inherited DBEdit1: TDBEdit
+          Height = 34
           DataField = 'cep'
           DataSource = DataSource1
         end
+        inherited Label2: TLabel
+          Height = 17
+          Width = 56
+        end
         inherited DBEdit2: TDBEdit
+          Height = 34
           Width = 272
           DataField = 'endereco'
           DataSource = DataSource1
         end
         inherited Label3: TLabel
           Left = 368
+          Height = 17
+          Width = 48
         end
         inherited DBEdit3: TDBEdit
           AnchorSideRight.Control = FrameEndereco1
           Left = 368
+          Height = 34
           Width = 112
           DataField = 'numero'
           DataSource = DataSource1
         end
+        inherited Label4: TLabel
+          Height = 17
+          Width = 84
+        end
         inherited DBComboBox1: TDBComboBox
+          Height = 34
           DataField = 'complemento'
           DataSource = DataSource1
+          ItemHeight = 0
+        end
+        inherited Label5: TLabel
+          Height = 17
+          Width = 37
+        end
+        inherited Label6: TLabel
+          Height = 17
+          Width = 41
         end
         inherited DBComboBox2: TDBComboBox
           AnchorSideRight.Control = FrameEndereco1
+          Height = 34
           Width = 112
           DataField = 'cidade'
           DataSource = DataSource1
+          ItemHeight = 0
         end
         inherited DBComboBox3: TDBComboBox
+          Height = 34
           DataField = 'bairro'
           DataSource = DataSource1
+          ItemHeight = 0
         end
         inherited Label7: TLabel
           Left = 199
         end
+        inherited Label8: TLabel
+          Height = 17
+          Width = 16
+        end
         inherited DBComboBox4: TDBComboBox
           AnchorSideRight.Control = FrameEndereco1
+          Height = 34
           Width = 59
           DataField = 'uf'
           DataSource = DataSource1
+          ItemHeight = 0
         end
       end
       inline frameCNPJ1: TframeCNPJ
@@ -419,8 +456,15 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         inherited lblFrameCNPJ: TLabel
           AnchorSideLeft.Control = frameCNPJ1
           AnchorSideTop.Control = frameCNPJ1
+          Height = 17
+        end
+        inherited lblFrameCNPJCheck: TLabel
+          Height = 17
+          Width = 114
         end
         inherited DBEditFrameCNPJ: TDBEdit
+          Height = 34
+          Top = 19
           Width = 163
           DataField = 'cnpj'
           DataSource = DataSource1
@@ -428,6 +472,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         inherited SpeedButton1: TSpeedButton
           AnchorSideRight.Control = frameCNPJ1
           Left = 163
+          Height = 34
+          Top = 19
         end
       end
     end
@@ -447,12 +493,14 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     ClientWidth = 754
     TabOrder = 9
     inherited Bevel1: TBevel
+      Top = 35
       Width = 750
     end
     inherited lblTitulo: TLabel
       AnchorSideLeft.Control = frameTitulo1
       AnchorSideTop.Control = frameTitulo1
       AnchorSideRight.Control = frameTitulo1
+      Height = 33
       Width = 750
       Caption = 'Bem Vindo ao Sistema'
     end
@@ -469,8 +517,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
   end
   object DataSource1: TDataSource[12]
     DataSet = mdEmpresa
-    Left = 608
-    Top = 200
+    Left = 576
+    Top = 184
   end
   object mdEmpresa: TRxMemoryData[13]
     FieldDefs = <    
@@ -535,8 +583,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Size = 40
       end>
     PacketRecords = 0
-    Left = 533
-    Top = 200
+    Left = 389
+    Top = 184
     object mdEmpresarazaosocial: TStringField
       FieldKind = fkData
       FieldName = 'razaosocial'

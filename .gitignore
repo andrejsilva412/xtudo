@@ -5,3 +5,5 @@
 /app/config
 /app/fbclient.dll
 /app/sqlite3.dll
+app/.config/cache.db
+app/xtudo
