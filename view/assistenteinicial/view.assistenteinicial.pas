@@ -159,6 +159,7 @@ end;
 procedure TfrmAssistenteInicial.TabSheet2Show(Sender: TObject);
 begin
   acGenerico2.Enabled := false;
+  SetFocus(edtBancoDeDados);
 end;
 
 procedure TfrmAssistenteInicial.TabSheet3Show(Sender: TObject);

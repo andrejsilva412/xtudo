@@ -25,9 +25,10 @@ type
       procedure Clear;
       function Delete: Integer; override;
       function Post: Integer; override;
-      procedure Get(AUserName: String);
+      procedure Get(AUserName: String; APassword: String = '');
       procedure GetPage(APage: Integer = 1); override;
       function AdministradorCadastrado: Boolean;
+      function Login: Boolean;
       property GUID: String read FGUID write FGUID;
       property Nome: String read FNome write FNome;
       property Username: String read FUsername write FUsername;
@@ -85,14 +86,14 @@ begin
   end;
 end;
 
-procedure TUser.Get(AUserName: String);
+procedure TUser.Get(AUserName: String; APassword: String);
 var
   MUser: TModelUser;
 begin
 
   MUser := TModelUser.Create;
   try
-    MUser.Get(AUserName, Self);
+    MUser.Get(AUserName, APassword, Self);
   finally
     FreeAndNil(MUser);
   end;
@@ -114,6 +115,25 @@ begin
     Result := MUser.AdministradorCadastrado;
   finally
     FreeAndNil(MUser);
+  end;
+
+end;
+
+function TUser.Login: Boolean;
+begin
+
+  Result := false;
+  try
+    Get(FUsername, FPassword);
+    if FGUID = '' then
+    begin
+      DoStatus('Usuário ou Senha inválido.');
+    end else Result := true;
+  except
+    on E: Exception do
+    begin
+      raise Exception.Create(E.Message);
+    end;
   end;
 
 end;

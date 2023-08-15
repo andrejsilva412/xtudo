@@ -31,11 +31,14 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
     pcMain: TPageControl;
     tbMain: TTabSheet;
     tbLogin: TTabSheet;
+    procedure BCButtonFocus1Click(Sender: TObject);
     procedure BCButtonFocus2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
@@ -44,6 +47,7 @@ type
   private
     procedure InitPanel(APanel: TPanel);
     procedure InitLogin;
+    procedure OnLoginStatus(const Status: String);
   protected
     procedure SetStyle; override;
   public
@@ -80,9 +84,8 @@ begin
     Sistema.Forms.ShowWizard;
   end;
   WindowState := wsMaximized;
-  {$ifdef windows}
-  SetFocus(Edit1);
-  {$endif}
+  if Visible then
+    SetFocus(Edit1);
 end;
 
 procedure TfrmMain.Panel1Resize(Sender: TObject);
@@ -102,6 +105,12 @@ procedure TfrmMain.InitLogin;
 begin
   Label2.Caption := 'Ao sistema ' + C_APP_TITLE;
   Edit2.PasswordChar := '*';
+  Label7.Caption := '';
+end;
+
+procedure TfrmMain.OnLoginStatus(const Status: String);
+begin
+  Label7.Caption := Status;
 end;
 
 procedure TfrmMain.SetStyle;
@@ -147,6 +156,19 @@ end;
 procedure TfrmMain.BCButtonFocus2Click(Sender: TObject);
 begin
   Sistema.Finaliza;
+end;
+
+procedure TfrmMain.BCButtonFocus1Click(Sender: TObject);
+begin
+
+  Sistema.Administrativo.User.Username := Edit1.Text;
+  Sistema.Administrativo.User.Password := Edit2.Text;
+  Sistema.Administrativo.User.OnStatus  := @OnLoginStatus;
+  if Sistema.Administrativo.User.Login then
+  begin
+    tbMain.Show;
+  end;
+
 end;
 
 procedure TfrmMain.FormPaint(Sender: TObject);

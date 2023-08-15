@@ -18,7 +18,7 @@ type
     public
       constructor Create;
       function AdministradorCadastrado: Boolean;
-      procedure Get(AUserName: String; AUser: TUser);
+      procedure Get(AUserName: String; APassword: String; AUser: TUser);
       function Post(AUser: TUser): Integer;
   end;
 
@@ -64,15 +64,22 @@ begin
 
 end;
 
-procedure TModelUser.Get(AUserName: String; AUser: TUser);
+procedure TModelUser.Get(AUserName: String; APassword: String; AUser: TUser);
 var
   ADataSet: TBufDataset;
 begin
 
   ADataSet := TBufDataset.Create(nil);
   try
-    Select('usuario', '*', 'where username = :username',
-      [AUserName], ADataSet);
+    if APassword <> '' then
+    begin
+      APassword := GetPasswordHash(APassword);
+      Select('usuario', '*', 'where username = :username and senha = :senha',
+        [AUserName, APassword], ADataSet);
+    end else begin
+      Select('usuario', '*', 'where username = :username',
+        [AUserName], ADataSet);
+    end;
     if not ADataSet.IsEmpty then
     begin
       AUser.GUID := ADataSet.FieldByName('guid').AsString;
@@ -91,7 +98,7 @@ begin
 
   StartTransaction;
   try
-    Get(AUser.Username, AUser);
+    Get(AUser.Username, '', AUser);
     if AUser.GUID = '' then
       Result := Insert(AUser)
     else Result := Update(AUser);

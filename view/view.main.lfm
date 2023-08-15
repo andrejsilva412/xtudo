@@ -17,8 +17,8 @@ inherited frmMain: TfrmMain
     TabOrder = 0
     object tbLogin: TTabSheet
       Caption = 'tbLogin'
-      ClientHeight = 500
-      ClientWidth = 876
+      ClientHeight = 506
+      ClientWidth = 878
       object Panel1: TPanel
         Left = 0
         Height = 506
@@ -47,6 +47,7 @@ inherited frmMain: TfrmMain
           Font.Pitch = fpVariable
           Font.Quality = fqDraft
           Font.Style = [fsBold]
+          ParentColor = False
           ParentFont = False
         end
         object Label2: TLabel
@@ -68,6 +69,7 @@ inherited frmMain: TfrmMain
           Font.Name = 'Segoe UI'
           Font.Pitch = fpVariable
           Font.Quality = fqDraft
+          ParentColor = False
           ParentFont = False
         end
         object Image1: TImage
@@ -4985,21 +4987,23 @@ inherited frmMain: TfrmMain
             Font.Pitch = fpVariable
             Font.Quality = fqDraft
             Font.Style = [fsBold]
+            ParentColor = False
             ParentFont = False
           end
           object Label4: TLabel
             Left = 24
             Height = 15
-            Top = 120
+            Top = 112
             Width = 40
             Anchors = []
             AutoSize = False
             Caption = 'Usuário'
+            ParentColor = False
           end
           object Edit1: TEdit
             Left = 24
             Height = 23
-            Top = 136
+            Top = 128
             Width = 344
             Anchors = []
             AutoSize = False
@@ -5009,16 +5013,17 @@ inherited frmMain: TfrmMain
           object Label5: TLabel
             Left = 24
             Height = 15
-            Top = 168
+            Top = 160
             Width = 40
             Anchors = []
             AutoSize = False
             Caption = 'Senha'
+            ParentColor = False
           end
           object Edit2: TEdit
             Left = 24
             Height = 23
-            Top = 184
+            Top = 176
             Width = 344
             Anchors = []
             AutoSize = False
@@ -5026,11 +5031,13 @@ inherited frmMain: TfrmMain
             Text = 'Edit2'
           end
           object BCButtonFocus1: TBCButtonFocus
+            AnchorSideTop.Control = Label7
+            AnchorSideTop.Side = asrBottom
             Left = 24
             Height = 37
             Top = 224
             Width = 168
-            Anchors = []
+            Anchors = [akTop]
             StateClicked.Background.Gradient1.StartColor = 8404992
             StateClicked.Background.Gradient1.EndColor = 4194304
             StateClicked.Background.Gradient1.GradientType = gtRadial
@@ -5108,6 +5115,7 @@ inherited frmMain: TfrmMain
             DropDownWidth = 16
             DropDownArrowSize = 8
             GlobalOpacity = 255
+            OnClick = BCButtonFocus1Click
             ParentColor = False
             Rounding.RoundX = 12
             Rounding.RoundY = 12
@@ -5118,11 +5126,13 @@ inherited frmMain: TfrmMain
             TabOrder = 2
           end
           object BCButtonFocus2: TBCButtonFocus
+            AnchorSideTop.Control = Label7
+            AnchorSideTop.Side = asrBottom
             Left = 200
             Height = 37
             Top = 224
             Width = 168
-            Anchors = []
+            Anchors = [akTop]
             StateClicked.Background.Gradient1.StartColor = 8404992
             StateClicked.Background.Gradient1.EndColor = 4194304
             StateClicked.Background.Gradient1.GradientType = gtRadial
@@ -5210,11 +5220,44 @@ inherited frmMain: TfrmMain
             MemoryUsage = bmuHighF
             TabOrder = 3
           end
+          object Label7: TLabel
+            AnchorSideLeft.Control = Edit2
+            AnchorSideTop.Control = Edit2
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = Edit2
+            AnchorSideRight.Side = asrBottom
+            Left = 24
+            Height = 15
+            Top = 204
+            Width = 344
+            Alignment = taCenter
+            Anchors = [akTop, akLeft, akRight]
+            BorderSpacing.Top = 5
+            Caption = '#####'
+            Font.CharSet = ANSI_CHARSET
+            Font.Color = clRed
+            Font.Name = 'Segoe UI Semibold'
+            Font.Pitch = fpVariable
+            Font.Quality = fqDraft
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
         end
       end
     end
     object tbMain: TTabSheet
       Caption = 'tbMain'
+      ClientHeight = 506
+      ClientWidth = 878
+      object Label6: TLabel
+        Left = 361
+        Height = 15
+        Top = 156
+        Width = 80
+        Caption = 'AREA RESTRITA'
+        ParentColor = False
+      end
     end
   end
   inherited JSONPropStorage1: TJSONPropStorage[1]
