@@ -76,7 +76,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Left = 8
         Height = 23
         Top = 58
-        Width = 296
+        Width = 400
         FileName = 'edtBancoDeDados'
         Filter = 'Banco de Dados Firebird|*.fdb'
         FilterIndex = 0
@@ -99,12 +99,12 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Left = 8
         Height = 23
         Top = 161
-        Width = 128
+        Width = 152
         TabOrder = 3
         Text = 'SYSDBA'
       end
       object Label3: TLabel
-        Left = 144
+        Left = 168
         Height = 15
         Top = 145
         Width = 32
@@ -112,10 +112,10 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         ParentColor = False
       end
       object edBdPassword: TEdit
-        Left = 144
+        Left = 168
         Height = 23
         Top = 161
-        Width = 160
+        Width = 152
         EchoMode = emPassword
         PasswordChar = '*'
         TabOrder = 4
@@ -181,12 +181,12 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Left = 8
         Height = 23
         Top = 109
-        Width = 208
+        Width = 312
         TabOrder = 1
         Text = 'Localhost'
       end
       object Label5: TLabel
-        Left = 224
+        Left = 328
         Height = 15
         Top = 93
         Width = 28
@@ -194,7 +194,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         ParentColor = False
       end
       object edtPorta: TEdit
-        Left = 224
+        Left = 328
         Height = 23
         Top = 109
         Width = 80
@@ -469,8 +469,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
   end
   object DataSource1: TDataSource[12]
     DataSet = mdEmpresa
-    Left = 576
-    Top = 184
+    Left = 592
+    Top = 136
   end
   object mdEmpresa: TRxMemoryData[13]
     FieldDefs = <    
@@ -535,8 +535,8 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Size = 40
       end>
     PacketRecords = 0
-    Left = 389
-    Top = 184
+    Left = 520
+    Top = 112
     object mdEmpresarazaosocial: TStringField
       FieldKind = fkData
       FieldName = 'razaosocial'

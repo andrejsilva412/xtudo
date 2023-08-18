@@ -5,6 +5,7 @@
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
+      <AutoCreateForms Value="False"/>
       <Title Value="X-Tudo"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
@@ -15,7 +16,7 @@
         <TextDesc Value="Aplicativo para gerencimento de Restaurantes, Bares e Lanchonetes."/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="8">
+      <Resources Count="9">
         <Resource_0 FileName="resources\svg\closesvg.svg" Type="RCDATA" ResourceName="CLOSESVG"/>
         <Resource_1 FileName="resources\svg\printer.svg" Type="RCDATA" ResourceName="PRINTER"/>
         <Resource_2 FileName="resources\svg\search.svg" Type="RCDATA" ResourceName="SEARCH"/>
@@ -24,6 +25,7 @@
         <Resource_5 FileName="resources\svg\notifications.svg" Type="RCDATA" ResourceName="NOTIFICATIONS"/>
         <Resource_6 FileName="resources\svg\menu.svg" Type="RCDATA" ResourceName="MENU"/>
         <Resource_7 FileName="resources\svg\point_of_sale.svg" Type="RCDATA" ResourceName="POINT_OF_SALE"/>
+        <Resource_8 FileName="resources\svg\arrow-right.svg" Type="RCDATA" ResourceName="ARROW-RIGHT"/>
       </Resources>
     </General>
     <VersionInfo>

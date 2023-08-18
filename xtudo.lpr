@@ -30,8 +30,6 @@ begin
   Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmDBGrid, frmDBGrid);
-  Application.CreateForm(TfrmUsuario, frmUsuario);
   Application.Run;
 end.
 
