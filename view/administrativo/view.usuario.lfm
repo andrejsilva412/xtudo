@@ -1,0 +1,14 @@
+inherited frmUsuario: TfrmUsuario
+  Caption = 'Usuários'
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+  end
+  inherited RxDBGrid1: TRxDBGrid
+    AnchorSideTop.Control = Owner
+  end
+  inherited pnOptions: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+  end
+end

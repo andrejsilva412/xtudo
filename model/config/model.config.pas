@@ -5,7 +5,8 @@ unit model.config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, controller.config, model.crud;
+  Classes, SysUtils, Graphics, controller.config,
+  controller.user, model.crud;
 
 type
 
@@ -20,6 +21,7 @@ type
       procedure SetConfig(AConfig: String; AValue: String; Global: Boolean = false); overload;
       procedure SetConfig(AConfig: String; AValue: Boolean; Global: Boolean = false); overload;
       procedure SetConfig(AConfig: String; AValue: Integer; Global: Boolean = false); overload;
+      procedure Delete(AConfig: String; Global: Boolean = false);
     public
       constructor Create;
       procedure CreateConfigTable;
@@ -27,7 +29,10 @@ type
       procedure Get(AConfig: TConfigTheme);
       procedure Get(AConfig: TConfigDatabase);
       procedure Get(Aconfig: TConfig);
+      procedure Get(ALoggedUser: TUser);
       procedure Save(AConfig: TConfigDatabase);
+      procedure Save(ALoggedUser: TUser);
+      procedure LogOutUser;
       procedure WizardDone;
   end;
 
@@ -76,11 +81,8 @@ function TModelConfig.GetConfig(AConfig: String; ADefault: String;
   Global: Boolean): String;
 begin
 
-  if not Global then
-    Result := Search('config', 'valor', 'where nome = :nome', [AConfig], '', true)
-  else
-    Result := Search('config', 'valor', 'where nome = :nome', [AConfig], '');
-
+  Global := not Global;
+  Result := Search('config', 'valor', 'where nome = :nome', [AConfig], '', Global);
   Result := iif(Result = '', ADefault, Result);
 
 end;
@@ -113,42 +115,22 @@ var
   lExists: Boolean;
 begin
 
-  if not Global then
-  begin
-    StartTransaction(true);
-    try
-      lExists := Search('config', 'nome', 'where nome = :nome', [AConfig], false, true);
-      if not lExists then
-        Insert('config', 'id = :id, nome = :nome, valor = :valor',
-          [GetNextID('config', 'id', true), AConfig, AValue], true)
-      else
+  Global := not Global;
+  StartTransaction(Global);
+  try
+    lExists := Search('config', 'nome', 'where nome = :nome', [AConfig], false, Global);
+    if not lExists then
+      Insert('config', 'id = :id, nome = :nome, valor = :valor',
+          [GetNextID('config', 'id', true), AConfig, AValue], Global)
+    else
         Update('config', 'valor = :valor', 'where nome = :nome',
-          [AValue, AConfig], true);
-      Commit(true);
-    except
-      on E: Exception do
-      begin
-        RollBack(true);
-        raise Exception.Create('Ocorreu uma falha ao salvar a configuração no cache. ' + E.Message);
-      end;
-    end;
-  end else begin
-    StartTransaction();
-    try
-      lExists := Search('config', 'nome', 'where nome = :nome', [AConfig], false);
-      if not lExists then
-        Insert('config', 'id = :id, nome = :nome, valor = :valor',
-          [GetNextID('config', 'id', true), AConfig, AValue])
-      else
-        Update('config', 'valor = :valor', 'where nome = :nome',
-        [AValue, AConfig]);
-      Commit();
-    except
-      on E: Exception do
-      begin
-        RollBack();
-        raise Exception.Create('Ocorreu uma falha ao salvar a configuração glogal. ' + E.Message);
-      end;
+          [AValue, AConfig], Global);
+    Commit(Global);
+  except
+    on E: Exception do
+    begin
+      RollBack(Global);
+      raise Exception.Create('Ocorreu uma falha ao salvar a configuração. ' + E.Message);
     end;
   end;
 
@@ -260,6 +242,13 @@ begin
 
 end;
 
+procedure TModelConfig.Get(ALoggedUser: TUser);
+begin
+
+  ALoggedUser.Username := GetConfig('logged_username', '');
+
+end;
+
 procedure TModelConfig.Save(AConfig: TConfigDatabase);
 begin
 
@@ -275,6 +264,38 @@ begin
       Password));
     SetConfig('database_hostname', HostName);
     SetConfig('database_port', AConfig.Port);
+  end;
+
+end;
+
+procedure TModelConfig.Save(ALoggedUser: TUser);
+begin
+
+  SetConfig('logged_username', ALoggedUser.Username);
+
+end;
+
+procedure TModelConfig.LogOutUser;
+begin
+
+  Delete('logged_username');
+
+end;
+
+procedure TModelConfig.Delete(AConfig: String; Global: Boolean);
+begin
+
+  Global := not Global;
+
+  StartTransaction(Global);
+  try
+    inherited Delete('config', 'where nome = :nome', [AConfig], Global);
+    Commit(Global);
+  except
+    on E: Exception do
+    begin
+      RollBack(Global);
+    end;
   end;
 
 end;

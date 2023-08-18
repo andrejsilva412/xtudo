@@ -5,7 +5,8 @@ unit uimage;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Graphics, BGRABitmap, BGRASVG, BGRAUnits, utypes;
+  Classes, SysUtils, buttons, ExtCtrls, Graphics,
+  BGRABitmap, BGRASVG, BGRAUnits, utypes;
 
 
 type
@@ -24,6 +25,8 @@ type
         Cor: TColor = clBlack); overload;
       procedure SVG(Image: TImage; aSVG: TSVGImages; W, H: Integer;
         Cor: TColor = clBlack); overload;
+      procedure SVG(ASpeedButton: TSpeedButton; aSVG: String;
+        Cor: TColor = clBlack; AResource: Boolean = true); overload;
   end;
 
 var
@@ -111,6 +114,13 @@ procedure TImages.SVG(Image: TImage; aSVG: TSVGImages; W, H: Integer;
   Cor: TColor);
 begin
   SVG(Image, SVGImagesToString(aSVG), W, H, Cor);
+end;
+
+procedure TImages.SVG(ASpeedButton: TSpeedButton; aSVG: String; Cor: TColor;
+  AResource: Boolean);
+begin
+  SVG(ASpeedButton.Glyph, aSVG,
+    ASpeedButton.Width, ASpeedButton.Height, Cor, AResource);
 end;
 
 end.

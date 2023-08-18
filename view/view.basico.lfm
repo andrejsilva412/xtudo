@@ -8,7 +8,7 @@ object frmBasico: TfrmBasico
   OnPaint = FormPaint
   OnShow = FormShow
   SessionProperties = 'Height;Width;Top;Left'
-  LCLVersion = '3.0.0.1'
+  LCLVersion = '2.2.6.0'
   object JSONPropStorage1: TJSONPropStorage
     StoredValues = <>
     Formatted = False

@@ -10,11 +10,16 @@ uses
 const
 
   C_APP_TITLE = 'X-Tudo';
-  C_INI_FORM = 'form.json';
+  C_FILE_JSON_FORM = 'form.json';
 
   // Ícones SVG
   C_SVG_CLOSE = 'closesvg';
   C_SVG_SEARCH = 'search';
+  C_SVG_POWER = 'power';
+  C_SVG_NOTIFICATION = 'NOTIFICATIONS';
+  C_SVG_CONFIG = 'CONFIG';
+  C_SVG_MENU = 'MENU';
+  c_SVG_POINT_OF_SALE = 'POINT_OF_SALE';
 
 
   C_OK = 'Ok';
@@ -38,9 +43,14 @@ resourcestring
   SMSGCampoObrigatorio = 'Desculpe, mas o campo %s, é obrigatário.';
   SMSGFieldNotFoundInDataSet = 'Field %s not found in DataSet.';
   SMSGSenhaTamanhoMinimo = 'A senha deve ter no mínimo ' + C_MIN_PASSWORD_LENGHT + ' caracteres.';
+  SMSGUsuarioOuSenhaInvalido = 'Usuário ou Senha inválido.';
+  SMSGInformeNomeArquivo = 'Informe o nome do arquivo.';
 
   // Banco de dados
   SMSGFalhaConexaoBD = 'Falha na conexão com o banco de dados.';
+
+  // Erros
+  SMGFalhaAoAbrirArquivo = 'Falha do abrir o arquivo.';
 
 implementation
 

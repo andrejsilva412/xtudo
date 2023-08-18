@@ -5,7 +5,7 @@ unit controller.forms;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes, SysUtils, Forms;
 
 type
 
@@ -16,11 +16,12 @@ type
       destructor Destroy; override;
       procedure ShowWizard;
       procedure CloseWizard;
+      procedure ShowUsuario;
   end;
 
 implementation
 
-uses view.main, view.assistenteinicial;
+uses view.main, view.assistenteinicial, view.usuario;
 
 { TForms }
 
@@ -44,6 +45,13 @@ procedure TForms.CloseWizard;
 begin
   frmAssistenteInicial.Hide;
   frmMain.Show;
+end;
+
+procedure TForms.ShowUsuario;
+begin
+  if not Assigned(frmUsuario) then
+    frmUsuario := TfrmUsuario.Create(Application);
+  frmMain.TDINoteBook1.ShowFormInPage(frmUsuario);
 end;
 
 end.

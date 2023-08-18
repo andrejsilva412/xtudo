@@ -13,12 +13,13 @@ uses
   Forms, datetimectrls, rxnew, view.basico, uconst, utils, view.buttons, uimage,
   uhtmlutils, utypes, view.bascadastro, udbnotifier, ustrutils,
   view.assistenteinicial, uframetitulo, controller.config, model.config, ucript,
-  uframecnpj, uframeendereco, uvalida, controller.admin,
-  controller.user, controller.crud, model.crud, model.user,
-  model.database.sqlite, controller.log, model.log, udatacollection,
-  model.endereco, controller.endereco, uformats, view.main, controller.forms,
-  model.pessoa, controller.pessoa, model.empresa, controller.empresa, 
-  controller.pessoajuridica, controller.sistema;
+  uframecnpj, uframeendereco, uvalida, controller.admin, controller.user,
+  controller.crud, model.crud, model.user, model.database.sqlite,
+  controller.log, model.log, udatacollection, model.endereco,
+  controller.endereco, uformats, view.main, controller.forms, model.pessoa,
+  controller.pessoa, model.empresa, controller.empresa,
+  controller.pessoajuridica, controller.sistema, view.dbgrid, view.usuario,
+  urxdbgrid, uprogressbar;
 
 
 {$R *.res}
@@ -29,6 +30,8 @@ begin
   Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmDBGrid, frmDBGrid);
+  Application.CreateForm(TfrmUsuario, frmUsuario);
   Application.Run;
 end.
 

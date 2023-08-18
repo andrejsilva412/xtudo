@@ -41,7 +41,6 @@ type
     public
       destructor Destroy; override;
       function Administrativo: TAdministrativo;
-      function DiretorioUsuario: String;
       function Image: TImages;
       function Log: TLog;
       function Mensagem: TMensagem;
@@ -158,13 +157,6 @@ begin
   Result := FAdministrativo;
 end;
 
-function TSistema.DiretorioUsuario: String;
-begin
-
-  Result := Path;
-
-end;
-
 function TSistema.Image: TImages;
 begin
   if not Assigned(FImage) then
@@ -243,6 +235,7 @@ end;
 
 procedure TSistema.Finaliza;
 begin
+  Self.Administrativo.User.LogOut;
   Application.Terminate;
 end;
 

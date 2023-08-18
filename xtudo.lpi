@@ -15,10 +15,15 @@
         <TextDesc Value="Aplicativo para gerencimento de Restaurantes, Bares e Lanchonetes."/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="3">
+      <Resources Count="8">
         <Resource_0 FileName="resources\svg\closesvg.svg" Type="RCDATA" ResourceName="CLOSESVG"/>
         <Resource_1 FileName="resources\svg\printer.svg" Type="RCDATA" ResourceName="PRINTER"/>
         <Resource_2 FileName="resources\svg\search.svg" Type="RCDATA" ResourceName="SEARCH"/>
+        <Resource_3 FileName="resources\svg\power.svg" Type="RCDATA" ResourceName="POWER"/>
+        <Resource_4 FileName="resources\svg\config.svg" Type="RCDATA" ResourceName="CONFIG"/>
+        <Resource_5 FileName="resources\svg\notifications.svg" Type="RCDATA" ResourceName="NOTIFICATIONS"/>
+        <Resource_6 FileName="resources\svg\menu.svg" Type="RCDATA" ResourceName="MENU"/>
+        <Resource_7 FileName="resources\svg\point_of_sale.svg" Type="RCDATA" ResourceName="POINT_OF_SALE"/>
       </Resources>
     </General>
     <VersionInfo>
@@ -38,6 +43,12 @@
       <FormatVersion Value="2"/>
     </RunParams>
     <RequiredPackages>
+      <Item>
+        <PackageName Value="laz_fpspreadsheet"/>
+      </Item>
+      <Item>
+        <PackageName Value="TDI"/>
+      </Item>
       <Item>
         <PackageName Value="ACBrTCP"/>
       </Item>
@@ -244,6 +255,28 @@
         <Filename Value="controller\controller.pessoajuridica.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="view\view.dbgrid.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmDBGrid"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\administrativo\view.usuario.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUsuario"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\urxdbgrid.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="helpers\uprogressbar.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -254,7 +287,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\admin;model\administrativo"/>
+      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\admin;model\administrativo;view\administrativo"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

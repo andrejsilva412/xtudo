@@ -1,0 +1,252 @@
+inherited frmDBGrid: TfrmDBGrid
+  Caption = 'DBGrid'
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  OnResize = FormResize
+  OnShow = FormShow
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+  end
+  object RxDBGrid1: TRxDBGrid[8]
+    AnchorSideLeft.Control = pnOptions
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = pnOptions
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = pnOptions
+    Left = 10
+    Height = 317
+    Top = 4
+    Width = 773
+    ColumnDefValues.BlobText = '(blob)'
+    TitleButtons = False
+    AutoSort = True
+    KeyStrokes = <    
+      item
+        Command = rxgcShowFindDlg
+        ShortCut = 16454
+        Enabled = True
+      end    
+      item
+        Command = rxgcShowColumnsDlg
+        ShortCut = 16471
+        Enabled = True
+      end    
+      item
+        Command = rxgcShowFilterDlg
+        ShortCut = 16468
+        Enabled = True
+      end    
+      item
+        Command = rxgcShowSortDlg
+        ShortCut = 16467
+        Enabled = True
+      end    
+      item
+        Command = rxgcShowQuickFilter
+        ShortCut = 16465
+        Enabled = True
+      end    
+      item
+        Command = rxgcHideQuickFilter
+        ShortCut = 16456
+        Enabled = True
+      end    
+      item
+        Command = rxgcSelectAll
+        ShortCut = 16449
+        Enabled = True
+      end    
+      item
+        Command = rxgcDeSelectAll
+        ShortCut = 16429
+        Enabled = True
+      end    
+      item
+        Command = rxgcInvertSelection
+        ShortCut = 16426
+        Enabled = True
+      end    
+      item
+        Command = rxgcOptimizeColumnsWidth
+        ShortCut = 16427
+        Enabled = True
+      end    
+      item
+        Command = rxgcCopyCellValue
+        ShortCut = 16451
+        Enabled = True
+      end>
+    FooterOptions.DrawFullLine = False
+    SearchOptions.QuickSearchOptions = [loCaseInsensitive, loPartialKey]
+    SearchOptions.FromStart = False
+    OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgAllowQuickFilter]
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Top = 4
+    BorderSpacing.Bottom = 2
+    Color = clWindow
+    DrawFullLine = False
+    FocusColor = clRed
+    SelectedColor = clHighlight
+    Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+    TabOrder = 8
+  end
+  object pnOptions: TPanel[9]
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = BCButtonFocus1
+    Left = 10
+    Height = 26
+    Top = 323
+    Width = 773
+    Align = alBottom
+    AutoSize = True
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 2
+    BorderSpacing.Right = 10
+    BorderSpacing.Bottom = 44
+    BevelOuter = bvNone
+    ClientHeight = 26
+    ClientWidth = 773
+    Constraints.MinHeight = 26
+    TabOrder = 9
+    object btnGridOptions: TSpeedButton
+      AnchorSideLeft.Control = pnOptions
+      AnchorSideTop.Control = pnOptions
+      AnchorSideRight.Control = pnOptions
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = pnOptions
+      AnchorSideBottom.Side = asrBottom
+      Left = 750
+      Height = 22
+      Top = 0
+      Width = 23
+      Anchors = [akTop, akRight, akBottom]
+      Constraints.MaxHeight = 22
+      OnClick = btnGridOptionsClick
+    end
+    object pnFuncaoPagina: TPanel
+      AnchorSideTop.Control = pnOptions
+      AnchorSideBottom.Control = pnOptions
+      AnchorSideBottom.Side = asrBottom
+      Left = 209
+      Height = 24
+      Top = 2
+      Width = 252
+      Anchors = [akTop, akBottom]
+      AutoSize = True
+      BorderSpacing.Top = 2
+      BevelOuter = bvNone
+      ClientHeight = 24
+      ClientWidth = 252
+      TabOrder = 0
+      object btnPgPrior: TButton
+        AnchorSideLeft.Control = btnPgFirst
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = cboTPagina
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = cboTPagina
+        AnchorSideBottom.Side = asrBottom
+        Left = 42
+        Height = 23
+        Top = 1
+        Width = 34
+        Anchors = [akTop, akLeft, akBottom]
+        AutoSize = True
+        Caption = '<'
+        OnClick = btnPgPriorClick
+        TabOrder = 0
+      end
+      object btnPgFirst: TButton
+        AnchorSideLeft.Control = pnFuncaoPagina
+        AnchorSideTop.Control = cboTPagina
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = cboTPagina
+        AnchorSideBottom.Side = asrBottom
+        Left = 0
+        Height = 23
+        Top = 1
+        Width = 42
+        Anchors = [akTop, akLeft, akBottom]
+        AutoSize = True
+        Caption = '<<'
+        OnClick = btnPgFirstClick
+        TabOrder = 1
+      end
+      object btnPgNext: TButton
+        AnchorSideLeft.Control = cboTPagina
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = cboTPagina
+        AnchorSideBottom.Control = cboTPagina
+        AnchorSideBottom.Side = asrBottom
+        Left = 176
+        Height = 23
+        Top = 1
+        Width = 34
+        Anchors = [akTop, akLeft, akBottom]
+        AutoSize = True
+        Caption = '>'
+        OnClick = btnPgNextClick
+        TabOrder = 2
+      end
+      object BtnPgLast: TButton
+        AnchorSideLeft.Control = btnPgNext
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = btnPgNext
+        AnchorSideBottom.Control = btnPgNext
+        AnchorSideBottom.Side = asrBottom
+        Left = 210
+        Height = 23
+        Top = 1
+        Width = 42
+        Anchors = [akTop, akLeft, akBottom]
+        AutoSize = True
+        Caption = '>>'
+        OnClick = BtnPgLastClick
+        TabOrder = 3
+      end
+      object cboTPagina: TComboBox
+        AnchorSideLeft.Control = btnPgPrior
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideBottom.Side = asrBottom
+        Left = 76
+        Height = 23
+        Top = 1
+        Width = 100
+        Anchors = [akTop, akLeft, akBottom]
+        ItemHeight = 15
+        OnCloseUp = cboTPaginaCloseUp
+        Style = csDropDownList
+        TabOrder = 4
+      end
+    end
+    object ProgressBar1: TProgressBar
+      AnchorSideLeft.Control = pnOptions
+      AnchorSideTop.Control = pnOptions
+      AnchorSideBottom.Control = pnOptions
+      AnchorSideBottom.Side = asrBottom
+      Left = 0
+      Height = 20
+      Top = 2
+      Width = 120
+      Anchors = [akTop, akLeft, akBottom]
+      BorderSpacing.Top = 2
+      Constraints.MaxHeight = 20
+      TabOrder = 1
+    end
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[10]
+    Left = 544
+    Top = 256
+  end
+  inherited ActionList1: TActionList[11]
+    Left = 632
+    Top = 256
+  end
+  object dsDBGrid: TDataSource[12]
+    OnDataChange = dsDBGridDataChange
+    Left = 411
+    Top = 265
+  end
+end

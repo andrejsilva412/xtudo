@@ -92,8 +92,8 @@ begin
   Application.OnException := @Sistema.Log.OnException;
   Application.Title := C_APP_TITLE;
   Icon := Application.Icon;
-  Caption := C_APP_TITLE + ' ' + Caption ;
-  JSONPropStorage1.JSONFileName := Path + C_INI_FORM;
+  Caption := C_APP_TITLE + ' ' + Caption;
+  JSONPropStorage1.JSONFileName := Sistema.Administrativo.User.ConfigFile;
   JSONPropStorage1.Active := true;
   FBorderColor := Sistema.Config.Theme.BackGround2;
   FLeftMargin := 8;
@@ -148,11 +148,11 @@ begin
     end;
   end;
 
-
 end;
 
 procedure TfrmBasico.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
+  JSONPropStorage1.JSONFileName := Sistema.Administrativo.User.ConfigFile;
   JSONPropStorage1.Save;
   FreeAndNil(Sistema);
 end;

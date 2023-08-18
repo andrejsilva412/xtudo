@@ -5,7 +5,8 @@ unit model.user;
 interface
 
 uses
-  Classes, SysUtils, controller.user, BufDataset, model.crud;
+  Classes, SysUtils, controller.user, BufDataset, model.crud,
+  model.config;
 
 type
 
@@ -20,6 +21,9 @@ type
       function AdministradorCadastrado: Boolean;
       procedure Get(AUserName: String; APassword: String; AUser: TUser);
       function Post(AUser: TUser): Integer;
+      procedure SaveLoggedUser(AUser: TUser);
+      procedure GetLoggedUser(AUser: TUser);
+      procedure LogOut(AUser: TUser);
   end;
 
 implementation
@@ -109,6 +113,48 @@ begin
       RollBack;
       raise Exception.Create(E.Message);
     end;
+  end;
+
+end;
+
+procedure TModelUser.SaveLoggedUser(AUser: TUser);
+var
+  MConfig: TModelConfig;
+begin
+
+  MConfig := TModelConfig.Create;
+  try
+    MConfig.Save(AUser);
+  finally
+    FreeAndNil(MConfig);
+  end;
+
+end;
+
+procedure TModelUser.GetLoggedUser(AUser: TUser);
+var
+  MConfig: TModelConfig;
+begin
+
+  MConfig := TModelConfig.Create;
+  try
+    MConfig.Get(AUser);
+  finally
+    FreeAndNil(MConfig);
+  end;
+
+end;
+
+procedure TModelUser.LogOut(AUser: TUser);
+var
+  MConfig: TModelConfig;
+begin
+
+  MConfig := TModelConfig.Create;
+  try
+    MConfig.LogOutUser;
+  finally
+    FreeAndNil(MConfig);
   end;
 
 end;
