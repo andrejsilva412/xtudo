@@ -5,8 +5,9 @@ unit view.dbgrid;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
-  ExtCtrls, urxdbgrid, view.buttons, Menus, Buttons, StdCtrls, ComCtrls, DB,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, urxdbgrid,
+  view.buttons, Menus, Buttons, StdCtrls, Grids, ComCtrls, ActnList, DB,
+  fpsTypes,
   uprogressbar;
 
 type
@@ -14,22 +15,28 @@ type
   { TfrmDBGrid }
 
   TfrmDBGrid = class(TfrmBasButtons)
+    acFirst: TAction;
+    acPrior: TAction;
+    acNext: TAction;
+    acLast: TAction;
     btnGridOptions: TSpeedButton;
-    btnPgFirst: TButton;
-    BtnPgLast: TButton;
-    btnPgNext: TButton;
-    btnPgPrior: TButton;
     cboTPagina: TComboBox;
     dsDBGrid: TDataSource;
+    lblDatabaseStatus: TLabel;
+    Panel1: TPanel;
     pnFuncaoPagina: TPanel;
     pnOptions: TPanel;
     ProgressBar1: TProgressBar;
     RxDBGrid1: TRxDBGrid;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton4: TSpeedButton;
+    procedure acFirstExecute(Sender: TObject);
+    procedure acLastExecute(Sender: TObject);
+    procedure acNextExecute(Sender: TObject);
+    procedure acPriorExecute(Sender: TObject);
     procedure btnGridOptionsClick(Sender: TObject);
-    procedure btnPgFirstClick(Sender: TObject);
-    procedure BtnPgLastClick(Sender: TObject);
-    procedure btnPgNextClick(Sender: TObject);
-    procedure btnPgPriorClick(Sender: TObject);
     procedure cboTPaginaCloseUp(Sender: TObject);
     procedure dsDBGridDataChange(Sender: TObject; Field: TField);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -47,12 +54,14 @@ type
     procedure PriorPage;
     procedure NextPage;
     procedure LastPage;
+    procedure DatabaseStatus(AUpdateStatus: TUpdateStatus;
+      const RowsAffected: Integer);
   protected
     procedure LoadPage; virtual;
-    procedure Progress(const APosition: Integer; AMax: Integer);
     procedure SetStyle; override;
     function GetPage: Integer;
     property MaxPage: Integer read FMaxPage write SetMaxPage;
+    procedure ProgressBar(const APosition: Integer; const AMax: Integer);
   public
 
   end;
@@ -80,24 +89,17 @@ begin
   cboTPagina.Items.Clear;
   cboTPagina.Text := '';
   cboTPagina.Enabled := false;
-  btnPgFirst.Enabled := false;
-  btnPgPrior.Enabled := false;
-  btnPgNext.Enabled := false;
-  BtnPgLast.Enabled := false;
+  acFirst.Enabled := false;
+  acPrior.Enabled := false;
+  acNext.Enabled := false;
+  acLast.Enabled := false;
   btnGridOptions.Enabled := false;
   FMaxPage := 0;
   FPage := 1;
   ProgressBar1.Visible := false;
-end;
-
-procedure TfrmDBGrid.btnPgPriorClick(Sender: TObject);
-begin
-  PriorPage;
-end;
-
-procedure TfrmDBGrid.btnPgFirstClick(Sender: TObject);
-begin
-  FirstPage;
+  lblDatabaseStatus.Caption := '';
+  acNovo.Visible := true;
+  RxDBGrid1.TitleStyle := tsNative;
 end;
 
 procedure TfrmDBGrid.btnGridOptionsClick(Sender: TObject);
@@ -113,14 +115,24 @@ begin
   FGridMenu.PopUp;
 end;
 
-procedure TfrmDBGrid.BtnPgLastClick(Sender: TObject);
+procedure TfrmDBGrid.acFirstExecute(Sender: TObject);
+begin
+  FirstPage;
+end;
+
+procedure TfrmDBGrid.acLastExecute(Sender: TObject);
 begin
   LastPage;
 end;
 
-procedure TfrmDBGrid.btnPgNextClick(Sender: TObject);
+procedure TfrmDBGrid.acNextExecute(Sender: TObject);
 begin
   NextPage;
+end;
+
+procedure TfrmDBGrid.acPriorExecute(Sender: TObject);
+begin
+  PriorPage;
 end;
 
 procedure TfrmDBGrid.cboTPaginaCloseUp(Sender: TObject);
@@ -145,7 +157,7 @@ begin
   if CanClose then
   begin
     FreeAndNil(FGridMenu);
-    inherited
+    inherited;
   end;
 end;
 
@@ -167,9 +179,14 @@ begin
 end;
 
 procedure TfrmDBGrid.OnExportToExcel(Sender: TObject);
+var
+  aFileName: String;
 begin
-  RxDBGrid1.ExportToSpreedSheet(LowerCase(
-    dsDBGrid.DataSet.Name + '.xlsx'));
+
+ aFileName := ChangeFileExt(GetTempFileName, STR_EXCEL_EXTENSION);
+ RxDBGrid1.OnProgress := @ProgressBar;
+ RxDBGrid1.ExportToSpreedSheet(aFileName);
+
 end;
 
 procedure TfrmDBGrid.UpdatePageButtons;
@@ -185,17 +202,17 @@ begin
     FEnable := not dsDBGrid.DataSet.IsEmpty;
   end;
 
-  btnPgFirst.Enabled := FEnable;
-  btnPgPrior.Enabled := FEnable;
-  btnPgNext.Enabled := FEnable;
-  BtnPgLast.Enabled := FEnable;
+  acFirst.Enabled := FEnable;
+  acPrior.Enabled := FEnable;
+  acNext.Enabled := FEnable;
+  acLast.Enabled := FEnable;
 
   if FPage = 1 then
-    btnPgFirst.Enabled := false;
-  btnPgPrior.Enabled := btnPgFirst.Enabled;
+    acFirst.Enabled := false;
+  acPrior.Enabled := acFirst.Enabled;
   if FPage = MaxPage then
-    BtnPgLast.Enabled := false;
-  btnPgNext.Enabled := BtnPgLast.Enabled;
+    acLast.Enabled := false;
+  acNext.Enabled := acLast.Enabled;
 
   cboTPagina.Enabled := false;
 
@@ -241,17 +258,19 @@ begin
   LoadPage;
 end;
 
+procedure TfrmDBGrid.DatabaseStatus(AUpdateStatus: TUpdateStatus;
+  const RowsAffected: Integer);
+begin
+  case AUpdateStatus of
+    usInserted: lblDatabaseStatus.Caption := IntToStr(RowsAffected) + ' registro inserido.';
+    usModified: lblDatabaseStatus.Caption := IntToStr(RowsAffected) + ' registro(s) atualizado(s).';
+    usDeleted: lblDatabaseStatus.Caption := IntToStr(RowsAffected) + ' registro(s) excluído(s).';
+  end;
+end;
+
 procedure TfrmDBGrid.LoadPage;
 begin
   UpdatePageButtons
-end;
-
-procedure TfrmDBGrid.Progress(const APosition: Integer; AMax: Integer);
-begin
-  ProgressBar1.Visible := APosition < AMax;
-  ProgressBar1.Max := AMax;
-  ProgressBar1.Position := APosition;
-  Application.ProcessMessages;
 end;
 
 function TfrmDBGrid.GetPage: Integer;
@@ -259,12 +278,37 @@ begin
   Result := FPage;
 end;
 
+procedure TfrmDBGrid.ProgressBar(const APosition: Integer; const AMax: Integer);
+begin
+  ProgressBar1.Position := APosition;
+  ProgressBar1.Max := AMax;
+  if APosition = AMax then
+    ProgressBar1.Position := 0;
+  Application.ProcessMessages;
+end;
+
 procedure TfrmDBGrid.SetStyle;
+var
+  aColor: TColor;
 begin
   inherited SetStyle;
-  Sistema.Image.SVG(btnGridOptions, C_SVG_MENU,
-    InvertColor(pnOptions.Color));
+  InitPanel(Panel1);
+  aColor := InvertColor(pnOptions.Color);
+  Sistema.Image.SVG(btnGridOptions, C_SVG_MENU, aColor);
   btnGridOptions.Flat := true;
+  SpeedButton1.Flat := true;
+  SpeedButton2.Flat := true;
+  SpeedButton3.Flat := true;
+  SpeedButton4.Flat := true;
+  SpeedButton1.ShowCaption := false;
+  SpeedButton2.ShowCaption := false;
+  SpeedButton3.ShowCaption := false;
+  SpeedButton4.ShowCaption := false;
+  aColor := InvertColor(pnOptions.Color);
+  Sistema.Image.SVG(SpeedButton1, C_SVG_FIRST, aColor);
+  Sistema.Image.SVG(SpeedButton2, C_SVG_PRIOR, aColor);
+  Sistema.Image.SVG(SpeedButton3, C_SVG_NEXT, aColor);
+  Sistema.Image.SVG(SpeedButton4, C_SVG_LAST, aColor);
 end;
 
 end.

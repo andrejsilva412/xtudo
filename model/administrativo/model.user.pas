@@ -19,7 +19,8 @@ type
     public
       constructor Create;
       function AdministradorCadastrado: Boolean;
-      procedure Get(AUserName: String; APassword: String; AUser: TUser);
+      procedure Get(AUserName: String; APassword: String; AUser: TUser); overload;
+      procedure Get(AUser: TUser; APage: Integer);
       function Post(AUser: TUser): Integer;
       procedure SaveLoggedUser(AUser: TUser);
       procedure GetLoggedUser(AUser: TUser);
@@ -89,6 +90,41 @@ begin
       AUser.GUID := ADataSet.FieldByName('guid').AsString;
       AUser.Username := ADataSet.FieldByName('username').AsString;
       AUser.UserType := IntegerToUserType(ADataSet.FieldByName('tipo').AsInteger);
+    end;
+    ADataSet.Close;
+  finally
+    FreeAndNil(ADataSet);
+  end;
+
+end;
+
+procedure TModelUser.Get(AUser: TUser; APage: Integer);
+var
+  ADataSet: TBufDataset;
+  ARecords, AMaxPage: Integer;
+begin
+
+  ADataSet := TBufDataset.Create(nil);
+  try
+    AMaxPage := 1;
+    ARecords := Select('usuario', 'guid, nome, username, tipo', '', [],
+                           'count(usuario.guid) total', 'total', APage,
+                           AMaxPage, ADataSet);
+    ADataSet.First;
+    AUser.Data.Clear;
+    AUser.Data.MaxPage := AMaxPage;
+    while not ADataSet.EOF do
+    begin
+      DoProgress(ADataSet.RecNo, ARecords);
+      with AUser.Data.Add do
+      begin
+        This.GUID := ADataSet.FieldByName('guid').AsString;
+        This.Nome := ADataSet.FieldByName('nome').AsString;
+        This.Username := ADataSet.FieldByName('username').AsString;
+        This.UserType := IntegerToUserType(
+           ADataSet.FieldByName('tipo').AsInteger);
+      end;
+      ADataSet.Next;
     end;
     ADataSet.Close;
   finally

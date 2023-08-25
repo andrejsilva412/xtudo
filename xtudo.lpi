@@ -16,7 +16,7 @@
         <TextDesc Value="Aplicativo para gerencimento de Restaurantes, Bares e Lanchonetes."/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="9">
+      <Resources Count="15">
         <Resource_0 FileName="resources\svg\closesvg.svg" Type="RCDATA" ResourceName="CLOSESVG"/>
         <Resource_1 FileName="resources\svg\printer.svg" Type="RCDATA" ResourceName="PRINTER"/>
         <Resource_2 FileName="resources\svg\search.svg" Type="RCDATA" ResourceName="SEARCH"/>
@@ -25,7 +25,13 @@
         <Resource_5 FileName="resources\svg\notifications.svg" Type="RCDATA" ResourceName="NOTIFICATIONS"/>
         <Resource_6 FileName="resources\svg\menu.svg" Type="RCDATA" ResourceName="MENU"/>
         <Resource_7 FileName="resources\svg\point_of_sale.svg" Type="RCDATA" ResourceName="POINT_OF_SALE"/>
-        <Resource_8 FileName="resources\svg\arrow-right.svg" Type="RCDATA" ResourceName="ARROW-RIGHT"/>
+        <Resource_8 FileName="resources\svg\first.svg" Type="RCDATA" ResourceName="FIRST"/>
+        <Resource_9 FileName="resources\svg\last.svg" Type="RCDATA" ResourceName="LAST"/>
+        <Resource_10 FileName="resources\svg\next.svg" Type="RCDATA" ResourceName="NEXT"/>
+        <Resource_11 FileName="resources\svg\prior.svg" Type="RCDATA" ResourceName="PRIOR"/>
+        <Resource_12 FileName="resources\svg\eye.svg" Type="RCDATA" ResourceName="EYE"/>
+        <Resource_13 FileName="resources\svg\delete.svg" Type="RCDATA" ResourceName="DELETE"/>
+        <Resource_14 FileName="resources\svg\user.svg" Type="RCDATA" ResourceName="USER"/>
       </Resources>
     </General>
     <VersionInfo>
@@ -278,6 +284,13 @@
       <Unit>
         <Filename Value="helpers\uprogressbar.pas"/>
         <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\administrativo\view.cadusuario.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCadUsuario"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
       </Unit>
     </Units>
   </ProjectOptions>

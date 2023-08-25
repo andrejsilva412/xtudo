@@ -25,6 +25,7 @@ type
 
   TfrmBasico = class(TForm)
     JSONPropStorage1: TJSONPropStorage;
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
@@ -40,6 +41,7 @@ type
     Sistema: TSistema;
     procedure SetStyle; virtual;
     procedure Clear; virtual;
+    procedure InitPanel(APanel: TPanel);
     property PaintBorder: Boolean read FPaintBorder write FPaintBorder;
   public
 
@@ -150,11 +152,24 @@ begin
 
 end;
 
+procedure TfrmBasico.InitPanel(APanel: TPanel);
+begin
+  APanel.Caption := '';
+  APanel.ParentColor := false;
+  APanel.BevelOuter := bvNone;
+  APanel.BevelInner := bvNone;
+end;
+
 procedure TfrmBasico.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   JSONPropStorage1.JSONFileName := Sistema.Administrativo.User.ConfigFile;
   JSONPropStorage1.Save;
   FreeAndNil(Sistema);
+end;
+
+procedure TfrmBasico.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  CloseAction := caFree;
 end;
 
 end.

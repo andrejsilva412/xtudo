@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, DBCtrls,
-  rxmemds, RxDBGrid, view.buttons, DB;
+  rxmemds, view.buttons, DB;
 
 type
 
@@ -38,7 +38,7 @@ implementation
 procedure TfrmBasCadastro.FormCreate(Sender: TObject);
 begin
   inherited;
-  acNovo.Visible := true;
+  acSalvar.Visible := true;
 end;
 
 procedure TfrmBasCadastro.DataSource1StateChange(Sender: TObject);

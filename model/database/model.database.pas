@@ -16,11 +16,13 @@ type
       FDatabase: T;
       FConfig: TConfig;
       FTransact: TSQLTransaction;
-      function AddLimit(OffSet: Integer): String;
       procedure BeforeConnect(Sender: TObject); virtual;
       function ClearWhereFromCondition(ACondition: String): String;
       function Execute(const SQL: String; ADataSet: TBufDataset;
         AParams: array of Variant): Integer;
+      function CountRecords(ATable, ACondicao: String;
+        AParams: array of Variant; ACount: String; AFieldCount: String): Integer;
+      function MaxPage(ARecords: Integer): Integer;
     public
       constructor Create;
       destructor Destroy; override;
@@ -32,9 +34,9 @@ type
       function Insert(ATable, AFields: String; AParams: array of Variant): Integer;
       function Select(ATable, AFields, ACondicao: String;
         AParams: array of Variant; ACount: String; AFieldCount: String;
-        APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer; overload;
+        APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer; virtual;
       function Select(ATable, AFields, ACondicao: String;
-        AParams: array of Variant; ADataSet: TBufDataset): Integer; overload;
+        AParams: array of Variant; ADataSet: TBufDataset): Integer; virtual;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String): String; overload;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean): Boolean; overload;
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer): Integer; overload;
@@ -54,11 +56,6 @@ const
 implementation
 
 uses ustrutils, utils;
-
-function TModelDatabase.AddLimit(OffSet: Integer): String;
-begin
-  Result := Format('limit %d, %d', [OffSet, C_MAX_REG]);
-end;
 
 procedure TModelDatabase.BeforeConnect(Sender: TObject);
 begin
@@ -101,6 +98,34 @@ begin
     FreeAndNil(ASQLQuery);
   end;
 
+end;
+
+function TModelDatabase.CountRecords(ATable, ACondicao: String;
+  AParams: array of Variant; ACount: String; AFieldCount: String): Integer;
+var
+  APageDataSet: TBufDataset;
+  SQL: String;
+begin
+  APageDataSet := TBufDataset.Create(nil);
+  try
+    SQL := Trim(Format(C_SELECT, [ACount, ATable]) + ' ' + ACondicao);
+    Execute(SQL, APageDataSet, AParams);
+
+    if not APageDataSet.IsEmpty then
+      Result := APageDataSet.FieldByName(AFieldCount).AsInteger
+    else Result := 0;
+  finally
+    FreeAndNil(APageDataSet);
+  end;
+end;
+
+function TModelDatabase.MaxPage(ARecords: Integer): Integer;
+var
+  AMaxPage: Integer;
+begin
+  AMaxPage := Ceil(ARecords / C_MAX_REG);
+  AMaxPage := iif(AMaxPage = 0, 1, AMaxPage);
+  Result := AMaxPage;
 end;
 
 procedure TModelDatabase.StartTransaction;
@@ -189,35 +214,8 @@ end;
 function TModelDatabase.Select(ATable, AFields, ACondicao: String;
   AParams: array of Variant; ACount: String; AFieldCount: String;
   APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
-var
-  sLimit, SQL: String;
-  APageDataSet: TBufDataset;
-  OffSet, ARecords: Integer;
 begin
 
-  APageDataSet := TBufDataset.Create(nil);
-  try
-    SQL := Trim(Format(C_SELECT, [ACount, ATable]) + ' ' + ACondicao);
-    Execute(SQL, APageDataSet, AParams);
-
-    if not APageDataSet.IsEmpty then
-      ARecords := APageDataSet.FieldByName(AFieldCount).AsInteger
-    else ARecords := 0;
-
-    OffSet := (C_MAX_REG * APage) - C_MAX_REG;
-
-    sLimit := AddLimit(OffSet);
-
-    SQL := Trim(Format(C_SELECT, [AFields, ATable]) + ' ' + ACondicao);
-    SQL := SQL + ' ' + sLimit;
-    Execute(SQL, ADataSet, AParams);
-
-    AMaxPage := Ceil(ARecords / C_MAX_REG);
-    AMaxPage := iif(AMaxPage = 0, 1, AMaxPage);
-    Result := ARecords;
-  finally
-    FreeAndNil(APageDataSet);
-  end;
 end;
 
 function TModelDatabase.Select(ATable, AFields, ACondicao: String;

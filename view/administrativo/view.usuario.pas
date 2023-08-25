@@ -5,20 +5,22 @@ unit view.usuario;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Buttons, view.dbgrid;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Buttons, rxmemds,
+  view.dbgrid, DB;
 
 type
 
   { TfrmUsuario }
 
   TfrmUsuario = class(TfrmDBGrid)
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    procedure FormCreate(Sender: TObject);
-  private
-
+    mdUsuario: TRxMemoryData;
+    mdUsuarioguid: TStringField;
+    mdUsuarionome: TStringField;
+    mdUsuariousername: TStringField;
+    procedure acNovoExecute(Sender: TObject);
+  protected
+    procedure LoadPage; override;
   public
-
   end;
 
 var
@@ -30,15 +32,35 @@ implementation
 
 { TfrmUsuario }
 
-procedure TfrmUsuario.FormCreate(Sender: TObject);
+procedure TfrmUsuario.acNovoExecute(Sender: TObject);
 begin
-  inherited;
+  if Sistema.Forms.ShowCadastroUsuario = mrOK then
+    LoadPage;
+end;
 
-  Sistema.Image.SVG(SpeedButton1.Glyph, -180, 'ARROW-RIGHT',
-     SpeedButton1.Width, SpeedButton1.Height);
+procedure TfrmUsuario.LoadPage;
+var
+  i, APage: Integer;
+begin
 
-  Sistema.Image.SVG(SpeedButton2, 'ARROW-RIGHT');
-
+  APage := GetPage;
+  mdUsuario.CloseOpen;
+  with Sistema.Administrativo do
+  begin
+    User.OnProgress := @ProgressBar;
+    User.Get(APage);
+    MaxPage := User.Data.MaxPage;
+    for i := 0 to User.Data.Count -1 do
+    begin
+      ProgressBar(i+1, User.Data.Count);
+      mdUsuario.Insert;
+      mdUsuarioguid.AsString := User.Data.Items[i].This.GUID;
+      mdUsuarionome.AsString := User.Data.Items[i].This.Nome;
+      mdUsuariousername.AsString := User.Data.Items[i].This.UserName;
+      mdUsuario.Post;
+    end;
+    inherited;
+  end;
 
 end;
 

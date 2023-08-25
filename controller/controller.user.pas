@@ -5,7 +5,24 @@ unit controller.user;
 interface
 
 uses
-  Classes, SysUtils, controller.crud, utypes;
+  Classes, SysUtils, controller.crud, udatacollection, utypes;
+
+type
+
+  TUser = class;
+
+type
+  TDataUser = class(specialize TDataItem<TUser>);
+
+type
+
+  { TData }
+
+  TData = class(specialize TDataCollecion<TDataUser>)
+    public
+      function Add: TDataUser;
+  end;
+
 
 type
 
@@ -13,6 +30,7 @@ type
 
   TUser = class(TControllerCRUD)
     private
+      FData: TData;
       FGUID: String;
       FNome: String;
       FPassword: String;
@@ -23,10 +41,12 @@ type
       procedure Valida; override;
     public
       constructor Create;
+      destructor Destroy; override;
       procedure Clear;
       function Delete: Integer; override;
       function Post: Integer; override;
-      procedure Get(AUserName: String; APassword: String = '');
+      procedure Get(AUserName: String; APassword: String = ''); overload;
+      procedure Get(APage: Integer = 1); overload;
       procedure GetPage(APage: Integer = 1); override;
       procedure LogOut;
       function AdministradorCadastrado: Boolean;
@@ -37,11 +57,19 @@ type
       property Username: String read FUsername write FUsername;
       property Password: String read FPassword write FPassword;
       property UserType: TUserType read FUserType write FUserType;
+      property Data: TData read FData write FData;
   end;
 
 implementation
 
 uses uconst, utils, model.user;
+
+{ TData }
+
+function TData.Add: TDataUser;
+begin
+  Result := inherited Add as TDataUser;
+end;
 
 { TUser }
 
@@ -58,6 +86,13 @@ end;
 constructor TUser.Create;
 begin
   FUserType := utNormal;
+  FData := TData.Create;
+end;
+
+destructor TUser.Destroy;
+begin
+  FreeAndNil(FData);
+  inherited Destroy;
 end;
 
 procedure TUser.Clear;
@@ -97,6 +132,21 @@ begin
   MUser := TModelUser.Create;
   try
     MUser.Get(AUserName, APassword, Self);
+  finally
+    FreeAndNil(MUser);
+  end;
+
+end;
+
+procedure TUser.Get(APage: Integer);
+var
+  MUser: TModelUser;
+begin
+
+  MUser := TModelUser.Create;
+  try
+    MUser.OnProgress := @DoProgress;
+    MUser.Get(Self, APage);
   finally
     FreeAndNil(MUser);
   end;

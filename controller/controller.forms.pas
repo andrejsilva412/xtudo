@@ -5,25 +5,46 @@ unit controller.forms;
 interface
 
 uses
-  Classes, SysUtils, Forms;
+  Classes, SysUtils, Controls, Forms;
 
 type
 
   { TForms }
 
   TForms = class
+    private
+      function FormExists(FormClass: TFormClass): Boolean;
     public
       destructor Destroy; override;
       procedure ShowWizard;
       procedure CloseWizard;
       procedure ShowUsuario;
+      function ShowCadastroUsuario: Integer;
   end;
 
 implementation
 
-uses view.main, view.assistenteinicial, view.usuario;
+uses view.main, view.assistenteinicial, view.usuario, view.cadusuario;
 
 { TForms }
+
+function TForms.FormExists(FormClass: TFormClass): Boolean;
+var
+  i: byte;
+begin
+
+  Result := false;
+
+  for i := 0 to Screen.FormCount -1 do
+  begin
+    if Screen.Forms[i] is FormClass then
+    begin
+      Result := true;
+      break;
+    end;
+  end;
+
+end;
 
 destructor TForms.Destroy;
 begin
@@ -49,9 +70,21 @@ end;
 
 procedure TForms.ShowUsuario;
 begin
-  if not Assigned(frmUsuario) then
+  if not FormExists(TfrmUsuario) then
     frmUsuario := TfrmUsuario.Create(Application);
   frmMain.TDINoteBook1.ShowFormInPage(frmUsuario);
+end;
+
+function TForms.ShowCadastroUsuario: Integer;
+begin
+
+  frmCadUsuario := TfrmCadUsuario.Create(Application);
+  try
+    Result := frmCadUsuario.ShowModal;
+  finally
+    FreeAndNil(frmCadUsuario);
+  end;
+
 end;
 
 end.

@@ -19,7 +19,7 @@ uses
   controller.endereco, uformats, view.main, controller.forms, model.pessoa,
   controller.pessoa, model.empresa, controller.empresa,
   controller.pessoajuridica, controller.sistema, view.dbgrid, view.usuario,
-  urxdbgrid, uprogressbar;
+  urxdbgrid, uprogressbar, view.cadusuario;
 
 
 {$R *.res}

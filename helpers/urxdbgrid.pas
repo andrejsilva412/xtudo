@@ -26,7 +26,7 @@ type
     protected
       procedure DoProgress(const APosition: Integer; const AMax: Integer);
     public
-      procedure ExportToSpreedSheet(aFileName: String; aOpenFile: Boolean = true);
+      procedure ExportToSpreedSheet(aFileName: String;  aOpenFile: Boolean = true);
       // AGrid the Grid to Export, lpp: Lines per page. Not including the text header, pageBreak: insert a page break that some printers could use for starting a new page
       procedure ExportToTXT(aFileName: String; lpp: Integer = 80;
         PageBreak: Boolean = true; aOpenFile: Boolean = true);
@@ -320,7 +320,7 @@ begin
     raise Exception.Create(SMSGInformeNomeArquivo);
 
   MyWorkbook := TsWorkbook.Create;
-  MyWorksheet := MyWorkbook.AddWorksheet(aFileName);
+  MyWorksheet := MyWorkbook.AddWorksheet('Planilha 1');
   ConfigPageLayoutWorkSheet(MyWorksheet);
 
   DataSource.DataSet.DisableControls;

@@ -1,5 +1,7 @@
 inherited frmMain: TfrmMain
+  Left = -39
   Height = 668
+  Top = 150
   Width = 1107
   ClientHeight = 668
   ClientWidth = 1107

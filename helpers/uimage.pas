@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, buttons, ExtCtrls, Graphics, Math, Forms, ustatus,
   BGRABitmap, BGRASVG, BGRAUnits, BGRATransform, BGRABitmapTypes,
-  utypes;
+  LCLType, utypes;
 
 
 type
@@ -16,16 +16,11 @@ type
 
   TImages = class(TDBStatus)
     private
+      function GetResourceToString(AResource: String): String;
       function SetColor(aSVG: String; aCor: TColor): String;
       procedure SVGToImage(aImage: TImage; SVG: String; W, H: Integer);
       procedure SVGToBitmap(aImage: TBitmap; aSVG: String; W, H: Integer);
-      procedure Rotate(bmp: TBitmap; Angle: Extended; Background: TColor);
-      function xComp(aVektor: TPoint; Angle: Extended): Integer;
-      function yComp(aVektor: TPoint; Angle: Extended): Integer;
-      function Vektor(FromP, aTop: TPoint): TPoint;
     public
-      procedure SVG(bmp: TBitmap; Angle: Extended; aSVG: String; W, H: Integer;
-        Cor: TColor = clBlack; AResource: Boolean = true); overload;
       procedure SVG(bmp: TBitmap; aSVG: String; W, H: Integer;
         Cor: TColor = clBlack; AResource: Boolean = true); overload;
       procedure SVG(Image: TImage; aSVG: String; W, H: Integer;
@@ -41,15 +36,44 @@ var
 
 implementation
 
-uses uhtmlutils, utils;
+uses uhtmlutils, ustrutils;
 
 { TImages }
+
+function TImages.GetResourceToString(AResource: String): String;
+var
+  RS: TResourceStream;
+  SS: TStringStream;
+begin
+
+  SS := TStringStream.Create('');
+  RS := TResourceStream.Create(HINSTANCE, AResource, RT_RCDATA);
+  try
+    Result := '';
+    try
+      RS.Position := 0;
+      SS.CopyFrom(RS, RS.Size);
+      Result := SS.DataString;
+    except
+      raise Exception.Create('Resource not found.');
+    end;
+  finally
+    FreeAndNil(SS);
+    FreeAndNil(RS);
+  end;
+
+end;
 
 function TImages.SetColor(aSVG: String; aCor: TColor): String;
 var
   HTMLUtils: THTMLUtils;
-  HTMLColor: String;
+  HTMLColor, Str: String;
+  APos: SmallInt;
 begin
+
+  APos := Pos('fill="', aSVG);
+
+  Str := TextoEntre(aSVG, ' fill', '"', true);
 
   HTMLUtils := THTMLUtils.Create;
   try
@@ -97,120 +121,6 @@ begin
     bmp.Free;
     img.Free;
   end;
-
-end;
-
-procedure TImages.Rotate(bmp: TBitmap; Angle: Extended; Background: TColor);
-var
-  FPoint, highest, lowest, mostleft, mostright: TPoint;
-  topoverh, leftoverh: integer;
-  x, y, newx, newy: integer;
-  SrcBit: TBitmap;
-  ImgRot: TBitmap;
-begin
-
- Angle := degtorad(Angle);
-
- SrcBit := TBitmap.Create;
-
- SrcBit.Assign(bmp);
-
- FPoint := Point(SrcBit.Width div 2, SrcBit.Height div 2);
-
- ImgRot := TBitmap.Create;
-
- while Angle >= (2 * pi) do
-   angle := Angle - (2 * pi);
-
- if (angle <= (pi / 2)) then
- begin
-   highest   := Point(0,0);                         //OL
-   Lowest    := Point(Srcbit.Width, Srcbit.Height); //UR
-   mostleft  := Point(0,Srcbit.Height);             //UL
-   mostright := Point(Srcbit.Width, 0);             //OR
- end else if (angle <= pi) then
- begin
-   highest := Point(0,Srcbit.Height);
-   Lowest := Point(Srcbit.Width, 0);
-   mostleft := Point(Srcbit.Width, Srcbit.Height);
-   mostright := Point(0,0);
- end else if (Angle <= (pi * 3 / 2)) then
- begin
-   highest := Point(Srcbit.Width, Srcbit.Height);
-   Lowest := Point(0,0);
-   mostleft := Point(Srcbit.Width, 0);
-   mostright := Point(0,Srcbit.Height);
- end else begin
-   highest := Point(Srcbit.Width, 0);
-   Lowest := Point(0,Srcbit.Height);
-   mostleft := Point(0,0);
-   mostright := Point(Srcbit.Width, Srcbit.Height);
- end;
-
-   topoverh := yComp(Vektor(FPoint, highest), Angle);
-   leftoverh := xComp(Vektor(FPoint, mostleft), Angle);
-   ImgRot.Height := Abs(yComp(Vektor(FPoint, lowest), Angle)) + Abs(topOverh);
-   ImgRot.Width  := Abs(xComp(Vektor(FPoint, mostright), Angle)) + Abs(leftoverh);
-
-   Topoverh := TopOverh + FPoint.y;
-   Leftoverh := LeftOverh + FPoint.x;
-
-   ImgRot.Canvas.Brush.Color := Background;
-   ImgRot.Canvas.pen.Color   := background;
-   ImgRot.Canvas.Fillrect(Rect(0,0,ImgRot.Width, ImgRot.Height));
-
-   for y := 0 to srcbit.Height - 1 do
-   begin
-     for x := 0 to srcbit.Width - 1 do
-     begin
-       newX := xComp(Vektor(FPoint, Point(x, y)), Angle);
-       newY := yComp(Vektor(FPoint, Point(x, y)), Angle);
-       newX := FPoint.x + newx - leftoverh;
-       newy := FPoint.y + newy - topoverh;
-       // Move por causa do novo tamanho
-       ImgRot.Canvas.Pixels[newx, newy] := srcbit.Canvas.Pixels[x, y];
-       // Preenche o pixel ao lado para prevenir pixels vazios
-       if ((angle < (pi / 2)) or
-          ((angle > pi) and
-          (angle < (pi * 3 / 2)))) then
-       begin
-            ImgRot.Canvas.Pixels[newx, newy + 1] := srcbit.Canvas.Pixels[x, y];
-       end else begin
-            ImgRot.Canvas.Pixels[newx + 1,newy] := srcbit.Canvas.Pixels[x, y];
-       end;
-     end;
-     DoProgress(y, SrcBit.Height);
-     Application.ProcessMessages;
-   end;
-   bmp.Clear;
-   bmp.Assign(ImgRot);
-   FreeAndNil(ImgRot);
-   FreeAndNil(SrcBit);
-
-end;
-
-function TImages.xComp(aVektor: TPoint; Angle: Extended): Integer;
-begin
-  Result := Round(aVektor.x * cos(Angle) - (aVektor.y) * sin(Angle));
-end;
-
-function TImages.yComp(aVektor: TPoint; Angle: Extended): Integer;
-begin
-  Result := Round((aVektor.x) * (sin(Angle)) + (avektor.y) * cos(Angle));
-end;
-
-function TImages.Vektor(FromP, aTop: TPoint): TPoint;
-begin
-  Result.x := aTop.x - FromP.x;
-  Result.y := aTop.y - FromP.y;
-end;
-
-procedure TImages.SVG(bmp: TBitmap; Angle: Extended; aSVG: String; W,
-  H: Integer; Cor: TColor; AResource: Boolean);
-begin
-
-  SVG(bmp, aSVG, W, H, Cor, AResource);
-  Rotate(bmp, Angle, clWhite);
 
 end;
 

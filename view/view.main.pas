@@ -18,6 +18,15 @@ type
 
 type
 
+  { TTDINoteBook }
+
+  TTDINoteBook = class(TDIClass.TTDINoteBook)
+    public
+      procedure AdjustClientRect(var ARect: TRect); override;
+  end;
+
+type
+
   { TfrmMain }
 
   TfrmMain = class(TfrmBasico)
@@ -75,8 +84,6 @@ type
   private
     FExpandirMenu: Boolean;
     procedure SetExpandirMenu(AValue: Boolean);
-  private
-    procedure InitPanel(APanel: TPanel);
     procedure InitLogin;
     procedure OnLoginStatus(const Status: String);
     property ExpandirMenu: Boolean read FExpandirMenu write SetExpandirMenu;
@@ -94,6 +101,17 @@ implementation
 uses uconst, controller.sistema;
 
 {$R *.lfm}
+
+{ TTDINoteBook }
+
+procedure TTDINoteBook.AdjustClientRect(var ARect: TRect);
+begin
+  inherited AdjustClientRect(ARect);
+  ARect.Top := ARect.Top -4;
+  ARect.Left := ARect.Left -4;
+  ARect.Bottom := ARect.Bottom +4;
+  ARect.Right := ARect.Right +4;
+end;
 
 { TPageControl }
 
@@ -158,14 +176,6 @@ begin
     SpeedButton5.ShowCaption := false;
   end;
   JSONPropStorage1.Save;
-end;
-
-procedure TfrmMain.InitPanel(APanel: TPanel);
-begin
-  APanel.Caption := '';
-  APanel.ParentColor := false;
-  APanel.BevelOuter := bvNone;
-  APanel.BevelInner := bvNone;
 end;
 
 procedure TfrmMain.InitLogin;
