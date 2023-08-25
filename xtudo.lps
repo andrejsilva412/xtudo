@@ -24,7 +24,7 @@
       <Unit>
         <Filename Value="helpers\uconst.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="19"/>
         <CursorPos X="23" Y="29"/>
         <UsageCount Value="51"/>
@@ -33,7 +33,7 @@
       <Unit>
         <Filename Value="helpers\utils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <TopLine Value="2"/>
         <CursorPos X="13" Y="8"/>
         <UsageCount Value="51"/>
@@ -57,8 +57,8 @@
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="62"/>
-        <CursorPos X="22" Y="74"/>
+        <TopLine Value="75"/>
+        <CursorPos X="30" Y="95"/>
         <UsageCount Value="51"/>
         <Loaded Value="True"/>
       </Unit>
@@ -99,7 +99,7 @@
       <Unit>
         <Filename Value="helpers\ustrutils.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <UsageCount Value="51"/>
         <Loaded Value="True"/>
       </Unit>
@@ -501,112 +501,17 @@
         <TopLine Value="10"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <UnitName Value="StrUtils"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="68"/>
+        <CursorPos X="10" Y="76"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="21" Column="82" TopLine="18"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="31" Column="34" TopLine="14"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="41" Column="13" TopLine="23"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="56" Column="57" TopLine="47"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="30" Column="38" TopLine="27"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="55" Column="59" TopLine="35"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="51" Column="26" TopLine="25"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="35" Column="77" TopLine="23"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="72" Column="36" TopLine="56"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="64" Column="28" TopLine="54"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="79" Column="35" TopLine="54"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="85" Column="50" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="86" Column="50" TopLine="67"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="72" Column="36" TopLine="68"/>
-      </Position>
-      <Position>
-        <Filename Value="view\administrativo\view.cadusuario.pas"/>
-        <Caret Line="85" Column="10" TopLine="79"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="25" Column="17" TopLine="15"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="111" Column="3" TopLine="109"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="23" Column="17" TopLine="13"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="100" Column="3" TopLine="97"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\utils.pas"/>
-        <Caret Line="10" Column="10"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\utils.pas"/>
-        <Caret Line="21" Column="3" TopLine="16"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="19" TopLine="7"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="68" Column="26" TopLine="53"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="14" Column="29"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="66" Column="28" TopLine="59"/>
-      </Position>
-      <Position>
-        <Filename Value="helpers\uimage.pas"/>
-        <Caret Line="76" TopLine="59"/>
-      </Position>
       <Position>
         <Filename Value="helpers\uimage.pas"/>
         <Caret Line="39" Column="27" TopLine="17"/>
@@ -622,6 +527,110 @@
       <Position>
         <Filename Value="helpers\uimage.pas"/>
         <Caret Line="76" TopLine="62"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="9" Column="13"/>
+      </Position>
+      <Position>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <Caret Line="76" Column="67" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="C:\lazarus\fpc\3.2.2\source\packages\rtl-objpas\src\inc\strutils.pp"/>
+        <Caret Line="1224" Column="3" TopLine="1221"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" Column="28" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="75" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="76" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="77" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="78" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="79" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="81" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="82" Column="19" TopLine="58"/>
+      </Position>
+      <Position>
+        <Filename Value="helpers\uimage.pas"/>
+        <Caret Line="87" Column="23" TopLine="67"/>
       </Position>
     </JumpHistory>
     <RunParams>
@@ -671,14 +680,7 @@
         <WatchScope Value="wpsLocal"/>
         <WatchKind Value="wpkWrite"/>
         <Source Value="helpers\uimage.pas"/>
-        <Line Value="78"/>
-      </Item>
-      <Item>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="helpers\uimage.pas"/>
-        <Line Value="74"/>
+        <Line Value="77"/>
       </Item>
     </BreakPoints>
   </Debugging>

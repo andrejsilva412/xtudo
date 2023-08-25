@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, buttons, ExtCtrls, Graphics, Math, Forms, ustatus,
-  BGRABitmap, BGRASVG, BGRAUnits, BGRATransform, BGRABitmapTypes,
+  StrUtils, BGRABitmap, BGRASVG, BGRAUnits, BGRATransform, BGRABitmapTypes,
   LCLType, utypes;
 
 
@@ -65,21 +65,35 @@ begin
 end;
 
 function TImages.SetColor(aSVG: String; aCor: TColor): String;
+const
+  C_FILL = 'fill="%s"';
 var
   HTMLUtils: THTMLUtils;
   HTMLColor, Str: String;
-  APos: SmallInt;
+  i: Integer;
+  SVGStrings: TStringList;
 begin
 
-  APos := Pos('fill="', aSVG);
-
-  Str := TextoEntre(aSVG, ' fill', '"', true);
-
   HTMLUtils := THTMLUtils.Create;
+  SVGStrings := TStringList.Create;
   try
-    HTMLColor := HTMLUtils.ColorToHTML(aCor);
-    Result := Format(aSVG, [HTMLColor]);
+    Split(' ', aSVG, SVGStrings);
+    for i := 0 to SVGStrings.Count -1 do
+    begin
+      Str := LowerCase(SVGStrings[i]);
+      if Pos('fill', Str) > 0 then
+      begin
+        Str := Trim(SVGStrings[i]);
+        HTMLColor := HTMLUtils.ColorToHTML(aCor);
+        Str := Format(Str, [HTMLUtils]);
+        SVGStrings[i] := Str;
+      end;
+    end;
+//    HTMLColor := HTMLUtils.ColorToHTML(aCor);
+  //  Result := Format(aSVG, [HTMLColor]);
+    Result := SVGStrings.Text;
   finally
+    FreeAndNil(SVGStrings);
     FreeAndNil(HTMLUtils);
   end;
 
