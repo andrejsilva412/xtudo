@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, BufDataset, model.database.firebird, model.database.sqlite,
-  udbnotifier, uvalida, ucript;
+  udbnotifier, uvalida, uimage, ucript;
 
 type
 
@@ -19,10 +19,12 @@ type
       FSQL: TStringList;
       FValida: TValidador;
       FCrip: TCript;
+      FImage: TImages;
       function Database: TModelFirebird;
       function DatabaseCache: TModelSQLite;
     protected
       function Cript: TCript;
+      function Image: TImages;
       procedure StartTransaction(ACache: Boolean = false);
       procedure Commit(ACache: Boolean = false);
       procedure RollBack(ACache: Boolean = false);
@@ -32,6 +34,7 @@ type
         ACache: Boolean = false): Integer;
       function NewGUID: String;
       function GetPasswordHash(APassword: String): String;
+      function GetBase64Content(ATable, GUIDField, GUID, ABase64Field: String): String;
       function GetNextID(ATable, AIDField: String; ACache: Boolean): Integer; overload;
       function Update(ATable, AFields, Acondicao: String; AParams: array of Variant;
         ACache: Boolean = false): Integer;
@@ -62,7 +65,7 @@ type
 
 implementation
 
-uses utils;
+uses utils, uconst;
 
 { TModelCRUD }
 
@@ -76,6 +79,8 @@ begin
     FreeAndNil(FDatabaseCache);
   if Assigned(FValida) then
     FreeAndNil(FValida);
+  if Assigned(FImage) then
+    FreeAndNil(FImage);
   FreeAndNil(FSQL);
   inherited Destroy;
 end;
@@ -105,6 +110,13 @@ begin
   if not Assigned(FCrip) then
     FCrip := TCript.Create;
   Result := FCrip;
+end;
+
+function TModelCRUD.Image: TImages;
+begin
+  if not Assigned(FImage) then
+    FImage := TImages.Create;
+  Result := FImage;
 end;
 
 procedure TModelCRUD.StartTransaction(ACache: Boolean);
@@ -160,6 +172,14 @@ function TModelCRUD.GetPasswordHash(APassword: String): String;
 begin
 
   Result := Cript.GetPassHASH(APassword);
+
+end;
+
+function TModelCRUD.GetBase64Content(ATable, GUIDField, GUID,
+  ABase64Field: String): String;
+begin
+
+  Result := Database.GetBase64Content(ATable,  GUIDField, GUID, ABase64Field);
 
 end;
 

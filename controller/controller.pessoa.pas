@@ -5,8 +5,8 @@ unit controller.pessoa;
 interface
 
 uses
-  Classes, SysUtils, utypes, controller.endereco,
-  controller.crud, udatacollection;
+  Classes, SysUtils, utypes, controller.endereco, controller.crud,
+  udatacollection;
 
 type
 
@@ -29,7 +29,7 @@ type
 
   { TPessoa }
 
-  TPessoa = class(TControllerCRUD)
+  TPessoa = class(TCRUD)
     private
       FContato: TContato;
       FEndereco: TEndereco;

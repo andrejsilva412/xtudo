@@ -36,6 +36,7 @@ type
     procedure acLastExecute(Sender: TObject);
     procedure acNextExecute(Sender: TObject);
     procedure acPriorExecute(Sender: TObject);
+    procedure acSalvarExecute(Sender: TObject);
     procedure btnGridOptionsClick(Sender: TObject);
     procedure cboTPaginaCloseUp(Sender: TObject);
     procedure dsDBGridDataChange(Sender: TObject; Field: TField);
@@ -43,6 +44,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure RxDBGrid1DblClick(Sender: TObject);
   private
     FGridMenu: TPopupMenu;
     FMaxPage: Integer;
@@ -62,8 +64,8 @@ type
     function GetPage: Integer;
     property MaxPage: Integer read FMaxPage write SetMaxPage;
     procedure ProgressBar(const APosition: Integer; const AMax: Integer);
+    procedure Edit; virtual;
   public
-
   end;
 
 var
@@ -99,7 +101,8 @@ begin
   ProgressBar1.Visible := false;
   lblDatabaseStatus.Caption := '';
   acNovo.Visible := true;
-  RxDBGrid1.TitleStyle := tsNative;
+  acSalvar.Caption := 'Editar';
+  acSalvar.Visible := true;
 end;
 
 procedure TfrmDBGrid.btnGridOptionsClick(Sender: TObject);
@@ -135,6 +138,11 @@ begin
   PriorPage;
 end;
 
+procedure TfrmDBGrid.acSalvarExecute(Sender: TObject);
+begin
+  Edit;
+end;
+
 procedure TfrmDBGrid.cboTPaginaCloseUp(Sender: TObject);
 begin
   FPage := StrToIntDef(cboTPagina.Items[cboTPagina.ItemIndex], 1);
@@ -145,6 +153,7 @@ procedure TfrmDBGrid.dsDBGridDataChange(Sender: TObject; Field: TField);
 begin
   btnGridOptions.Enabled := not dsDBGrid.DataSet.IsEmpty;
   cboTPagina.Enabled := false;
+  acSalvar.Enabled := btnGridOptions.Enabled;
   if cboTPagina.Items.Count > 0 then
   begin
     cboTPagina.ItemIndex := 0;
@@ -164,6 +173,11 @@ end;
 procedure TfrmDBGrid.FormShow(Sender: TObject);
 begin
   LoadPage;
+end;
+
+procedure TfrmDBGrid.RxDBGrid1DblClick(Sender: TObject);
+begin
+  Edit;
 end;
 
 procedure TfrmDBGrid.SetMaxPage(AValue: Integer);
@@ -287,11 +301,17 @@ begin
   Application.ProcessMessages;
 end;
 
+procedure TfrmDBGrid.Edit;
+begin
+  LoadPage;
+end;
+
 procedure TfrmDBGrid.SetStyle;
 var
   aColor: TColor;
 begin
   inherited SetStyle;
+  RxDBGrid1.TitleStyle := tsNative;
   InitPanel(Panel1);
   aColor := InvertColor(pnOptions.Color);
   Sistema.Image.SVG(btnGridOptions, C_SVG_MENU, aColor);

@@ -61,8 +61,6 @@ type
      function GetImgButton(aName: String): TBitmap;
   protected
      procedure SetStyle; override;
-  public
-
   end;
 
 var

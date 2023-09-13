@@ -209,7 +209,7 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="controller\controller.log.pas"/>
+        <Filename Value="helpers\usyserror.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -316,20 +316,4 @@
       </Options>
     </Linking>
   </CompilerOptions>
-  <Debugging>
-    <Exceptions>
-      <Item>
-        <Name Value="EAbort"/>
-      </Item>
-      <Item>
-        <Name Value="ECodetoolError"/>
-      </Item>
-      <Item>
-        <Name Value="EFOpenError"/>
-      </Item>
-      <Item>
-        <Name Value="EIBDatabaseError"/>
-      </Item>
-    </Exceptions>
-  </Debugging>
 </CONFIG>

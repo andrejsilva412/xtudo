@@ -33,12 +33,18 @@ const
   C_ERRO = 'Erro';
   C_EXCLUIR = 'Excluir';
   C_CANCELAR = 'Cancelar';
+  C_INFORMACAO = 'Informação';
 
   // Mask
   C_CNPJ_MASK = '99.999.999/9999-99;1;_';
 
   // MINIMAL PASSWORD LENGTH
   C_MIN_PASSWORD_LENGHT = '5';
+
+  // Error CODE
+  C_EXCEPTION_ERROR = -1;
+  C_REG_NOT_FOUND = 1;
+  C_REG_FOUND = 2;
 
 resourcestring
 
@@ -54,6 +60,7 @@ resourcestring
 
   // Banco de dados
   SMSGFalhaConexaoBD = 'Falha na conexão com o banco de dados.';
+  SMSGRegistroNaoEncontrado = 'Nenhum registro foi encontrado.';
 
   // Erros
   SMGFalhaAoAbrirArquivo = 'Falha do abrir o arquivo.';

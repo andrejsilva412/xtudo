@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, Dialogs, Forms, LMessages, uimage, controller.config,
-  controller.admin, controller.log, uvalida, controller.forms;
+  controller.admin, uvalida, controller.forms;
 
 type
 
@@ -22,6 +22,7 @@ type
       function Excluir: Boolean;
       procedure Alerta(ACaption, ATitle, AText: String); overload;
       procedure Alerta(AText: String); overload;
+      procedure Informacao(AText: String);
       procedure Erro(AText: String);
   end;
 
@@ -36,13 +37,11 @@ type
       FMessagem: TMensagem;
       FConfig: TConfig;
       FValidador: TValidador;
-      FLog: TLog;
       FForms: TForms;
     public
       destructor Destroy; override;
       function Administrativo: TAdministrativo;
       function Image: TImages;
-      function Log: TLog;
       function Mensagem: TMensagem;
       function Config: TConfig;
       function Validador: TValidador;
@@ -124,6 +123,11 @@ begin
   Alerta(C_APP_TITLE, C_ATENCAO, AText);
 end;
 
+procedure TMensagem.Informacao(AText: String);
+begin
+  GenericTaskDialog(C_APP_TITLE, C_INFORMACAO, AText, [], tdiInformation);
+end;
+
 procedure TMensagem.Erro(AText: String);
 begin
   GenericTaskDialog(C_APP_TITLE, C_ERRO, AText, [], tdiError);
@@ -143,8 +147,6 @@ begin
     FreeAndNil(FConfig);
   if Assigned(FValidador) then
     FreeAndNil(FValidador);
-  if Assigned(FLog) then
-    FreeAndNil(FLog);
   if Assigned(FForms) then
     FreeAndNil(FForms);
   inherited Destroy;
@@ -162,13 +164,6 @@ begin
   if not Assigned(FImage) then
     FImage := TImages.Create;
   Result := FImage;
-end;
-
-function TSistema.Log: TLog;
-begin
-  if not Assigned(FLog) then
-    FLog := TLog.Create;
-  Result := FLog;
 end;
 
 function TSistema.Mensagem: TMensagem;

@@ -5,8 +5,8 @@ unit model.config;
 interface
 
 uses
-  Classes, SysUtils, Graphics, controller.config,
-  controller.user, model.crud;
+  Classes, SysUtils, Graphics, controller.config, controller.user,
+  model.crud;
 
 type
 

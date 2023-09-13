@@ -23,7 +23,8 @@ type
   private
 
   public
-
+    procedure Insert;
+    procedure Edit(AGUID: String); virtual;
   end;
 
 var
@@ -39,6 +40,18 @@ procedure TfrmBasCadastro.FormCreate(Sender: TObject);
 begin
   inherited;
   acSalvar.Visible := true;
+end;
+
+procedure TfrmBasCadastro.Insert;
+begin
+  DataSource1.DataSet.Close;
+  DataSource1.DataSet.Open;
+  DataSource1.DataSet.Insert;
+end;
+
+procedure TfrmBasCadastro.Edit(AGUID: String);
+begin
+
 end;
 
 procedure TfrmBasCadastro.DataSource1StateChange(Sender: TObject);

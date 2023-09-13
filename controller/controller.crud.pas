@@ -5,13 +5,13 @@ unit controller.crud;
 interface
 
 uses
-  Classes, SysUtils, DB, uvalida, udbnotifier;
+  Classes, SysUtils, Controls, DB, uvalida, udbnotifier;
 
 type
 
-  { TControllerCRUD }
+  { TCRUD }
 
-  TControllerCRUD = class(TDBNotifier)
+  TCRUD = class(TDBNotifier)
     private
       FValidador: TValidador;
     protected
@@ -19,6 +19,7 @@ type
       procedure Valida; virtual;
     public
       destructor Destroy; override;
+      procedure Clear; virtual;
       function Delete: Integer; virtual;
       function Post: Integer; virtual;
       procedure GetPage(APage: Integer = 1); virtual;
@@ -26,38 +27,44 @@ type
 
 implementation
 
-{ TControllerCRUD }
+{ TCRUD }
 
-function TControllerCRUD.Validador: TValidador;
+function TCRUD.Validador: TValidador;
 begin
   if not Assigned(FValidador) then
     FValidador := TValidador.Create;
   Result := FValidador;
 end;
 
-procedure TControllerCRUD.Valida;
+procedure TCRUD.Valida;
 begin
 
 end;
 
-destructor TControllerCRUD.Destroy;
+destructor TCRUD.Destroy;
 begin
   if Assigned(FValidador) then
     FreeAndNil(FValidador);
   inherited Destroy;
 end;
 
-function TControllerCRUD.Delete: Integer;
+procedure TCRUD.Clear;
+begin
+
+end;
+
+function TCRUD.Delete: Integer;
 begin
   Result := 0;
 end;
 
-function TControllerCRUD.Post: Integer;
+function TCRUD.Post: Integer;
 begin
   Valida;
+  Result := mrOK;
 end;
 
-procedure TControllerCRUD.GetPage(APage: Integer);
+procedure TCRUD.GetPage(APage: Integer);
 begin
 
 end;

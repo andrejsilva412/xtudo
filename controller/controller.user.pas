@@ -5,7 +5,7 @@ unit controller.user;
 interface
 
 uses
-  Classes, SysUtils, controller.crud, udatacollection, utypes;
+  Classes, SysUtils, ExtCtrls, controller.crud, udatacollection, usyserror, utypes;
 
 type
 
@@ -28,7 +28,7 @@ type
 
   { TUser }
 
-  TUser = class(TControllerCRUD)
+  TUser = class(TCRUD)
     private
       FData: TData;
       FGUID: String;
@@ -42,11 +42,11 @@ type
     public
       constructor Create;
       destructor Destroy; override;
-      procedure Clear;
+      procedure Clear; override;
       function Delete: Integer; override;
       function Post: Integer; override;
-      procedure Get(AUserName: String; APassword: String = ''); overload;
-      procedure Get(APage: Integer = 1); overload;
+      function Get(AUserName: String; APassword: String): Integer;
+      function Get(GUID: String): Integer;
       procedure GetPage(APage: Integer = 1); override;
       procedure LogOut;
       function AdministradorCadastrado: Boolean;
@@ -124,33 +124,31 @@ begin
   end;
 end;
 
-procedure TUser.Get(AUserName: String; APassword: String);
+function TUser.Get(AUserName: String; APassword: String): Integer;
 var
   MUser: TModelUser;
 begin
 
   MUser := TModelUser.Create;
   try
-    MUser.Get(AUserName, APassword, Self);
+    Result := MUser.Get(AUserName, APassword, Self);
   finally
     FreeAndNil(MUser);
   end;
 
 end;
 
-procedure TUser.Get(APage: Integer);
+function TUser.Get(GUID: String): Integer;
 var
   MUser: TModelUser;
 begin
 
   MUser := TModelUser.Create;
   try
-    MUser.OnProgress := @DoProgress;
-    MUser.Get(Self, APage);
+    Result := MUser.Get(GUID, Self);
   finally
     FreeAndNil(MUser);
   end;
-
 end;
 
 procedure TUser.GetLoggedUser;
@@ -168,8 +166,18 @@ begin
 end;
 
 procedure TUser.GetPage(APage: Integer);
+var
+  MUser: TModelUser;
 begin
-  inherited GetPage(APage);
+
+  MUser := TModelUser.Create;
+  try
+    MUser.OnProgress := @DoProgress;
+    MUser.Get(Self, APage);
+  finally
+    FreeAndNil(MUser);
+  end;
+
 end;
 
 procedure TUser.LogOut;
@@ -221,7 +229,7 @@ begin
       end;
     end;
   except
-    on E: Exception do
+    on E: SysError do
     begin
       raise Exception.Create(E.Message);
     end;

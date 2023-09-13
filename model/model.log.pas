@@ -5,7 +5,7 @@ unit model.log;
 interface
 
 uses
-  Classes, SysUtils, model.crud, controller.log;
+  Classes, SysUtils, model.crud;
 
   type
 
@@ -19,7 +19,7 @@ uses
         function GetNextID: Integer; overload;
       public
         constructor Create;
-        function Post(ALog: TLog): Integer;
+        procedure Post(const msg: String; AErrorCode: Integer);
     end;
 
 implementation
@@ -34,10 +34,14 @@ begin
     SQL.Add('CREATE TABLE "log" (');
     SQL.Add('"id"	INTEGER NOT NULL UNIQUE,');
     SQL.Add('"data"	TEXT NOT NULL,');
+    SQL.Add('"errorcode"	INTEGER NOT NULL,');
     SQL.Add('"descricao"	TEXT NOT NULL,');
     SQL.Add('PRIMARY KEY("id"));');
     // Cria a tabela Log
     StartTransaction(true);
+    ExecuteDirect(SQL, true);
+    SQL.Clear;
+    SQL.Add('CREATE INDEX idx_errorcode ON log (errorcode);');
     ExecuteDirect(SQL, true);
     Commit(true);
   end;
@@ -57,23 +61,22 @@ begin
 
 end;
 
-function TModelLog.Post(ALog: TLog): Integer;
+procedure TModelLog.Post(const msg: String; AErrorCode: Integer);
 var
-  ID: Integer;
+  lID: Integer;
 begin
 
   StartTransaction(true);
   try
-    ID := GetNextID;
-    Result := Inherited Insert(FTableLog, 'id = :id, data = :data, '
-      + 'descricao = :descricao', [ID,
-        DateTimeToCacheDateTime(Date), ALog.Descricao], true);
+    lID := GetNextID;
+    Inherited Insert(FTableLog, 'id = :id, data = :data, '
+      + 'errorcode = :errorcode, descricao = :descricao', [lID,
+        DateTimeToCacheDateTime(Date), AErrorCode, msg], true);
     Commit(true);
   except
     on E: Exception do
     begin
       RollBack(true);
-      raise Exception.Create(E.Message);
     end;
   end;
 

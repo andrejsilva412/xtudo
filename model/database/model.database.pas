@@ -18,6 +18,7 @@ type
       FTransact: TSQLTransaction;
       procedure BeforeConnect(Sender: TObject); virtual;
       function ClearWhereFromCondition(ACondition: String): String;
+      function GetSQLQuery: TSQLQuery;
       function Execute(const SQL: String; ADataSet: TBufDataset;
         AParams: array of Variant): Integer;
       function CountRecords(ATable, ACondicao: String;
@@ -31,6 +32,7 @@ type
       function Connected: Boolean;
       procedure ExecuteDirect(ASQL: String);
       function Delete(ATable, ACondicao: String; AParams: array of Variant): Integer;
+      function GetBase64Content(ATable, GUIDField, GUID, ABase64Field: String): String;
       function Insert(ATable, AFields: String; AParams: array of Variant): Integer;
       function Select(ATable, AFields, ACondicao: String;
         AParams: array of Variant; ACount: String; AFieldCount: String;
@@ -67,6 +69,19 @@ begin
   Result := Trim(StringReplace(ACondition, 'where', '', [rfReplaceAll]));
 end;
 
+function TModelDatabase.GetSQLQuery: TSQLQuery;
+var
+  ASQLQuery: TSQLQuery;
+begin
+
+  ASQLQuery := TSQLQuery.Create(nil);
+  ASQLQuery.DataBase := FDatabase;
+  ASQLQuery.Transaction := FDatabase.Transaction;
+  ASQLQuery.SQL.Clear;
+  Result := ASQLQuery;
+
+end;
+
 function TModelDatabase.Execute(const SQL: String; ADataSet: TBufDataset;
   AParams: array of Variant): Integer;
 var
@@ -74,11 +89,8 @@ var
   i: Integer;
 begin
 
-  ASQLQuery := TSQLQuery.Create(nil);
+  ASQLQuery := GetSQLQuery;
   try
-    ASQLQuery.DataBase := FDatabase;
-    ASQLQuery.Transaction := FDatabase.Transaction;
-    ASQLQuery.SQL.Clear;
     ASQLQuery.SQL.Add(SQL);
     for i := 0 to ASQLQuery.Params.Count -1 do
     begin
@@ -191,6 +203,34 @@ begin
   end;
 
   Result := Execute(ASQL, nil, AParams);
+end;
+
+function TModelDatabase.GetBase64Content(ATable, GUIDField, GUID,
+  ABase64Field: String): String;
+const
+  C_WHERE = 'where %s = :%s';
+var
+  SQL, ACondicao: String;
+  ASQLQuery: TSQLQuery;
+begin
+
+  ASQLQuery := GetSQLQuery;
+  try
+    Result := '';
+    ACondicao := Trim(Format(C_WHERE, [GUIDField, GUIDField]));
+    SQL := Trim(Format(C_SELECT, [ABase64Field, ATable]) + ' ' + ACondicao);
+    ASQLQuery.SQL.Add(SQL);
+    ASQLQuery.ParamByName(GUIDField).AsString := GUID;
+    ASQLQuery.Open;
+    if not ASQLQuery.IsEmpty then
+    begin
+      Result := ASQLQuery.FieldByName(GUIDField).AsString;
+    end;
+    ASQLQuery.Close;
+  finally
+    FreeAndNil(ASQLQuery);
+  end;
+
 end;
 
 function TModelDatabase.Update(ATable, AFields, Acondicao: String;

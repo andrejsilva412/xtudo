@@ -5,16 +5,15 @@ unit view.cadusuario;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  DBCtrls, Buttons, BGRAShape, BGRAImageManipulation, rxmemds, view.bascadastro,
-  DB;
+  LCLType, LCLIntf, Classes, SysUtils, Forms, Controls, Graphics, Dialogs,
+  ExtCtrls, StdCtrls, DBCtrls, Buttons, ExtDlgs, BGRAShape, rxmemds, rxswitch,
+  view.bascadastro, DB;
 
 type
 
   { TfrmCadUsuario }
 
   TfrmCadUsuario = class(TfrmBasCadastro)
-    BGRAShape1: TBGRAShape;
     DBEdit1: TDBEdit;
     DBEdit2: TDBEdit;
     DBEdit3: TDBEdit;
@@ -30,19 +29,23 @@ type
     mdUsernome: TStringField;
     mdUsersenha: TStringField;
     mdUserusuario: TStringField;
+    RxSwitch1: TRxSwitch;
+    Shape1: TShape;
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;
+    procedure acSalvarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
   private
     FShowPassword: Boolean;
     procedure SetShowPassword(AValue: Boolean);
-  private
     procedure LoadPictureUserDefault;
     property ShowPassword: Boolean read FShowPassword write SetShowPassword;
   protected
     procedure SetStyle; override;
+    procedure Edit(AGUID: String); override;
   public
 
   end;
@@ -52,7 +55,7 @@ var
 
 implementation
 
-uses uconst;
+uses uconst, utils, utypes;
 
 {$R *.lfm}
 
@@ -68,7 +71,7 @@ begin
   DBEdit3.PasswordChar := '*';
   DBEdit4.PasswordChar := '*';
   FShowPassword := AValue;
-  if not FShowPassword then
+  if FShowPassword then
   begin
     DBEdit3.PasswordChar := #0;
     DBEdit4.PasswordChar := #0;
@@ -80,6 +83,39 @@ begin
   inherited;
   LoadPictureUserDefault;
   ShowPassword := false;
+end;
+
+procedure TfrmCadUsuario.acSalvarExecute(Sender: TObject);
+begin
+  inherited;
+  if mdUsersenha.AsString <> mdUserconfsenha.AsString then
+  begin
+    Sistema.Mensagem.Alerta('As senhas estão diferentes.');
+    mdUser.Edit;
+    DBEdit3.SetFocus;
+  end else begin
+    Sistema.Administrativo.User.GUID := mdUserguid.AsString;
+    Sistema.Administrativo.User.Nome := mdUsernome.AsString;
+    Sistema.Administrativo.User.Username := mdUserusuario.AsString;
+    Sistema.Administrativo.User.Password := mdUsersenha.AsString;
+    Sistema.Administrativo.User.UserType := iif(RxSwitchStateToBoolean(
+      RxSwitch1.StateOn) = true, utAdmin, utNormal);
+    if Sistema.Administrativo.User.Post = 1 then
+      ModalResult := mrOK;
+  end;
+end;
+
+procedure TfrmCadUsuario.Image1Click(Sender: TObject);
+var
+  aFile: String;
+begin
+
+  aFile := Sistema.Image.OpenPictureDialog;
+  if aFile <> '' then
+  begin
+    Image1.Picture.LoadFromFile(aFile);
+  end;
+
 end;
 
 procedure TfrmCadUsuario.SpeedButton1Click(Sender: TObject);
@@ -99,6 +135,23 @@ begin
   SpeedButton2.Flat := true;
   Sistema.Image.SVG(SpeedButton1, C_SVG_EYE, FBorderColor);
   Sistema.Image.SVG(SpeedButton2, C_SVG_DELETE, clRed);
+  RxSwitch1.Color := FBrushColor;
+end;
+
+procedure TfrmCadUsuario.Edit(AGUID: String);
+begin
+
+  Sistema.Administrativo.User.Get(AGUID);
+  mdUser.CloseOpen;
+  mdUser.Edit;
+  mdUserguid.AsString := Sistema.Administrativo.User.GUID;
+  mdUsernome.AsString := Sistema.Administrativo.User.Nome;
+  mdUserusuario.AsString := Sistema.Administrativo.User.Username;
+  RxSwitch1.StateOn := sw_off;
+  if Sistema.Administrativo.User.UserType = utAdmin then
+    RxSwitch1.StateOn := sw_on;
+  inherited Edit(AGUID);
+
 end;
 
 end.

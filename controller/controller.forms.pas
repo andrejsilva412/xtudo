@@ -18,8 +18,8 @@ type
       destructor Destroy; override;
       procedure ShowWizard;
       procedure CloseWizard;
-      procedure ShowUsuario;
-      function ShowCadastroUsuario: Integer;
+      function Usuario: Integer; overload;
+      function Usuario(AGUID: String): Integer; overload;
   end;
 
 implementation
@@ -68,18 +68,23 @@ begin
   frmMain.Show;
 end;
 
-procedure TForms.ShowUsuario;
+function TForms.Usuario: Integer;
 begin
   if not FormExists(TfrmUsuario) then
     frmUsuario := TfrmUsuario.Create(Application);
   frmMain.TDINoteBook1.ShowFormInPage(frmUsuario);
+  Result := mrIgnore;
 end;
 
-function TForms.ShowCadastroUsuario: Integer;
+function TForms.Usuario(AGUID: String): Integer;
 begin
 
   frmCadUsuario := TfrmCadUsuario.Create(Application);
   try
+    if AGUID = '' then
+      frmCadUsuario.Insert
+    else
+      frmCadUsuario.Edit(AGUID);
     Result := frmCadUsuario.ShowModal;
   finally
     FreeAndNil(frmCadUsuario);

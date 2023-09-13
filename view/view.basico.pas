@@ -7,8 +7,8 @@ interface
 
 uses
   LMessages, LCLIntf, Classes, SysUtils, Forms, Controls, ComCtrls, Graphics,
-  Dialogs, StdCtrls, IniPropStorage, ExtCtrls, JSONPropStorage,
-  controller.sistema;
+  Dialogs, StdCtrls, IniPropStorage, ExtCtrls, JSONPropStorage, usyserror,
+  controller.sistema, rxswitch;
 
 type
 
@@ -38,11 +38,14 @@ type
     FBottonMargin: Integer;
   protected
     FBorderColor: TColor;
+    FBrushColor: TColor;
     Sistema: TSistema;
     procedure SetStyle; virtual;
     procedure Clear; virtual;
     procedure InitPanel(APanel: TPanel);
     property PaintBorder: Boolean read FPaintBorder write FPaintBorder;
+    function RxSwitchStateToBoolean(ARxSwitchState: TSwithState): Boolean;
+    function BooleanToRxSwitchState(ARxSwitchState: Boolean): TSwithState;
   public
 
   end;
@@ -91,7 +94,7 @@ procedure TfrmBasico.FormCreate(Sender: TObject);
 begin
 
   Sistema := TSistema.Create;
-  Application.OnException := @Sistema.Log.OnException;
+  Application.OnException  := @SysError.OnException;
   Application.Title := C_APP_TITLE;
   Icon := Application.Icon;
   Caption := C_APP_TITLE + ' ' + Caption;
@@ -102,6 +105,7 @@ begin
   FRightMargin := 8;
   FTopMargin := 27;
   FBottonMargin := 48;
+  FBrushColor := clDefault;
   SetStyle;
   Clear;
   FPaintBorder := true;
@@ -114,7 +118,7 @@ begin
   if FPaintBorder then
   begin
     Color := FBorderColor;
-    Canvas.Brush.Color := clDefault;
+    Canvas.Brush.Color := FBrushColor;
     Canvas.Brush.Style := bsSolid;
     Canvas.FillRect(FLeftMargin, FTopMargin, ClientWidth - FRightMargin,
       ClientHeight - FBottonMargin);
@@ -133,7 +137,6 @@ end;
 
 procedure TfrmBasico.SetStyle;
 begin
-
 
 end;
 
@@ -158,6 +161,20 @@ begin
   APanel.ParentColor := false;
   APanel.BevelOuter := bvNone;
   APanel.BevelInner := bvNone;
+end;
+
+function TfrmBasico.RxSwitchStateToBoolean(ARxSwitchState: TSwithState
+  ): Boolean;
+begin
+  Result := iif(ARxSwitchState = sw_on, true, false);
+end;
+
+function TfrmBasico.BooleanToRxSwitchState(ARxSwitchState: Boolean
+  ): TSwithState;
+begin
+
+  Result := iif(ARxSwitchState = true, sw_on, sw_off);
+
 end;
 
 procedure TfrmBasico.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

@@ -18,8 +18,10 @@ type
     mdUsuarionome: TStringField;
     mdUsuariousername: TStringField;
     procedure acNovoExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   protected
     procedure LoadPage; override;
+    procedure Edit; override;
   public
   end;
 
@@ -34,8 +36,14 @@ implementation
 
 procedure TfrmUsuario.acNovoExecute(Sender: TObject);
 begin
-  if Sistema.Forms.ShowCadastroUsuario = mrOK then
+  if Sistema.Forms.Usuario = mrOK then
     LoadPage;
+end;
+
+procedure TfrmUsuario.FormCreate(Sender: TObject);
+begin
+  inherited;
+  acNovo.Visible := false;
 end;
 
 procedure TfrmUsuario.LoadPage;
@@ -48,7 +56,7 @@ begin
   with Sistema.Administrativo do
   begin
     User.OnProgress := @ProgressBar;
-    User.Get(APage);
+    User.GetPage(APage);
     MaxPage := User.Data.MaxPage;
     for i := 0 to User.Data.Count -1 do
     begin
@@ -62,6 +70,12 @@ begin
     inherited;
   end;
 
+end;
+
+procedure TfrmUsuario.Edit;
+begin
+  if Sistema.Forms.Usuario(dsDBGrid.DataSet.FieldByName('guid').AsString) = mrOK then
+    inherited;
 end;
 
 end.

@@ -51,7 +51,7 @@ type
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
-    Panel5: TPanel;
+    pnBtnCaixa: TPanel;
     pnMenu: TPanel;
     Panel4: TPanel;
     pnCenter: TPanel;
@@ -199,7 +199,7 @@ begin
   InitPanel(Panel2);
   InitPanel(Panel3);
   InitPanel(Panel4);
-  InitPanel(Panel5);
+  InitPanel(pnBtnCaixa);
   InitPanel(pnTop);
   InitPanel(pnCenter);
   InitPanel(pnBottom);
@@ -233,7 +233,7 @@ begin
   Sistema.Image.SVG(SpeedButton3, C_SVG_NOTIFICATION, AColor);
   Sistema.Image.SVG(SpeedButton4, C_SVG_MENU, clWhite);
 
-  Panel5.Color := AColor;
+  pnBtnCaixa.Color := AColor;
   Sistema.Image.SVG(SpeedButton5.Glyph, c_SVG_POINT_OF_SALE,
     48, 48, clWhite);
   SpeedButton5.Font.Color := clWhite;
@@ -257,6 +257,10 @@ begin
     pnBottom.Visible := false;
     Menu := nil;
     TDINoteBook1.ShowTabs := false;
+
+    pnBtnCaixa.Visible := false;
+    SpeedButton3.Visible := false;
+
   finally
     FreeAndNil(LSistema);
   end;
@@ -300,7 +304,7 @@ end;
 
 procedure TfrmMain.acUsuarioExecute(Sender: TObject);
 begin
-  Sistema.Forms.ShowUsuario;
+  Sistema.Forms.Usuario;
 end;
 
 procedure TfrmMain.FormPaint(Sender: TObject);

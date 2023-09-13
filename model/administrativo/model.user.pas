@@ -5,8 +5,9 @@ unit model.user;
 interface
 
 uses
-  Classes, SysUtils, controller.user, BufDataset, model.crud,
-  model.config;
+  Classes, SysUtils, controller.user, model.crud, BufDataset,
+
+  usyserror;
 
 type
 
@@ -19,8 +20,9 @@ type
     public
       constructor Create;
       function AdministradorCadastrado: Boolean;
-      procedure Get(AUserName: String; APassword: String; AUser: TUser); overload;
-      procedure Get(AUser: TUser; APage: Integer);
+      function Get(AGUID: String; AUser: TUser): Integer; overload;
+      function Get(AUserName: String; APassword: String; AUser: TUser): Integer; overload;
+      function Get(AUser: TUser; APage: Integer): Integer; overload;
       function Post(AUser: TUser): Integer;
       procedure SaveLoggedUser(AUser: TUser);
       procedure GetLoggedUser(AUser: TUser);
@@ -29,7 +31,7 @@ type
 
 implementation
 
-uses utypes;
+uses utypes, uconst, model.config;
 
 { TModelUser }
 
@@ -69,36 +71,24 @@ begin
 
 end;
 
-procedure TModelUser.Get(AUserName: String; APassword: String; AUser: TUser);
-var
-  ADataSet: TBufDataset;
+function TModelUser.Get(AUserName: String; APassword: String; AUser: TUser
+  ): Integer;
 begin
 
-  ADataSet := TBufDataset.Create(nil);
-  try
-    if APassword <> '' then
-    begin
-      APassword := GetPasswordHash(APassword);
-      Select('usuario', '*', 'where username = :username and senha = :senha',
-        [AUserName, APassword], ADataSet);
-    end else begin
-      Select('usuario', '*', 'where username = :username',
-        [AUserName], ADataSet);
-    end;
-    if not ADataSet.IsEmpty then
-    begin
-      AUser.GUID := ADataSet.FieldByName('guid').AsString;
-      AUser.Username := ADataSet.FieldByName('username').AsString;
-      AUser.UserType := IntegerToUserType(ADataSet.FieldByName('tipo').AsInteger);
-    end;
-    ADataSet.Close;
-  finally
-    FreeAndNil(ADataSet);
+  if APassword <> '' then
+  begin
+    APassword := GetPasswordHash(APassword);
+    AUser.GUID := Search('usuario', 'guid', 'where username = :username and senha = :senha',
+      [AUserName, APassword], '');
+  end else begin
+    AUser.GUID := Search('usuario', 'guid', 'where username = :username',
+      [AUserName], '');
   end;
+  Result := Get(AUser.GUID, AUser);
 
 end;
 
-procedure TModelUser.Get(AUser: TUser; APage: Integer);
+function TModelUser.Get(AUser: TUser; APage: Integer): Integer;
 var
   ADataSet: TBufDataset;
   ARecords, AMaxPage: Integer;
@@ -106,6 +96,7 @@ begin
 
   ADataSet := TBufDataset.Create(nil);
   try
+    Result := C_REG_FOUND;
     AMaxPage := 1;
     ARecords := Select('usuario', 'guid, nome, username, tipo', '', [],
                            'count(usuario.guid) total', 'total', APage,
@@ -133,12 +124,41 @@ begin
 
 end;
 
+function TModelUser.Get(AGUID: String; AUser: TUser): Integer;
+var
+  ADataSet: TBufDataset;
+  Str: String;
+begin
+
+  Result := C_REG_NOT_FOUND;
+  ADataSet := TBufDataset.Create(nil);
+  try
+    Select('usuario', 'guid, nome, username, tipo',
+      'where guid = :guid', [AGUID], ADataSet);
+    AUser.Clear;
+    if not ADataSet.IsEmpty then
+    begin
+      AUser.GUID := ADataSet.FieldByName('guid').AsString;
+      AUser.Nome := ADataSet.FieldByName('nome').AsString;
+      AUser.Username := ADataSet.FieldByName('username').AsString;
+      AUser.UserType := IntegerToUserType(ADataSet.FieldByName('tipo').AsInteger);
+{      Str := GetBase64Content('usuario', 'guid', AUser.GUID, 'foto');
+      if Str <> '' then
+        Image.Base64ToPNG(Str, AUser.Image.Picture.PNG);  }
+      Result := C_REG_FOUND;
+    end;
+  finally
+    FreeAndNil(ADataSet);
+  end;
+
+end;
+
 function TModelUser.Post(AUser: TUser): Integer;
 begin
 
   StartTransaction;
   try
-    Get(AUser.Username, '', AUser);
+    //Get(AUser.Username, '', AUser);
     if AUser.GUID = '' then
       Result := Insert(AUser)
     else Result := Update(AUser);

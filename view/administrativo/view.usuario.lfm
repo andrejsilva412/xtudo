@@ -1,5 +1,6 @@
 inherited frmUsuario: TfrmUsuario
   Caption = 'Usuários'
+  OnCreate = FormCreate
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
@@ -35,6 +36,7 @@ inherited frmUsuario: TfrmUsuario
           KeyList.Strings = (          )
         end      
         item
+          ButtonStyle = cbsButton
           PickList.Strings = (          )
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal

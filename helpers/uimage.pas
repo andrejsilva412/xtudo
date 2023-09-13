@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, buttons, ExtCtrls, Graphics, Math, Forms, ustatus,
-  BGRABitmap, BGRASVG, BGRAUnits, BGRATransform, BGRABitmapTypes,
-  LCLType, utypes;
+  BGRABitmap, BGRASVG, BGRAUnits, BGRATransform, BGRABitmapTypes, base64,
+  LCLType, utypes, ExtDlgs, usyserror, System.NetEncoding;
 
 
 type
@@ -29,6 +29,9 @@ type
         Cor: TColor = clBlack); overload;
       procedure SVG(ASpeedButton: TSpeedButton; aSVG: String;
         Cor: TColor = clBlack; AResource: Boolean = true); overload;
+      function OpenPictureDialog: String;
+      function PNGToBase64(PNG: TPortableNetworkGraphic): String;
+      procedure Base64ToPNG(pngBase64: String; PNG: TPortableNetworkGraphic);
   end;
 
 var
@@ -36,7 +39,7 @@ var
 
 implementation
 
-uses uhtmlutils, ustrutils;
+uses uhtmlutils, utils, ustrutils;
 
 { TImages }
 
@@ -152,6 +155,79 @@ procedure TImages.SVG(ASpeedButton: TSpeedButton; aSVG: String; Cor: TColor;
 begin
   SVG(ASpeedButton.Glyph, aSVG,
     ASpeedButton.Width, ASpeedButton.Height, Cor, AResource);
+end;
+
+function TImages.OpenPictureDialog: String;
+const
+  MAX_IMG_FILE_SIZE = 1000000; // 1MB
+var
+  op: TOpenPictureDialog;
+  aFile: String;
+begin
+
+  op := TOpenPictureDialog.Create(nil);
+  aFile := '';
+  try
+    op.Filter := 'Arquivos PNG (*.png)|*.png';
+    if op.Execute then
+    begin
+      aFile := op.FileName;
+      if FileExists(aFile) then
+      begin
+        if FileSize(aFile) > MAX_IMG_FILE_SIZE then
+          raise SysError.Create('O arquivo não pode ser maior que 1MB');
+      end;
+    end;
+    Result := aFile;
+  finally
+    FreeAndNil(op);
+  end;
+
+end;
+
+function TImages.PNGToBase64(PNG: TPortableNetworkGraphic): String;
+var
+  Encoder: TBase64EncodingStream;
+  imgStream, OutPutStream: TStream;
+  s64: String;
+begin
+
+  OutPutStream := TStringStream.Create('');
+  Encoder := TBase64EncodingStream.Create(OutPutStream);
+  imgStream := TMemoryStream.Create;
+  try
+    png.SaveToStream(imgStream);
+    imgStream.Position := 0;
+    Encoder.CopyFrom(TStringStream(imgStream), imgStream.Size);
+    Encoder.Flush;
+    s64 := 'data:image/png;base64,' + TStringStream(OutPutStream).DataString;
+    Result := s64;
+  finally
+    imgStream.Free;
+    Encoder.Free;
+    OutPutStream.Free;
+  end;
+
+end;
+
+procedure TImages.Base64ToPNG(pngBase64: String; PNG: TPortableNetworkGraphic);
+var
+  Input, OutPut: TStringStream;
+begin
+
+  Input := TStringStream.Create(pngBase64);
+  OutPut := TStringStream.Create();
+  try
+    Input.Position := 0;
+    TNetEncoding.Base64.Decode(Input, OutPut);
+    OutPut.Position := 0;
+    PNG.LoadFromStream(OutPut);
+  finally
+    Input.Free;
+    OutPut.Free;
+  end;
+
+
 end;
 
 end.

@@ -252,8 +252,9 @@ inherited frmDBGrid: TfrmDBGrid
       FocusColor = clRed
       SelectedColor = clHighlight
       DataSource = dsDBGrid
-      Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
+      Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
       TabOrder = 0
+      OnDblClick = RxDBGrid1DblClick
     end
   end
   inherited JSONPropStorage1: TJSONPropStorage[10]
@@ -263,6 +264,9 @@ inherited frmDBGrid: TfrmDBGrid
   inherited ActionList1: TActionList[11]
     Left = 632
     Top = 256
+    inherited acSalvar: TAction
+      OnExecute = acSalvarExecute
+    end
     object acFirst: TAction[8]
       Caption = 'First'
       OnExecute = acFirstExecute
