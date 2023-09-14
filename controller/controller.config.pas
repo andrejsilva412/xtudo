@@ -58,7 +58,6 @@ type
     private
       FCacheDatabase: String;
       FCharSet: String;
-      FCheckTransaction: Boolean;
       FDatabaseName: String;
       FHostName: String;
       FParams: TStringList;
@@ -74,7 +73,6 @@ type
       function CheckCacheConnection: Boolean;
       procedure CreateConfigTable;
       property CharSet: String read FCharSet write FCharSet;
-      property CheckTransaction: Boolean read FCheckTransaction write FCheckTransaction;
       property DatabaseName: String read FDatabaseName write FDatabaseName;
       property HostName: String read FHostName write FHostName;
       property Port: Integer read FPort write FPort;

@@ -18,7 +18,7 @@ uses
   usyserror, model.log, udatacollection, model.endereco,
   uformats, view.main, model.pessoa,
   model.empresa, view.dbgrid, view.usuario,
-  urxdbgrid, uprogressbar, view.cadusuario;
+  urxdbgrid, uprogressbar, view.cadusuario, model.database.mariadb;
 
 
 {$R *.res}

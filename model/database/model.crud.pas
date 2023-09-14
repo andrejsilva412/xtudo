@@ -5,7 +5,7 @@ unit model.crud;
 interface
 
 uses
-  Classes, SysUtils, BufDataset, model.database.firebird, model.database.sqlite,
+  Classes, SysUtils, BufDataset, model.database.mariadb, model.database.sqlite,
   udbnotifier, uvalida, uimage, ucript;
 
 type
@@ -15,12 +15,12 @@ type
   TModelCRUD = class(TDBNotifier)
     private
       FDatabaseCache: TModelSQLite;
-      FDatabase: TModelFirebird;
+      FDatabase: TModelMariaDB;
       FSQL: TStringList;
       FValida: TValidador;
       FCrip: TCript;
       FImage: TImages;
-      function Database: TModelFirebird;
+      function Database: TModelMariaDB;
       function DatabaseCache: TModelSQLite;
     protected
       function Cript: TCript;
@@ -85,10 +85,10 @@ begin
   inherited Destroy;
 end;
 
-function TModelCRUD.Database: TModelFirebird;
+function TModelCRUD.Database: TModelMariaDB;
 begin
   if not Assigned(FDatabase) then
-    FDatabase := TModelFirebird.Create;
+    FDatabase := TModelMariaDB.Create;
   FDatabase.OnDatabaseNotify := @DoDataBaseNotify;
   FDatabase.OnProgress := @DoProgress;
   FDatabase.OnStatus := @DoStatus;

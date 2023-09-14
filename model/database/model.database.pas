@@ -254,7 +254,20 @@ end;
 function TModelDatabase.Select(ATable, AFields, ACondicao: String;
   AParams: array of Variant; ACount: String; AFieldCount: String;
   APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
+const
+  C_LIMIT = ' limit %d, %d';
+var
+  SQL: String;
+  OffSet, ARecords: Integer;
 begin
+  ARecords := CountRecords(ATable, ACondicao, AParams, ACount, AFieldCount);
+  OffSet := (C_MAX_REG * APage) - C_MAX_REG;
+  SQL := Trim(Format(C_SELECT, [OffSet, C_MAX_REG, AFields, ATable])
+    + ' ' + ACondicao);
+  SQL := SQL + Format(C_LIMIT, [OffSet, C_MAX_REG]);
+  Execute(SQL, ADataSet, AParams);
+  AMaxPage := MaxPage(ARecords);
+  Result := ARecords;
 
 end;
 

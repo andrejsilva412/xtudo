@@ -38,7 +38,7 @@ type
 
 implementation
 
-uses utils, ucript, uhtmlutils;
+uses uconst, utils, ucript, uhtmlutils;
 
 { TModelConfig }
 
@@ -216,21 +216,16 @@ procedure TModelConfig.Get(AConfig: TConfigDatabase);
 var
   aDef: String;
 begin
-  aDef := Path + 'database' + PathDelim + 'xtudo.fdb';
   with AConfig do
   begin
-    DatabaseName := GetConfig('database_filename', aDef);
+    DatabaseName := GetConfig('database_name', 'xtudo');
     HostName := GetConfig('database_hostname', 'localhost');
-    CharSet := GetConfig('database_charset', 'WIN1252');
-    CheckTransaction := GetConfig('database_checktransaction', false);
-    Params.Clear;
-    Params.DelimitedText :=
-        GetConfig('database_params', 'isc_tpb_read_committed');
+    CharSet := GetConfig('database_charset', 'utf8');
     aDef := GetConfig('database_username', '');
-    Username := iif(aDef <> '', Cript.Sha256Decrypt(aDef), 'SYSDBA');
+    Username := iif(aDef <> '', Cript.Sha256Decrypt(aDef), 'root');
     aDef := GetConfig('database_password', '');
-    Password := iif(aDef <> '', Cript.Sha256Decrypt(aDef), 'masterkey');
-    Port := GetConfig('database_port', 3050, false);
+    Password := iif(aDef <> '', Cript.Sha256Decrypt(aDef), 'root');
+    Port := GetConfig('database_port', C_MARIA_DB_DEFAULT_PORT, false);
   end;
 
 end;
@@ -254,9 +249,8 @@ begin
 
   with AConfig do
   begin
-    SetConfig('database_filename', DatabaseName);
+    SetConfig('database_name', DatabaseName);
     SetConfig('database_charset', CharSet);
-    SetConfig('database_checktransaction', CheckTransaction);
     SetConfig('database_params', Params.DelimitedText);
     SetConfig('database_username',
       Cript.Sha256Encrypt(Username));

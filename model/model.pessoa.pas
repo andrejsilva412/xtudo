@@ -12,6 +12,8 @@ type
   { TModelPessoa }
 
   TModelPessoa = class(TModelCRUD)
+    private
+      procedure Valida(AContato: TContato);
     protected
       function Post(ATipoContato: TTipoContato; AContato: TContato): Integer;
       procedure Get(ATipoContato: TTipoContato; AContato: TContato);
@@ -21,14 +23,29 @@ implementation
 
 { TModelPessoa }
 
+procedure TModelPessoa.Valida(AContato: TContato);
+var
+  i: Integer;
+begin
+
+  // Verifica se foi informado o GUID
+  for i := 0 to AContato.Count -1 do
+  begin
+    if AContato.Items[i].GUID = '' then
+      raise Exception.Create('Informe o GUID do contato.');
+  end;
+
+end;
+
 function TModelPessoa.Post(ATipoContato: TTipoContato; AContato: TContato
   ): Integer;
 var
   i: Integer;
 begin
 
-  // A Transação fica por conta de classe de herança
+  Valida(AContato);
 
+  // A Transação fica por conta de classe de herança
   Result := inherited Delete('contato', 'where tipo = :tipo',
     [TipoContatoToInteger(ATipoContato)]);
 

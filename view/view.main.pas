@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ComCtrls,
-  ExtCtrls, Buttons, ActnList, Menus, BCPanel, BCButtonFocus, BCButton,
-  BGRASpeedButton, BCTypes, TDIClass, view.basico;
+  ExtCtrls, Buttons, ActnList, Menus, BCPanel, BCButtonFocus,
+  TDIClass, view.basico;
 
 type
   { TPageControl }

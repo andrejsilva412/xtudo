@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ComCtrls, StdCtrls,
   ExtCtrls, EditBtn, MaskEdit, DBCtrls, rxmemds, uframetitulo, view.buttons,
-  uframeendereco, uframecnpj, BufDataset, DB;
+  uframeendereco, uframecnpj, BufDataset, DB, mysql80conn;
 
 type
 
@@ -34,8 +34,8 @@ type
     edBdPassword: TEdit;
     edBdUserName: TEdit;
     edHostName: TEdit;
+    edtDatabase: TEdit;
     edtAdminUsername: TEdit;
-    edtBancoDeDados: TFileNameEdit;
     edtPorta: TEdit;
     frameCNPJ1: TframeCNPJ;
     FrameEndereco1: TFrameEndereco;
@@ -159,7 +159,7 @@ end;
 procedure TfrmAssistenteInicial.TabSheet2Show(Sender: TObject);
 begin
   acGenerico2.Enabled := false;
-  SetFocus(edtBancoDeDados);
+  SetFocus(edtDatabase);
 end;
 
 procedure TfrmAssistenteInicial.TabSheet3Show(Sender: TObject);
@@ -222,14 +222,14 @@ procedure TfrmAssistenteInicial.Clear;
 begin
 
   inherited Clear;
-  edtBancoDeDados.Clear;
+  edtDatabase.Clear;
   lblServidorTesteConexao.Caption := '';
   Sistema.Config.Database.Get;
   edBdUserName.Caption := Sistema.Config.Database.Username;
   edBdPassword.Caption := Sistema.Config.Database.Password;
   edtPorta.Text := Sistema.Config.Database.Port.ToString;
   edHostName.Text := Sistema.Config.Database.HostName;
-  edtBancoDeDados.Text := Sistema.Config.Database.DatabaseName;
+  edtDatabase.Text := Sistema.Config.Database.DatabaseName;
   edAdminNome.Text := 'Administrador';
   edtAdminUsername.Text := 'admin';
   edAdminSenha.Text := 'admin';
@@ -249,10 +249,9 @@ procedure TfrmAssistenteInicial.btnServidorTesteClick(Sender: TObject);
 begin
   with Sistema.Config.Database do
   begin
-    CheckTransaction := true;
-    DataBaseName := edtBancoDeDados.FileName;
+    DataBaseName := edtDatabase.Text;
     HostName := edHostName.Text;
-    Port := StrToIntDef(edtPorta.Text, 3050);
+    Port := StrToIntDef(edtPorta.Text, C_MARIA_DB_DEFAULT_PORT);
     UserName := edBdUserName.Text;
     Password := edBdPassword.Text;
     Save;

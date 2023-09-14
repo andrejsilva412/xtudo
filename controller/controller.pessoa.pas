@@ -15,8 +15,10 @@ type
   TContatoItem = class(TCollectionItem)
     private
       FContato: String;
+      FGUID: String;
       FTipo: String;
     public
+      property GUID: String read FGUID write FGUID;
       property Tipo: String read FTipo write FTipo;
       property Contato: String read FContato write FContato;
   end;

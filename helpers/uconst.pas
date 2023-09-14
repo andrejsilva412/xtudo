@@ -12,6 +12,9 @@ const
   C_APP_TITLE = 'X-Tudo';
   C_FILE_JSON_FORM = 'form.json';
 
+  // MariaDB
+  C_MARIA_DB_DEFAULT_PORT = 3306;
+
   // Ícones SVG
   C_SVG_CLOSE = 'closesvg';
   C_SVG_SEARCH = 'search';
