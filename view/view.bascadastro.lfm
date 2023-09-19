@@ -7,6 +7,7 @@ inherited frmBasCadastro: TfrmBasCadastro
   ClientHeight = 312
   ClientWidth = 446
   OnCreate = FormCreate
+  OnShow = FormShow
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner

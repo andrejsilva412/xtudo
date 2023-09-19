@@ -18,7 +18,6 @@ type
     mdUsuarionome: TStringField;
     mdUsuariousername: TStringField;
     procedure acNovoExecute(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
   protected
     procedure LoadPage; override;
     procedure Edit; override;
@@ -36,14 +35,8 @@ implementation
 
 procedure TfrmUsuario.acNovoExecute(Sender: TObject);
 begin
-  if Sistema.Forms.Usuario = mrOK then
+  if Sistema.Forms.Usuario('') = mrOK then
     LoadPage;
-end;
-
-procedure TfrmUsuario.FormCreate(Sender: TObject);
-begin
-  inherited;
-  acNovo.Visible := false;
 end;
 
 procedure TfrmUsuario.LoadPage;

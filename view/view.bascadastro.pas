@@ -20,10 +20,12 @@ type
     procedure acSalvarExecute(Sender: TObject);
     procedure DataSource1StateChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
-
+    FACNovoVisible: Boolean;
+    FACExcluirVisible: Boolean;
   public
-    procedure Insert;
+    procedure Insert; virtual;
     procedure Edit(AGUID: String); virtual;
   end;
 
@@ -40,6 +42,12 @@ procedure TfrmBasCadastro.FormCreate(Sender: TObject);
 begin
   inherited;
   acSalvar.Visible := true;
+end;
+
+procedure TfrmBasCadastro.FormShow(Sender: TObject);
+begin
+  FACNovoVisible := acNovo.Visible;
+  FACExcluirVisible := acExcluir.Visible;
 end;
 
 procedure TfrmBasCadastro.Insert;
@@ -61,8 +69,9 @@ begin
     dsBrowse: begin
       acSalvar.Visible := false;
       acCancelar.Visible := false;
-      acExcluir.Visible := not DataSource1.DataSet.IsEmpty;
-      acNovo.Visible := true;
+      acExcluir.Visible := (not DataSource1.DataSet.IsEmpty) and (FACExcluirVisible);
+
+      acNovo.Visible := FACNovoVisible;
     end;
     dsInsert, dsEdit: begin
       acSalvar.Visible := true;

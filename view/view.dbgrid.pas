@@ -298,7 +298,7 @@ begin
   ProgressBar1.Max := AMax;
   if APosition = AMax then
     ProgressBar1.Position := 0;
-  Application.ProcessMessages;
+  //Application.ProcessMessages;
 end;
 
 procedure TfrmDBGrid.Edit;

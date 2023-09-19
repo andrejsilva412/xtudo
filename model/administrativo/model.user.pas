@@ -5,9 +5,7 @@ unit model.user;
 interface
 
 uses
-  Classes, SysUtils, controller.user, model.crud, BufDataset,
-
-  usyserror;
+  Classes, SysUtils, controller.user, model.crud, BufDataset, usyserror;
 
 type
 
@@ -23,7 +21,7 @@ type
       function Get(AGUID: String; AUser: TUser): Integer; overload;
       function Get(AUserName: String; APassword: String; AUser: TUser): Integer; overload;
       function Get(AUser: TUser; APage: Integer): Integer; overload;
-      function Post(AUser: TUser): Integer;
+      function Post(AUser: TUser): Boolean;
       procedure SaveLoggedUser(AUser: TUser);
       procedure GetLoggedUser(AUser: TUser);
       procedure LogOut(AUser: TUser);
@@ -43,7 +41,7 @@ begin
   Result := inherited Insert('usuario', 'guid = :guid, nome = :nome, '
     + 'username = :username, senha = :senha, tipo = :tipo',
     [AUSer.GUID, AUSer.Nome, AUSer.Username, AUSer.Password,
-     UserTypeToInteger(AUSer.UserType)]);
+    UserTypeToInteger(AUSer.UserType)]);
 
 end;
 
@@ -52,7 +50,7 @@ begin
 
   AUSer.Password := GetPasswordHash(AUSer.Password);
   Result := inherited Update('usuario', 'nome = :nome, username = :username, '
-    + 'senha = :senha, tipo = :tipo', 'where guid = :guid',
+    + 'senha = :senha, tipo2 = :tipo', 'where guid = :guid',
     [AUSer.Nome, AUSer.Username, AUSer.Password,
     UserTypeToInteger(AUSer.UserType), AUSer.GUID]);
 
@@ -153,21 +151,27 @@ begin
 
 end;
 
-function TModelUser.Post(AUser: TUser): Integer;
+function TModelUser.Post(AUser: TUser): Boolean;
 begin
 
   StartTransaction;
   try
     //Get(AUser.Username, '', AUser);
     if AUser.GUID = '' then
-      Result := Insert(AUser)
-    else Result := Update(AUser);
+      Insert(AUser)
+    else
+      Update(AUser);
+    // Foto
+    SaveToBlobField('usuario', AUser.GUID, 'foto', AUser.Image);
     Commit;
+    AUser.Responce := 'Success';
+    Result := true;
   except
     on E: Exception do
     begin
       RollBack;
-      raise Exception.Create(E.Message);
+      Result := false;
+      AUser.Responce := E.Message;
     end;
   end;
 

@@ -32,6 +32,7 @@ type
   TfrmMain = class(TfrmBasico)
     acCaixa: TAction;
     acFinalizar: TAction;
+    acEmpresa: TAction;
     acUsuario: TAction;
     ActionList1: TActionList;
     BCButtonFocus1: TBCButtonFocus;
@@ -47,7 +48,9 @@ type
     Label5: TLabel;
     Label7: TLabel;
     MainMenu1: TMainMenu;
-    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -68,6 +71,7 @@ type
     tbLogin: TTabSheet;
     TDINoteBook1: TTDINoteBook;
     procedure acCaixaExecute(Sender: TObject);
+    procedure acEmpresaExecute(Sender: TObject);
     procedure acFinalizarExecute(Sender: TObject);
     procedure acUsuarioExecute(Sender: TObject);
     procedure BCButtonFocus1Click(Sender: TObject);
@@ -294,7 +298,12 @@ end;
 
 procedure TfrmMain.acCaixaExecute(Sender: TObject);
 begin
-  ShowMessage('teste');
+  Sistema.Forms.Usuario('49C4396C-1C18-467D-959C-CD618A2A42DD');
+end;
+
+procedure TfrmMain.acEmpresaExecute(Sender: TObject);
+begin
+  Sistema.Forms.Empresa;
 end;
 
 procedure TfrmMain.acFinalizarExecute(Sender: TObject);

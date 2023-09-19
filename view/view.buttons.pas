@@ -51,8 +51,8 @@ type
     BCButtonFocus8: TBCButtonFocus;
     BCButtonFocus9: TBCButtonFocus;
     procedure acFecharExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure FormMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
   private
@@ -96,6 +96,12 @@ begin
   Close;
 end;
 
+procedure TfrmBasButtons.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  FreeAndNil(FPopUpMenuButtons);
+  inherited;
+end;
+
 procedure TfrmBasButtons.FormCreate(Sender: TObject);
 var
   i: Integer;
@@ -120,11 +126,6 @@ begin
   FPopUpMenuButtons.Parent := Self;
   PopupMenu := FPopUpMenuButtons;
 
-end;
-
-procedure TfrmBasButtons.FormDestroy(Sender: TObject);
-begin
-  FreeAndNil(FPopUpMenuButtons);
 end;
 
 procedure TfrmBasButtons.FormMouseUp(Sender: TObject; Button: TMouseButton;

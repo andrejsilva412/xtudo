@@ -15,9 +15,9 @@ inherited frmMain: TfrmMain
     Height = 607
     Top = 0
     Width = 1107
-    ActivePage = tbLogin
+    ActivePage = tbMain
     Align = alClient
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tbLogin: TTabSheet
       Caption = 'tbLogin'
@@ -5773,12 +5773,22 @@ inherited frmMain: TfrmMain
       Caption = 'Usuários'
       OnExecute = acUsuarioExecute
     end
+    object acEmpresa: TAction
+      Caption = 'Empresa'
+      OnExecute = acEmpresaExecute
+    end
   end
   object mnuConfig: TPopupMenu[3]
     Left = 522
     Top = 105
-    object MenuItem1: TMenuItem
-      Action = acUsuario
+    object MenuItem2: TMenuItem
+      Caption = 'Cadastros'
+      object MenuItem3: TMenuItem
+        Action = acEmpresa
+      end
+      object MenuItem4: TMenuItem
+        Action = acUsuario
+      end
     end
   end
   object MainMenu1: TMainMenu[4]

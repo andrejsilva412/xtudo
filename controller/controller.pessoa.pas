@@ -33,20 +33,26 @@ type
 
   TPessoa = class(TCRUD)
     private
+      FCNPJ: String;
       FContato: TContato;
       FEndereco: TEndereco;
       FGUID: String;
+      FInscricaoEstadual: String;
       FNome: String;
+      FNomeFantasia: String;
       FTipoContato: TTipoContato;
     public
       constructor Create;
       destructor Destroy; override;
-      procedure Clear; virtual;
+      procedure Clear;
       property GUID: String read FGUID write FGUID;
       property Nome: String read FNome write FNome;
       property Endereco: TEndereco read FEndereco;
       property TipoContato: TTipoContato read FTipoContato write FTipoContato;
       property Contato: TContato read FContato;
+      property CNPJ: String read FCNPJ write FCNPJ;
+      property InscricaoEstadual: String read FInscricaoEstadual write FInscricaoEstadual;
+      property NomeFantasia: String read FNomeFantasia write FNomeFantasia;
   end;
 
 implementation
@@ -80,6 +86,9 @@ begin
   FNome := '';
   FEndereco.Clear;
   FContato.Clear;
+  FCNPJ := '';
+  FInscricaoEstadual := '';
+  FNomeFantasia := '';
 
 end;
 

@@ -1,6 +1,5 @@
 inherited frmUsuario: TfrmUsuario
   Caption = 'Usuários'
-  OnCreate = FormCreate
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner

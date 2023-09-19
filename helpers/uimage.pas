@@ -29,7 +29,7 @@ type
         Cor: TColor = clBlack); overload;
       procedure SVG(ASpeedButton: TSpeedButton; aSVG: String;
         Cor: TColor = clBlack; AResource: Boolean = true); overload;
-      function OpenPictureDialog: String;
+      procedure OpenPictureDialog(AImg: TImage);
       function PNGToBase64(PNG: TPortableNetworkGraphic): String;
       procedure Base64ToPNG(pngBase64: String; PNG: TPortableNetworkGraphic);
   end;
@@ -157,7 +157,7 @@ begin
     ASpeedButton.Width, ASpeedButton.Height, Cor, AResource);
 end;
 
-function TImages.OpenPictureDialog: String;
+procedure TImages.OpenPictureDialog(AImg: TImage);
 const
   MAX_IMG_FILE_SIZE = 1000000; // 1MB
 var
@@ -176,9 +176,10 @@ begin
       begin
         if FileSize(aFile) > MAX_IMG_FILE_SIZE then
           raise SysError.Create('O arquivo não pode ser maior que 1MB');
+        AImg.Proportional := true;
+        AImg.Picture.LoadFromFile(aFile);
       end;
     end;
-    Result := aFile;
   finally
     FreeAndNil(op);
   end;

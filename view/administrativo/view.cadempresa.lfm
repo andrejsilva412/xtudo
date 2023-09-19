@@ -1,0 +1,74 @@
+inherited frmCadEmpresa: TfrmCadEmpresa
+  Left = 240
+  Top = 138
+  Caption = 'Editar Cadastro da Empresa'
+  OnShow = FormShow
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+  end
+  object Label1: TLabel[8]
+    Left = 16
+    Height = 15
+    Top = 24
+    Width = 65
+    Caption = 'Razão Social'
+    ParentColor = False
+  end
+  object DBEdit1: TDBEdit[9]
+    Left = 16
+    Height = 23
+    Top = 42
+    Width = 416
+    DataField = 'razaosocial'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 8
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[10]
+  end
+  inherited ActionList1: TActionList[11]
+    inherited acSalvar: TAction
+      OnExecute = acSalvarExecute
+    end
+  end
+  inherited DataSource1: TDataSource[12]
+    DataSet = mdEmpresa
+  end
+  object mdEmpresa: TRxMemoryData[13]
+    FieldDefs = <    
+      item
+        Name = 'guid'
+        DataType = ftString
+        Size = 50
+      end    
+      item
+        Name = 'razaosocial'
+        DataType = ftString
+        Size = 40
+      end>
+    PacketRecords = 0
+    Left = 331
+    Top = 92
+    object mdEmpresaguid: TStringField
+      FieldKind = fkData
+      FieldName = 'guid'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object mdEmpresarazaosocial: TStringField
+      FieldKind = fkData
+      FieldName = 'razaosocial'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+  end
+end

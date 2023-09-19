@@ -6,8 +6,8 @@ inherited frmBasButtons: TfrmBasButtons
   Caption = 'Buttons'
   ClientHeight = 393
   ClientWidth = 793
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnMouseUp = FormMouseUp
   OnShow = nil
   object BCButtonFocus1: TBCButtonFocus[0]

@@ -5,17 +5,17 @@ unit controller.empresa;
 interface
 
 uses
-  Classes, SysUtils, db, controller.pessoajuridica;
+  Classes, SysUtils, controller.pessoa;
 
 type
 
   { TEmpresa }
 
-  TEmpresa = class(TPessoaJuridica)
+  TEmpresa = class(TPessoa)
     protected
       procedure Valida; override;
     public
-      function Post: Integer; override;
+      function Post: Boolean; override;
       function Get: Boolean;
   end;
 
@@ -33,7 +33,7 @@ begin
     raise Exception.Create(Format(SMSGCampoObrigatorio, ['Nome Fantasia']));
 end;
 
-function TEmpresa.Post: Integer;
+function TEmpresa.Post: Boolean;
 var
   MEmpresa: TModelEmpresa;
 begin

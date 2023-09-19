@@ -17,7 +17,7 @@ type
       function Update(AEmpresa: TEmpresa): Integer;
     public
       function Get(AEmpresa: TEmpresa): Boolean;
-      function Post(AEmpresa: TEmpresa): Integer;
+      function Post(AEmpresa: TEmpresa): Boolean;
   end;
 
 implementation
@@ -95,20 +95,22 @@ begin
 
 end;
 
-function TModelEmpresa.Post(AEmpresa: TEmpresa): Integer;
+function TModelEmpresa.Post(AEmpresa: TEmpresa): Boolean;
 begin
 
   StartTransaction();
   try
     if AEmpresa.GUID = '' then
-      Result := Insert(AEmpresa)
+      Insert(AEmpresa)
     else
-      Result := Update(AEmpresa);
+      Update(AEmpresa);
     inherited Post(AEmpresa.TipoContato, AEmpresa.Contato);
     Commit();
+    Result := true;
   except
     on E: Exception do
     begin
+      Result := false;
       RollBack();
       raise Exception.Create(E.Message);
     end;

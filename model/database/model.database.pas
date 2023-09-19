@@ -5,7 +5,8 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, sqldb, BufDataset, controller.config, Math, udbnotifier;
+  Classes, SysUtils, sqldb, db, BufDataset, controller.config, Math, usyserror,
+  udbnotifier;
 
 type
 
@@ -44,6 +45,7 @@ type
       function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer): Integer; overload;
       procedure StartTransaction;
       function Update(ATable, AFields, Acondicao: String; AParams: array of Variant): Integer;
+      function Update(ATable, GUID, BlobField: String; AStream: TStream): Integer;
       procedure RollBack;
 
   end;
@@ -251,6 +253,30 @@ begin
 
 end;
 
+function TModelDatabase.Update(ATable, GUID, BlobField: String; AStream: TStream
+  ): Integer;
+var
+  ASQLQuery: TSQLQuery;
+  SQL: String;
+begin
+
+  ASQLQuery := GetSQLQuery;
+  try
+    SQL := Format(C_UPDATE, [ATable, BlobField + ' = :' + BlobField,
+      'guid = :guid']);
+    ASQLQuery.Close;
+    ASQLQuery.SQL.Clear;
+    ASQLQuery.SQL.Add(SQL);
+    ASQLQuery.ParamByName('guid').AsString := GUID;
+    ASQLQuery.ParamByName(BlobField).LoadFromStream(AStream, ftBlob);
+    ASQLQuery.ExecSQL;
+    Result := ASQLQuery.RowsAffected;
+  finally
+    FreeAndNil(ASQLQuery);
+  end;
+
+end;
+
 function TModelDatabase.Select(ATable, AFields, ACondicao: String;
   AParams: array of Variant; ACount: String; AFieldCount: String;
   APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
@@ -260,10 +286,10 @@ var
   SQL: String;
   OffSet, ARecords: Integer;
 begin
+
   ARecords := CountRecords(ATable, ACondicao, AParams, ACount, AFieldCount);
   OffSet := (C_MAX_REG * APage) - C_MAX_REG;
-  SQL := Trim(Format(C_SELECT, [OffSet, C_MAX_REG, AFields, ATable])
-    + ' ' + ACondicao);
+  SQL := Trim(Format(C_SELECT, [AFields, ATable + ' ' + ACondicao]));
   SQL := SQL + Format(C_LIMIT, [OffSet, C_MAX_REG]);
   Execute(SQL, ADataSet, AParams);
   AMaxPage := MaxPage(ARecords);

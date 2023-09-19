@@ -1,208 +1,145 @@
 inherited frmCadUsuario: TfrmCadUsuario
-  Left = 539
-  Height = 268
-  Top = 174
-  Width = 488
+  Left = 199
+  Height = 183
+  Top = 171
+  Width = 583
   Caption = 'Usuário'
-  ClientHeight = 268
-  ClientWidth = 488
-  OnCreate = FormCreate
+  ClientHeight = 183
+  ClientWidth = 583
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
-    Left = 389
-    Top = 230
-    TabOrder = 11
+    Left = 484
+    Top = 145
   end
   inherited BCButtonFocus2: TBCButtonFocus
-    Left = 278
-    Top = 230
-    TabOrder = 10
+    Left = 373
+    Top = 145
   end
   inherited BCButtonFocus3: TBCButtonFocus
-    Left = 183
-    Top = 230
-    TabOrder = 9
+    Left = 278
+    Top = 145
   end
   inherited BCButtonFocus4: TBCButtonFocus
-    Left = 88
-    Top = 230
-    TabOrder = 8
+    Left = 183
+    Top = 145
   end
   inherited BCButtonFocus5: TBCButtonFocus
-    Left = -7
-    Top = 230
-    TabOrder = 7
+    Left = 88
+    Top = 145
   end
   inherited BCButtonFocus6: TBCButtonFocus
-    Left = -102
-    Top = 230
-    TabOrder = 6
+    Left = -7
+    Top = 145
   end
   inherited BCButtonFocus8: TBCButtonFocus
-    Left = -195
-    Top = 230
-    TabOrder = 5
+    Left = -100
+    Top = 145
   end
   inherited BCButtonFocus9: TBCButtonFocus
-    Left = -288
-    Top = 230
-    TabOrder = 4
+    Left = -193
+    Top = 145
   end
-  object Shape1: TShape[8]
-    Left = 19
-    Height = 90
-    Top = 48
-    Width = 90
-    Pen.Width = 2
-  end
-  object Label1: TLabel[9]
-    Left = 120
+  object Label1: TLabel[8]
+    Left = 176
     Height = 15
-    Top = 30
-    Width = 89
-    Caption = 'Nome Completo'
+    Top = 40
+    Width = 33
+    Caption = 'Nome'
     ParentColor = False
   end
-  object DBEdit1: TDBEdit[10]
-    AnchorSideRight.Side = asrBottom
-    Left = 120
+  object DBEdit1: TDBEdit[9]
+    Left = 176
     Height = 23
-    Top = 46
-    Width = 344
+    Top = 56
+    Width = 248
     DataField = 'nome'
     DataSource = DataSource1
-    Anchors = [akTop, akLeft, akRight]
     MaxLength = 0
-    TabOrder = 0
+    TabOrder = 8
   end
-  object Label2: TLabel[11]
-    Left = 120
+  object Label2: TLabel[10]
+    Left = 432
     Height = 15
-    Top = 83
+    Top = 40
     Width = 92
     Caption = 'Nome de Usuário'
     ParentColor = False
   end
-  object DBEdit2: TDBEdit[12]
-    AnchorSideRight.Side = asrBottom
-    Left = 120
+  object DBEdit2: TDBEdit[11]
+    Left = 432
     Height = 23
-    Top = 100
-    Width = 344
-    DataField = 'usuario'
+    Top = 56
+    Width = 128
+    DataField = 'username'
     DataSource = DataSource1
-    Anchors = [akTop, akLeft, akRight]
     MaxLength = 0
-    TabOrder = 1
+    TabOrder = 9
   end
-  object Label3: TLabel[13]
-    Left = 120
+  object Label3: TLabel[12]
+    Left = 176
     Height = 15
-    Top = 134
+    Top = 88
     Width = 32
     Caption = 'Senha'
     ParentColor = False
   end
-  object DBEdit3: TDBEdit[14]
-    Left = 120
+  object DBEdit3: TDBEdit[13]
+    Left = 176
     Height = 23
-    Top = 150
-    Width = 170
+    Top = 104
+    Width = 137
     DataField = 'senha'
     DataSource = DataSource1
     MaxLength = 0
-    TabOrder = 2
+    PasswordChar = '*'
+    TabOrder = 10
   end
-  object Label4: TLabel[15]
-    Left = 296
+  object Label4: TLabel[14]
+    Left = 320
     Height = 15
-    Top = 134
+    Top = 89
     Width = 89
     Caption = 'Confirmar Senha'
     ParentColor = False
   end
-  object DBEdit4: TDBEdit[16]
-    AnchorSideRight.Control = SpeedButton1
-    Left = 296
+  object DBEdit4: TDBEdit[15]
+    Left = 320
     Height = 23
-    Top = 150
-    Width = 145
+    Top = 104
+    Width = 104
     DataField = 'confsenha'
     DataSource = DataSource1
-    Anchors = [akTop, akLeft, akRight]
     MaxLength = 0
-    TabOrder = 3
+    PasswordChar = '*'
+    TabOrder = 11
   end
-  object SpeedButton1: TSpeedButton[17]
-    AnchorSideTop.Control = DBEdit4
-    AnchorSideRight.Control = DBEdit2
-    AnchorSideRight.Side = asrBottom
-    AnchorSideBottom.Control = DBEdit4
-    AnchorSideBottom.Side = asrBottom
-    Left = 441
-    Height = 23
-    Top = 150
-    Width = 23
-    Anchors = [akTop, akRight, akBottom]
-    OnClick = SpeedButton1Click
+  inherited JSONPropStorage1: TJSONPropStorage[16]
   end
-  object SpeedButton2: TSpeedButton[18]
-    Cursor = crHandPoint
-    Left = 86
-    Height = 22
-    Top = 144
-    Width = 23
-    OnClick = SpeedButton2Click
-  end
-  object RxSwitch1: TRxSwitch[19]
-    Left = 120
-    Height = 34
-    Top = 184
-    Width = 146
-    Caption = 'Administrador'
-    ParentColor = False
-    TabOrder = 12
-    TextPosition = tpRight
-    Style = swsHorizontal
-  end
-  object Image1: TImage[20]
-    Cursor = crHandPoint
-    Left = 19
-    Height = 90
-    Top = 48
-    Width = 90
-    OnClick = Image1Click
-  end
-  inherited JSONPropStorage1: TJSONPropStorage[21]
-    Top = 30
-  end
-  inherited ActionList1: TActionList[22]
-    Top = 30
+  inherited ActionList1: TActionList[17]
     inherited acSalvar: TAction
       OnExecute = acSalvarExecute
     end
   end
-  inherited DataSource1: TDataSource[23]
-    DataSet = mdUser
-    Top = 30
+  inherited DataSource1: TDataSource[18]
+    DataSet = mdUsuario
   end
-  object mdUser: TRxMemoryData[24]
+  object mdUsuario: TRxMemoryData[19]
     FieldDefs = <    
-      item
-        Name = 'guid'
-        DataType = ftString
-        Size = 45
-      end    
       item
         Name = 'nome'
         DataType = ftString
         Size = 45
       end    
       item
-        Name = 'usuario'
+        Name = 'guid'
         DataType = ftString
-        Size = 20
+        Size = 45
+      end    
+      item
+        Name = 'username'
+        DataType = ftString
+        Size = 45
       end    
       item
         Name = 'senha'
@@ -215,11 +152,11 @@ inherited frmCadUsuario: TfrmCadUsuario
         Size = 20
       end>
     PacketRecords = 0
-    Left = 430
-    Top = 31
-    object mdUserguid: TStringField
+    Left = 433
+    Top = 8
+    object mdUsuarionome: TStringField
       FieldKind = fkData
-      FieldName = 'guid'
+      FieldName = 'nome'
       Index = 0
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
@@ -227,9 +164,9 @@ inherited frmCadUsuario: TfrmCadUsuario
       Required = False
       Size = 45
     end
-    object mdUsernome: TStringField
+    object mdUsuarioguid: TStringField
       FieldKind = fkData
-      FieldName = 'nome'
+      FieldName = 'guid'
       Index = 1
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
@@ -237,16 +174,17 @@ inherited frmCadUsuario: TfrmCadUsuario
       Required = False
       Size = 45
     end
-    object mdUserusuario: TStringField
+    object mdUsuariousername: TStringField
       FieldKind = fkData
-      FieldName = 'usuario'
+      FieldName = 'username'
       Index = 2
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+      Size = 45
     end
-    object mdUsersenha: TStringField
+    object mdUsuariosenha: TStringField
       FieldKind = fkData
       FieldName = 'senha'
       Index = 3
@@ -255,7 +193,7 @@ inherited frmCadUsuario: TfrmCadUsuario
       ReadOnly = False
       Required = False
     end
-    object mdUserconfsenha: TStringField
+    object mdUsuarioconfsenha: TStringField
       FieldKind = fkData
       FieldName = 'confsenha'
       Index = 4

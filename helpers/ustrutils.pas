@@ -9,6 +9,8 @@ uses
 
 function DelChars(const S: string; Chr: Char): string; overload;
 function DelChars(const S: string; Chr: String): string; overload;
+function RemoveAcentos(Str: String;
+   RemoveEspacosDuplos: Boolean = true; aStrToUpper: Boolean = false): String;
 // Remove todos os caracteres deixando apenas os números
 function RemoveChar(const Texto: String): String;
 procedure Split(const Delimiter: Char; Input: String;
@@ -17,6 +19,8 @@ function TextoEntre(Texto,
     Caracter1, Caracter2: String; caseSensitive: Boolean = false): String;
 
 implementation
+
+uses withoutaccent_pt_br;
 
 function DelChars(const S: string; Chr: Char): string;
 var
@@ -37,6 +41,41 @@ begin
   Result := S;
   for i := Length(Result) downto 1 do
       if Result[i] = Chr then Delete(Result, I, 1);
+
+end;
+
+function RemoveAcentos(Str: String; RemoveEspacosDuplos: Boolean;
+  aStrToUpper: Boolean): String;
+const
+  xCarExt: array[1..48] of string = ('<','>','!','@','#','$','%','¨','&','*',
+                                   '(',')','_','+','=','{','}','[',']','?',
+                                   ';',':',',','|','*','"','~','^','´','`',
+                                   '¨','æ','Æ','ø','£','Ø','ƒ','ª','º','¿',
+                                   '®','½','¼','ß','µ','þ','ý','Ý');
+var
+  i: Integer;
+begin
+
+  Result := Str;
+
+  if Result = '' then
+    exit;
+
+  Result := WithoutAccent_ptBR(Result);
+
+  if RemoveEspacosDuplos then
+    for i := 0 to Length(Result) do
+      if (Result[i] = ' ') and (Result[i+1] = '') then
+        Delete(Result, i+1, 1);
+
+  if RemoveEspacosDuplos then
+    Result := Trim(Result);
+
+  for i := 1 to 48 do
+    Result := StringReplace(Result, xCarExt[i], '', [rfReplaceAll]);
+
+  if aStrToUpper then
+    Result := UpperCase(Result);
 
 end;
 

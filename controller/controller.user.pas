@@ -5,7 +5,8 @@ unit controller.user;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, controller.crud, udatacollection, usyserror, utypes;
+  Classes, SysUtils, ExtCtrls, Graphics, controller.crud,
+  udatacollection, usyserror, utypes;
 
 type
 
@@ -32,6 +33,7 @@ type
     private
       FData: TData;
       FGUID: String;
+      FImage: TPortableNetworkGraphic;
       FNome: String;
       FPassword: String;
       FUsername: String;
@@ -43,8 +45,8 @@ type
       constructor Create;
       destructor Destroy; override;
       procedure Clear; override;
-      function Delete: Integer; override;
-      function Post: Integer; override;
+      function Delete: Boolean; override;
+      function Post: Boolean; override;
       function Get(AUserName: String; APassword: String): Integer;
       function Get(GUID: String): Integer;
       procedure GetPage(APage: Integer = 1); override;
@@ -56,6 +58,7 @@ type
       property Nome: String read FNome write FNome;
       property Username: String read FUsername write FUsername;
       property Password: String read FPassword write FPassword;
+      property Image: TPortableNetworkGraphic read FImage write FImage;
       property UserType: TUserType read FUserType write FUserType;
       property Data: TData read FData write FData;
   end;
@@ -87,10 +90,12 @@ constructor TUser.Create;
 begin
   FUserType := utNormal;
   FData := TData.Create;
+  FImage := TPortableNetworkGraphic.Create;
 end;
 
 destructor TUser.Destroy;
 begin
+  FreeAndNil(FImage);
   FreeAndNil(FData);
   inherited Destroy;
 end;
@@ -106,19 +111,23 @@ begin
 
 end;
 
-function TUser.Delete: Integer;
+function TUser.Delete: Boolean;
 begin
   Result := inherited Delete;
 end;
 
-function TUser.Post: Integer;
+function TUser.Post: Boolean;
 var
   MUser: TModelUser;
 begin
   MUser := TModelUser.Create;
   try
-    Valida;
-    Result := MUser.Post(Self);
+    try
+      inherited Post;
+      Result := MUser.Post(Self);
+    except
+      Result := false;
+    end;
   finally
     FreeAndNil(MUser);
   end;

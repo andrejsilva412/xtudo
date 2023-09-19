@@ -144,7 +144,7 @@ begin
   Sistema.Administrativo.User.Username := edtAdminUsername.Text;
   Sistema.Administrativo.User.Password := edAdminSenha.Text;
   Sistema.Administrativo.User.UserType := utAdmin;
-  if Sistema.Administrativo.User.Post = 0 then
+  if Sistema.Administrativo.User.Post then
   begin
     Sistema.Mensagem.Erro('Falha ao cadastrar o usuário');
   end;
@@ -296,7 +296,7 @@ begin
       mdEmpresacidade.AsString;
     Sistema.Administrativo.Empresa.Endereco.Cidade.UF.Sigla :=
       mdEmpresauf.AsString;
-    if Sistema.Administrativo.Empresa.Post > 0 then
+    if Sistema.Administrativo.Empresa.Post then
       Sistema.WizardDone
     else Sistema.Finaliza;
   end else begin

@@ -13,6 +13,7 @@ type
 
   TCRUD = class(TDBNotifier)
     private
+      FResponce: String;
       FValidador: TValidador;
     protected
       function Validador: TValidador;
@@ -20,9 +21,10 @@ type
     public
       destructor Destroy; override;
       procedure Clear; virtual;
-      function Delete: Integer; virtual;
-      function Post: Integer; virtual;
+      function Delete: Boolean; virtual;
+      function Post: Boolean; virtual;
       procedure GetPage(APage: Integer = 1); virtual;
+      property Responce: String read FResponce write FResponce;
   end;
 
 implementation
@@ -53,15 +55,15 @@ begin
 
 end;
 
-function TCRUD.Delete: Integer;
+function TCRUD.Delete: Boolean;
 begin
-  Result := 0;
+  Result := false;
 end;
 
-function TCRUD.Post: Integer;
+function TCRUD.Post: Boolean;
 begin
   Valida;
-  Result := mrOK;
+  Result := false;
 end;
 
 procedure TCRUD.GetPage(APage: Integer);

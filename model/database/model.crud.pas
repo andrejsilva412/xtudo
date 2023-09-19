@@ -5,8 +5,8 @@ unit model.crud;
 interface
 
 uses
-  Classes, SysUtils, BufDataset, model.database.mariadb, model.database.sqlite,
-  udbnotifier, uvalida, uimage, ucript;
+  Classes, SysUtils, BufDataset, Graphics, model.database.mariadb,
+  model.database.sqlite, udbnotifier, uvalida, uimage, ucript;
 
 type
 
@@ -51,6 +51,8 @@ type
          AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
       function Search(ATable, AField, ACondicao: String;
          AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
+      function SaveToBlobField(ATable, GUID, BlobField: String; AStream: TStream; ACache: Boolean = false): Integer; overload;
+      function SaveToBlobField(ATable, GUID, BlobField: String; APNG: TPortableNetworkGraphic; ACache: Boolean = false): Integer; overload;
       procedure ExecuteDirect(ASQL: String; ACache: Boolean = false);
       procedure ExecuteDirect(ASQL: TStringList; ACache: Boolean = false);
       function DateTimeToCacheDateTime(ADateTime: TDateTime): String;
@@ -271,6 +273,33 @@ begin
     Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
   else
     Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
+end;
+
+function TModelCRUD.SaveToBlobField(ATable, GUID, BlobField: String;
+  AStream: TStream; ACache: Boolean): Integer;
+begin
+
+  if ACache then
+    Result := DatabaseCache.Update(ATable, GUID, BlobField, AStream)
+  else
+    Result := Database.Update(ATable, GUID, BlobField, AStream);
+
+end;
+
+function TModelCRUD.SaveToBlobField(ATable, GUID, BlobField: String;
+  APNG: TPortableNetworkGraphic; ACache: Boolean): Integer;
+var
+  AStream: TMemoryStream;
+begin
+
+  AStream := TMemoryStream.Create;
+  try
+    APNG.SaveToStream(AStream);
+    Result := SaveToBlobField(ATable, GUID, BlobField, AStream, ACache);
+  finally
+    FreeAndNil(AStream);
+  end;
+
 end;
 
 procedure TModelCRUD.ExecuteDirect(ASQL: String; ACache: Boolean);
