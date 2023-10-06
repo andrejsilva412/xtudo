@@ -70,7 +70,6 @@ type
     tbMain: TTabSheet;
     tbLogin: TTabSheet;
     TDINoteBook1: TTDINoteBook;
-    procedure acCaixaExecute(Sender: TObject);
     procedure acEmpresaExecute(Sender: TObject);
     procedure acFinalizarExecute(Sender: TObject);
     procedure acUsuarioExecute(Sender: TObject);
@@ -294,11 +293,6 @@ begin
     tbMain.Show;
   end;
 
-end;
-
-procedure TfrmMain.acCaixaExecute(Sender: TObject);
-begin
-  Sistema.Forms.Usuario('49C4396C-1C18-467D-959C-CD618A2A42DD');
 end;
 
 procedure TfrmMain.acEmpresaExecute(Sender: TObject);

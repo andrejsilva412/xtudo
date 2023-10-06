@@ -15,9 +15,9 @@ inherited frmMain: TfrmMain
     Height = 607
     Top = 0
     Width = 1107
-    ActivePage = tbMain
+    ActivePage = tbLogin
     Align = alClient
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 0
     object tbLogin: TTabSheet
       Caption = 'tbLogin'
@@ -5759,11 +5759,10 @@ inherited frmMain: TfrmMain
     OnRestoreProperties = JSONPropStorage1RestoreProperties
   end
   object ActionList1: TActionList[2]
-    Left = 384
-    Top = 112
+    Left = 400
+    Top = 120
     object acCaixa: TAction
       Caption = 'Caixa'
-      OnExecute = acCaixaExecute
     end
     object acFinalizar: TAction
       Caption = 'Finalizar'

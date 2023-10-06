@@ -71,6 +71,10 @@ inherited frmUsuario: TfrmUsuario
   object mdUsuario: TRxMemoryData[13]
     FieldDefs = <    
       item
+        Name = 'id'
+        DataType = ftInteger
+      end    
+      item
         Name = 'nome'
         DataType = ftString
         Size = 20
@@ -79,19 +83,23 @@ inherited frmUsuario: TfrmUsuario
         Name = 'username'
         DataType = ftString
         Size = 30
-      end    
-      item
-        Name = 'guid'
-        DataType = ftString
-        Size = 40
       end>
     PacketRecords = 0
     Left = 504
     Top = 113
+    object mdUsuarioid: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
     object mdUsuarionome: TStringField
       FieldKind = fkData
       FieldName = 'nome'
-      Index = 0
+      Index = 1
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -100,22 +108,12 @@ inherited frmUsuario: TfrmUsuario
     object mdUsuariousername: TStringField
       FieldKind = fkData
       FieldName = 'username'
-      Index = 1
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 30
-    end
-    object mdUsuarioguid: TStringField
-      FieldKind = fkData
-      FieldName = 'guid'
       Index = 2
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 30
     end
   end
 end

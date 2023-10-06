@@ -189,7 +189,7 @@
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="controller\controller.crud.pas"/>
+        <Filename Value="controller\controller.dataset.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -302,6 +302,10 @@
         <ComponentName Value="frmCadUsuario"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\database\model.dataset.pas"/>
+        <IsPartOfProject Value="True"/>
       </Unit>
     </Units>
   </ProjectOptions>

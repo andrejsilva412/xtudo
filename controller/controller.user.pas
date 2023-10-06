@@ -5,7 +5,7 @@ unit controller.user;
 interface
 
 uses
-  Classes, SysUtils, ExtCtrls, Graphics, controller.crud,
+  Classes, SysUtils, ExtCtrls, Graphics, controller.pessoa,
   udatacollection, usyserror, utypes;
 
 type
@@ -29,10 +29,9 @@ type
 
   { TUser }
 
-  TUser = class(TCRUD)
+  TUser = class(TPessoa)
     private
       FData: TData;
-      FGUID: String;
       FImage: TPortableNetworkGraphic;
       FNome: String;
       FPassword: String;
@@ -45,16 +44,15 @@ type
       constructor Create;
       destructor Destroy; override;
       procedure Clear; override;
-      function Delete: Boolean; override;
-      function Post: Boolean; override;
+      function Delete: Integer; override;
+      function Post: Integer; override;
       function Get(AUserName: String; APassword: String): Integer;
-      function Get(GUID: String): Integer;
+      function Get(AID: Integer): Integer;
       procedure GetPage(APage: Integer = 1); override;
       procedure LogOut;
       function AdministradorCadastrado: Boolean;
       function Login: Boolean;
       function ConfigFile: String;
-      property GUID: String read FGUID write FGUID;
       property Nome: String read FNome write FNome;
       property Username: String read FUsername write FUsername;
       property Password: String read FPassword write FPassword;
@@ -88,6 +86,7 @@ end;
 
 constructor TUser.Create;
 begin
+  inherited;
   FUserType := utNormal;
   FData := TData.Create;
   FImage := TPortableNetworkGraphic.Create;
@@ -103,31 +102,26 @@ end;
 procedure TUser.Clear;
 begin
 
-  FGUID := '';
-  FNome := '';
+  inherited;
   FUsername := '';
   FPassword := '';
   FUserType := utNormal;
 
 end;
 
-function TUser.Delete: Boolean;
+function TUser.Delete: Integer;
 begin
   Result := inherited Delete;
 end;
 
-function TUser.Post: Boolean;
+function TUser.Post: Integer;
 var
   MUser: TModelUser;
 begin
   MUser := TModelUser.Create;
   try
-    try
-      inherited Post;
-      Result := MUser.Post(Self);
-    except
-      Result := false;
-    end;
+    inherited Post;
+    Result := MUser.Post(Self);
   finally
     FreeAndNil(MUser);
   end;
@@ -147,17 +141,18 @@ begin
 
 end;
 
-function TUser.Get(GUID: String): Integer;
+function TUser.Get(AID: Integer): Integer;
 var
   MUser: TModelUser;
 begin
 
   MUser := TModelUser.Create;
   try
-    Result := MUser.Get(GUID, Self);
+    Result := MUser.Get(AID, Self);
   finally
     FreeAndNil(MUser);
   end;
+
 end;
 
 procedure TUser.GetLoggedUser;
@@ -225,7 +220,7 @@ begin
   Result := false;
   try
     Get(FUsername, FPassword);
-    if FGUID = '' then
+    if ID = 0 then
     begin
       DoStatus(SMSGUsuarioOuSenhaInvalido);
     end else begin

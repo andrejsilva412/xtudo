@@ -17,17 +17,12 @@ type
 
   TUserType = (utNormal, utAdmin);
 
-// Tipo de Pessoa
-
 type
-
-  TTipoContato = (tcEmpresa);
+  TView = (vEmpresa, vUsuario);
 
 function SVGImagesToString(ASVGImage: TSVGImages): String;
 function UserTypeToInteger(AUserType: TUserType): Integer;
 function IntegerToUserType(AUserType: Integer): TUserType;
-function TipoContatoToInteger(ATipoContato: TTipoContato): Integer;
-function IntegerToTipoContato(ATipoContato: Integer): TTipoContato;
 
 implementation
 
@@ -69,16 +64,6 @@ end;
 function IntegerToUserType(AUserType: Integer): TUserType;
 begin
   Result := TUserType(AUserType);
-end;
-
-function TipoContatoToInteger(ATipoContato: TTipoContato): Integer;
-begin
-  Result := Ord(ATipoContato);
-end;
-
-function IntegerToTipoContato(ATipoContato: Integer): TTipoContato;
-begin
-  Result := TTipoContato(ATipoContato);
 end;
 
 end.

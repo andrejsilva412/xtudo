@@ -5,39 +5,38 @@ unit model.empresa;
 interface
 
 uses
-  Classes, SysUtils, BufDataset, controller.empresa, model.pessoa;
+  Classes, SysUtils, BufDataset, Controls, controller.empresa, model.dataset;
 
 type
 
   { TModelEmpresa }
 
-  TModelEmpresa = class(TModelPessoa)
+  TModelEmpresa = class(TModelDataSet)
     private
       function Insert(AEmpresa: TEmpresa): Integer;
       function Update(AEmpresa: TEmpresa): Integer;
     public
+      constructor Create;
       function Get(AEmpresa: TEmpresa): Boolean;
-      function Post(AEmpresa: TEmpresa): Boolean;
+      function Post(AEmpresa: TEmpresa): Integer;
   end;
 
 implementation
-
-uses utypes;
 
 { TModelEmpresa }
 
 function TModelEmpresa.Insert(AEmpresa: TEmpresa): Integer;
 begin
-  if Search('empresa', 'guid', '', [], 0) > 0 then
+
+  if Search('id', '', [], 0) > 0 then
     raise Exception.Create('O sistema não permite multiempresa.');
 
-  AEmpresa.GUID := NewGUID;
+  AEmpresa.ID := GetNextID();
 
-  Result := inherited Insert(
-    'empresa', 'guid = :guid, nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
+  Result := inherited Insert('id = :id, nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
     + 'inscricaoestadual = :ie, endereco = :endereco, numero = :numero, '
     + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, uf = :uf, '
-    + 'cep = :cep', [AEmpresa.GUID, AEmpresa.Nome, AEmpresa.NomeFantasia,
+    + 'cep = :cep', [AEmpresa.ID, AEmpresa.Nome, AEmpresa.NomeFantasia,
     AEmpresa.CNPJ, AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
     AEmpresa.Endereco.Numero, AEmpresa.Endereco.Complemento, AEmpresa.Endereco.Bairro,
     AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla,
@@ -48,18 +47,22 @@ end;
 function TModelEmpresa.Update(AEmpresa: TEmpresa): Integer;
 begin
 
-  Result := inherited Update(
-    'empresa', 'nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
+  Result := inherited Update('nome = :nome, fantasia = :fantasia, cnpj = :cnpj, '
     + 'inscricaoestadual = :ie, endereco = :endereco, numero = :numero, '
     + 'complemento = :complemento, bairro = :bairro, cidade = :cidade, '
     + 'uf = :uf, cep = :cep',
-    'where guid = :guid',
+    'where id = :id',
     [AEmpresa.Nome, AEmpresa.NomeFantasia, AEmpresa.CNPJ,
     AEmpresa.InscricaoEstadual, AEmpresa.Endereco.Logradouro,
     AEmpresa.Endereco.Numero, AEmpresa.Endereco.Complemento, AEmpresa.Endereco.Bairro,
     AEmpresa.Endereco.Cidade.Nome, AEmpresa.Endereco.Cidade.UF.Sigla,
-    AEmpresa.Endereco.CEP, AEmpresa.GUID]);
+    AEmpresa.Endereco.CEP, AEmpresa.ID]);
 
+end;
+
+constructor TModelEmpresa.Create;
+begin
+  TableName := 'empresa';
 end;
 
 function TModelEmpresa.Get(AEmpresa: TEmpresa): Boolean;
@@ -70,11 +73,11 @@ begin
   ADataSet := TBufDataset.Create(nil);
   Result := false;
   try
-    Select('empresa', '*', '', [], ADataSet);
+    Select('*', '', [], ADataSet);
     AEmpresa.Clear;
     if not ADataSet.IsEmpty then
     begin
-      AEmpresa.GUID := ADataSet.FieldByName('guid').AsString;
+      AEmpresa.ID := ADataSet.FieldByName('id').AsInteger;
       AEmpresa.Nome := ADataSet.FieldByName('nome').AsString;
       AEmpresa.NomeFantasia := ADataSet.FieldByName('fantasia').AsString;
       AEmpresa.CNPJ := ADataSet.FieldByName('cnpj').AsString;
@@ -88,29 +91,27 @@ begin
       AEmpresa.Endereco.CEP := ADataSet.FieldByName('cep').AsString;
       Result := true;
     end;
-    inherited Get(tcEmpresa, AEmpresa.Contato);
   finally
     FreeAndNil(ADataSet);
   end;
 
 end;
 
-function TModelEmpresa.Post(AEmpresa: TEmpresa): Boolean;
+function TModelEmpresa.Post(AEmpresa: TEmpresa): Integer;
 begin
 
   StartTransaction();
+  Result := mrNone;
   try
-    if AEmpresa.GUID = '' then
-      Insert(AEmpresa)
+    if AEmpresa.ID = 0 then
+      Result := Insert(AEmpresa)
     else
-      Update(AEmpresa);
-    inherited Post(AEmpresa.TipoContato, AEmpresa.Contato);
+      Result := Update(AEmpresa);
     Commit();
-    Result := true;
+    Result := mrOK;
   except
     on E: Exception do
     begin
-      Result := false;
       RollBack();
       raise Exception.Create(E.Message);
     end;

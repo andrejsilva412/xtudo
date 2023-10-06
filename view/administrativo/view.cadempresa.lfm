@@ -38,9 +38,8 @@ inherited frmCadEmpresa: TfrmCadEmpresa
   object mdEmpresa: TRxMemoryData[13]
     FieldDefs = <    
       item
-        Name = 'guid'
-        DataType = ftString
-        Size = 50
+        Name = 'id'
+        DataType = ftInteger
       end    
       item
         Name = 'razaosocial'
@@ -50,15 +49,14 @@ inherited frmCadEmpresa: TfrmCadEmpresa
     PacketRecords = 0
     Left = 331
     Top = 92
-    object mdEmpresaguid: TStringField
+    object mdEmpresaid: TLongintField
       FieldKind = fkData
-      FieldName = 'guid'
+      FieldName = 'id'
       Index = 0
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 50
     end
     object mdEmpresarazaosocial: TStringField
       FieldKind = fkData

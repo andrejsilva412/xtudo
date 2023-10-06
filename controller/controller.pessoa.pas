@@ -5,7 +5,7 @@ unit controller.pessoa;
 interface
 
 uses
-  Classes, SysUtils, utypes, controller.endereco, controller.crud,
+  Classes, SysUtils, utypes, controller.endereco, controller.dataset,
   udatacollection;
 
 type
@@ -31,24 +31,24 @@ type
 
   { TPessoa }
 
-  TPessoa = class(TCRUD)
+  TPessoa = class(TControllerDataSet)
     private
       FCNPJ: String;
       FContato: TContato;
       FEndereco: TEndereco;
-      FGUID: String;
+      FID: Integer;
       FInscricaoEstadual: String;
       FNome: String;
       FNomeFantasia: String;
-      FTipoContato: TTipoContato;
     public
       constructor Create;
       destructor Destroy; override;
-      procedure Clear;
-      property GUID: String read FGUID write FGUID;
+      procedure Clear; virtual;
+      function Delete: Integer; override;
+      function Post: Integer; override;
+      property ID: Integer read FID write FID;
       property Nome: String read FNome write FNome;
       property Endereco: TEndereco read FEndereco;
-      property TipoContato: TTipoContato read FTipoContato write FTipoContato;
       property Contato: TContato read FContato;
       property CNPJ: String read FCNPJ write FCNPJ;
       property InscricaoEstadual: String read FInscricaoEstadual write FInscricaoEstadual;
@@ -82,7 +82,7 @@ end;
 procedure TPessoa.Clear;
 begin
 
-  FGUID := '';
+  FID := 0;
   FNome := '';
   FEndereco.Clear;
   FContato.Clear;
@@ -90,6 +90,16 @@ begin
   FInscricaoEstadual := '';
   FNomeFantasia := '';
 
+end;
+
+function TPessoa.Delete: Integer;
+begin
+  Result := inherited Delete;
+end;
+
+function TPessoa.Post: Integer;
+begin
+  Result := inherited Post;
 end;
 
 end.

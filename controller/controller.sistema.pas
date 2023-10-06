@@ -210,7 +210,7 @@ begin
     wd := false;
 
   Self.Administrativo.Empresa.Get;
-  if Self.Administrativo.Empresa.GUID = '' then
+  if Self.Administrativo.Empresa.ID = 0 then
     wd := false;
 
   if wd then

@@ -63,7 +63,7 @@ type
     mdEmpresacomplemento: TStringField;
     mdEmpresaendereco: TStringField;
     mdEmpresafantasia: TStringField;
-    mdEmpresaguid: TStringField;
+    mdEmpresaid: TLongintField;
     mdEmpresainscricaoestadual: TStringField;
     mdEmpresanumero: TStringField;
     mdEmpresarazaosocial: TStringField;
@@ -144,7 +144,7 @@ begin
   Sistema.Administrativo.User.Username := edtAdminUsername.Text;
   Sistema.Administrativo.User.Password := edAdminSenha.Text;
   Sistema.Administrativo.User.UserType := utAdmin;
-  if Sistema.Administrativo.User.Post then
+  if Sistema.Administrativo.User.Post = mrNone then
   begin
     Sistema.Mensagem.Erro('Falha ao cadastrar o usuário');
   end;
@@ -189,8 +189,8 @@ begin
   if Sistema.Administrativo.Empresa.Get then
   begin
     mdEmpresa.Insert;
-    mdEmpresaguid.AsString :=
-      Sistema.Administrativo.Empresa.GUID;
+    mdEmpresaid.AsInteger :=
+      Sistema.Administrativo.Empresa.ID;
     mdEmpresarazaosocial.AsString :=
       Sistema.Administrativo.Empresa.Nome;
     mdEmpresafantasia.AsString :=
@@ -296,7 +296,7 @@ begin
       mdEmpresacidade.AsString;
     Sistema.Administrativo.Empresa.Endereco.Cidade.UF.Sigla :=
       mdEmpresauf.AsString;
-    if Sistema.Administrativo.Empresa.Post then
+    if Sistema.Administrativo.Empresa.Post = mrOK then
       Sistema.WizardDone
     else Sistema.Finaliza;
   end else begin

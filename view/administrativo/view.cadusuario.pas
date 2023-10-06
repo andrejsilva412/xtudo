@@ -23,7 +23,7 @@ type
     Label4: TLabel;
     mdUsuario: TRxMemoryData;
     mdUsuarioconfsenha: TStringField;
-    mdUsuarioguid: TStringField;
+    mdUsuarioid: TLongintField;
     mdUsuarionome: TStringField;
     mdUsuariosenha: TStringField;
     mdUsuariousername: TStringField;
@@ -31,7 +31,7 @@ type
   private
     function Valida: Boolean;
   public
-    procedure Edit(AGUID: String); override;
+    procedure Edit(AID: Integer); override;
   end;
 
 var
@@ -48,14 +48,11 @@ begin
   if Valida then
   begin
     inherited;
-    Sistema.Administrativo.User.GUID := mdUsuarioguid.AsString;
+    Sistema.Administrativo.User.ID := mdUsuarioid.AsInteger;
     Sistema.Administrativo.User.Nome := mdUsuarionome.AsString;
     Sistema.Administrativo.User.Username := mdUsuariousername.AsString;
     Sistema.Administrativo.User.Password := mdUsuariosenha.AsString;
-    if Sistema.Administrativo.User.Post then
-       ModalResult := mrOK
-    else
-      Sistema.Mensagem.Erro(Sistema.Administrativo.User.Responce);
+    ModalResult := Sistema.Administrativo.User.Post;
   end;
 end;
 
@@ -75,12 +72,12 @@ begin
 
 end;
 
-procedure TfrmCadUsuario.Edit(AGUID: String);
+procedure TfrmCadUsuario.Edit(AID: Integer);
 begin
-  Sistema.Administrativo.User.Get(AGUID);
+  Sistema.Administrativo.User.Get(AID);
   mdUsuario.CloseOpen;
   mdUsuario.Edit;
-  mdUsuarioguid.AsString := Sistema.Administrativo.User.GUID;
+  mdUsuarioid.AsInteger := Sistema.Administrativo.User.ID;
   mdUsuarionome.AsString := Sistema.Administrativo.User.Nome;
   mdUsuariousername.AsString := Sistema.Administrativo.User.Username;
 end;

@@ -16,7 +16,7 @@ type
     DBEdit1: TDBEdit;
     Label1: TLabel;
     mdEmpresa: TRxMemoryData;
-    mdEmpresaguid: TStringField;
+    mdEmpresaid: TLongintField;
     mdEmpresarazaosocial: TStringField;
     procedure acSalvarExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -38,9 +38,9 @@ implementation
 procedure TfrmCadEmpresa.acSalvarExecute(Sender: TObject);
 begin
   inherited;
-  Sistema.Administrativo.Empresa.GUID := mdEmpresaguid.AsString;
+  Sistema.Administrativo.Empresa.ID := mdEmpresaid.AsInteger;
   Sistema.Administrativo.Empresa.Nome := mdEmpresarazaosocial.AsString;
-  if Sistema.Administrativo.Empresa.Post then
+  if Sistema.Administrativo.Empresa.Post = mrOK then
     Close;
 end;
 
@@ -50,7 +50,7 @@ begin
   Sistema.Administrativo.Empresa.Get;
   mdEmpresa.CloseOpen;
   mdEmpresa.Edit;
-  mdEmpresaguid.AsString := Sistema.Administrativo.Empresa.GUID;
+  mdEmpresaid.AsInteger := Sistema.Administrativo.Empresa.ID;
   mdEmpresarazaosocial.AsString := Sistema.Administrativo.Empresa.Nome;
 end;
 

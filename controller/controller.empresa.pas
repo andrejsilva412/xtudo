@@ -15,7 +15,7 @@ type
     protected
       procedure Valida; override;
     public
-      function Post: Boolean; override;
+      function Post: Integer; override;
       function Get: Boolean;
   end;
 
@@ -33,14 +33,13 @@ begin
     raise Exception.Create(Format(SMSGCampoObrigatorio, ['Nome Fantasia']));
 end;
 
-function TEmpresa.Post: Boolean;
+function TEmpresa.Post: Integer;
 var
   MEmpresa: TModelEmpresa;
 begin
 
   MEmpresa := TModelEmpresa.Create;
   try
-    inherited Post;
     Result := MEmpresa.Post(Self);
   finally
     FreeAndNil(MEmpresa);

@@ -5,23 +5,23 @@ unit model.user;
 interface
 
 uses
-  Classes, SysUtils, controller.user, model.crud, BufDataset, usyserror;
+  Classes, SysUtils, Controls, controller.user, model.dataset, BufDataset, usyserror;
 
 type
 
   { TModelUser }
 
-  TModelUser = class(TModelCRUD)
+  TModelUser = class(TModelDataSet)
     private
       function Insert(AUSer: TUser): Integer;
       function Update(AUSer: TUser): Integer;
     public
       constructor Create;
       function AdministradorCadastrado: Boolean;
-      function Get(AGUID: String; AUser: TUser): Integer; overload;
+      function Get(AID: Integer; AUser: TUser): Integer; overload;
       function Get(AUserName: String; APassword: String; AUser: TUser): Integer; overload;
       function Get(AUser: TUser; APage: Integer): Integer; overload;
-      function Post(AUser: TUser): Boolean;
+      function Post(AUser: TUser): Integer;
       procedure SaveLoggedUser(AUser: TUser);
       procedure GetLoggedUser(AUser: TUser);
       procedure LogOut(AUser: TUser);
@@ -36,11 +36,12 @@ uses utypes, uconst, model.config;
 function TModelUser.Insert(AUSer: TUser): Integer;
 begin
 
-  AUSer.GUID := NewGUID;
+  AUSer.ID := inherited GetNextID();
+
   AUSer.Password := GetPasswordHash(AUSer.Password);
-  Result := inherited Insert('usuario', 'guid = :guid, nome = :nome, '
+  Result := inherited Insert('id = :id, nome = :nome, '
     + 'username = :username, senha = :senha, tipo = :tipo',
-    [AUSer.GUID, AUSer.Nome, AUSer.Username, AUSer.Password,
+    [AUSer.ID, AUSer.Nome, AUSer.Username, AUSer.Password,
     UserTypeToInteger(AUSer.UserType)]);
 
 end;
@@ -49,22 +50,23 @@ function TModelUser.Update(AUSer: TUser): Integer;
 begin
 
   AUSer.Password := GetPasswordHash(AUSer.Password);
-  Result := inherited Update('usuario', 'nome = :nome, username = :username, '
-    + 'senha = :senha, tipo2 = :tipo', 'where guid = :guid',
+  Result := inherited Update('nome = :nome, username = :username, '
+    + 'senha = :senha, tipo = :tipo', 'where id = :id',
     [AUSer.Nome, AUSer.Username, AUSer.Password,
-    UserTypeToInteger(AUSer.UserType), AUSer.GUID]);
+    UserTypeToInteger(AUSer.UserType), AUSer.ID]);
 
 end;
 
 constructor TModelUser.Create;
 begin
   inherited;
+  TableName := 'usuario';
 end;
 
 function TModelUser.AdministradorCadastrado: Boolean;
 begin
 
-  Result := Search('usuario', 'guid', 'where tipo = :tipo',
+  Result := Search('id', 'where tipo = :tipo',
     [1], false);
 
 end;
@@ -76,13 +78,13 @@ begin
   if APassword <> '' then
   begin
     APassword := GetPasswordHash(APassword);
-    AUser.GUID := Search('usuario', 'guid', 'where username = :username and senha = :senha',
-      [AUserName, APassword], '');
+    AUser.ID := Search('id', 'where username = :username and senha = :senha',
+      [AUserName, APassword], 0);
   end else begin
-    AUser.GUID := Search('usuario', 'guid', 'where username = :username',
-      [AUserName], '');
+    AUser.ID := Search('id', 'where username = :username',
+      [AUserName], 0);
   end;
-  Result := Get(AUser.GUID, AUser);
+  Result := Get(AUser.ID, AUser);
 
 end;
 
@@ -96,8 +98,8 @@ begin
   try
     Result := C_REG_FOUND;
     AMaxPage := 1;
-    ARecords := Select('usuario', 'guid, nome, username, tipo', '', [],
-                           'count(usuario.guid) total', 'total', APage,
+    ARecords := Select('id, nome, username, tipo', '', [],
+                           'count(usuario.id) total', 'total', APage,
                            AMaxPage, ADataSet);
     ADataSet.First;
     AUser.Data.Clear;
@@ -107,7 +109,7 @@ begin
       DoProgress(ADataSet.RecNo, ARecords);
       with AUser.Data.Add do
       begin
-        This.GUID := ADataSet.FieldByName('guid').AsString;
+        This.ID := ADataSet.FieldByName('id').AsInteger;
         This.Nome := ADataSet.FieldByName('nome').AsString;
         This.Username := ADataSet.FieldByName('username').AsString;
         This.UserType := IntegerToUserType(
@@ -122,7 +124,7 @@ begin
 
 end;
 
-function TModelUser.Get(AGUID: String; AUser: TUser): Integer;
+function TModelUser.Get(AID: Integer; AUser: TUser): Integer;
 var
   ADataSet: TBufDataset;
   Str: String;
@@ -131,18 +133,15 @@ begin
   Result := C_REG_NOT_FOUND;
   ADataSet := TBufDataset.Create(nil);
   try
-    Select('usuario', 'guid, nome, username, tipo',
-      'where guid = :guid', [AGUID], ADataSet);
+    Select('id, nome, username, tipo',
+      'where id = :id', [AID], ADataSet);
     AUser.Clear;
     if not ADataSet.IsEmpty then
     begin
-      AUser.GUID := ADataSet.FieldByName('guid').AsString;
+      AUser.ID := ADataSet.FieldByName('id').AsInteger;
       AUser.Nome := ADataSet.FieldByName('nome').AsString;
       AUser.Username := ADataSet.FieldByName('username').AsString;
       AUser.UserType := IntegerToUserType(ADataSet.FieldByName('tipo').AsInteger);
-{      Str := GetBase64Content('usuario', 'guid', AUser.GUID, 'foto');
-      if Str <> '' then
-        Image.Base64ToPNG(Str, AUser.Image.Picture.PNG);  }
       Result := C_REG_FOUND;
     end;
   finally
@@ -151,27 +150,24 @@ begin
 
 end;
 
-function TModelUser.Post(AUser: TUser): Boolean;
+function TModelUser.Post(AUser: TUser): Integer;
 begin
 
   StartTransaction;
+  Result := mrNone;
   try
-    //Get(AUser.Username, '', AUser);
-    if AUser.GUID = '' then
-      Insert(AUser)
+    if AUser.ID = 0 then
+      Result := Insert(AUser)
     else
-      Update(AUser);
-    // Foto
-    SaveToBlobField('usuario', AUser.GUID, 'foto', AUser.Image);
+      Result := Update(AUser);
     Commit;
-    AUser.Responce := 'Success';
-    Result := true;
+    if Result > 0 then
+      Result := mrOK;
   except
     on E: Exception do
     begin
       RollBack;
-      Result := false;
-      AUser.Responce := E.Message;
+      raise Exception.Create(E.Message);
     end;
   end;
 

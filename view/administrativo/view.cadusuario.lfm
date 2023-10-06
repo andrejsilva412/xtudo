@@ -2,56 +2,56 @@ inherited frmCadUsuario: TfrmCadUsuario
   Left = 199
   Height = 183
   Top = 171
-  Width = 583
+  Width = 411
   Caption = 'Usuário'
   ClientHeight = 183
-  ClientWidth = 583
+  ClientWidth = 411
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
-    Left = 484
+    Left = 312
     Top = 145
   end
   inherited BCButtonFocus2: TBCButtonFocus
-    Left = 373
+    Left = 201
     Top = 145
   end
   inherited BCButtonFocus3: TBCButtonFocus
-    Left = 278
+    Left = 106
     Top = 145
   end
   inherited BCButtonFocus4: TBCButtonFocus
-    Left = 183
+    Left = 11
     Top = 145
   end
   inherited BCButtonFocus5: TBCButtonFocus
-    Left = 88
+    Left = -84
     Top = 145
   end
   inherited BCButtonFocus6: TBCButtonFocus
-    Left = -7
+    Left = -179
     Top = 145
   end
   inherited BCButtonFocus8: TBCButtonFocus
-    Left = -100
+    Left = -272
     Top = 145
   end
   inherited BCButtonFocus9: TBCButtonFocus
-    Left = -193
+    Left = -365
     Top = 145
   end
   object Label1: TLabel[8]
-    Left = 176
+    Left = 16
     Height = 15
-    Top = 40
+    Top = 32
     Width = 33
     Caption = 'Nome'
     ParentColor = False
   end
   object DBEdit1: TDBEdit[9]
-    Left = 176
+    Left = 16
     Height = 23
-    Top = 56
+    Top = 48
     Width = 248
     DataField = 'nome'
     DataSource = DataSource1
@@ -59,17 +59,17 @@ inherited frmCadUsuario: TfrmCadUsuario
     TabOrder = 8
   end
   object Label2: TLabel[10]
-    Left = 432
+    Left = 272
     Height = 15
-    Top = 40
+    Top = 32
     Width = 92
     Caption = 'Nome de Usuário'
     ParentColor = False
   end
   object DBEdit2: TDBEdit[11]
-    Left = 432
+    Left = 272
     Height = 23
-    Top = 56
+    Top = 48
     Width = 128
     DataField = 'username'
     DataSource = DataSource1
@@ -77,17 +77,17 @@ inherited frmCadUsuario: TfrmCadUsuario
     TabOrder = 9
   end
   object Label3: TLabel[12]
-    Left = 176
+    Left = 16
     Height = 15
-    Top = 88
+    Top = 80
     Width = 32
     Caption = 'Senha'
     ParentColor = False
   end
   object DBEdit3: TDBEdit[13]
-    Left = 176
+    Left = 16
     Height = 23
-    Top = 104
+    Top = 96
     Width = 137
     DataField = 'senha'
     DataSource = DataSource1
@@ -96,17 +96,17 @@ inherited frmCadUsuario: TfrmCadUsuario
     TabOrder = 10
   end
   object Label4: TLabel[14]
-    Left = 320
+    Left = 160
     Height = 15
-    Top = 89
+    Top = 80
     Width = 89
     Caption = 'Confirmar Senha'
     ParentColor = False
   end
   object DBEdit4: TDBEdit[15]
-    Left = 320
+    Left = 160
     Height = 23
-    Top = 104
+    Top = 96
     Width = 104
     DataField = 'confsenha'
     DataSource = DataSource1
@@ -115,24 +115,29 @@ inherited frmCadUsuario: TfrmCadUsuario
     TabOrder = 11
   end
   inherited JSONPropStorage1: TJSONPropStorage[16]
+    Left = 320
+    Top = 104
   end
   inherited ActionList1: TActionList[17]
+    Left = 112
+    Top = 32
     inherited acSalvar: TAction
       OnExecute = acSalvarExecute
     end
   end
   inherited DataSource1: TDataSource[18]
     DataSet = mdUsuario
+    Left = 200
+    Top = 32
   end
   object mdUsuario: TRxMemoryData[19]
     FieldDefs = <    
       item
-        Name = 'nome'
-        DataType = ftString
-        Size = 45
+        Name = 'id'
+        DataType = ftInteger
       end    
       item
-        Name = 'guid'
+        Name = 'nome'
         DataType = ftString
         Size = 45
       end    
@@ -152,21 +157,20 @@ inherited frmCadUsuario: TfrmCadUsuario
         Size = 20
       end>
     PacketRecords = 0
-    Left = 433
-    Top = 8
-    object mdUsuarionome: TStringField
+    Left = 281
+    Top = 32
+    object mdUsuarioid: TLongintField
       FieldKind = fkData
-      FieldName = 'nome'
+      FieldName = 'id'
       Index = 0
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 45
     end
-    object mdUsuarioguid: TStringField
+    object mdUsuarionome: TStringField
       FieldKind = fkData
-      FieldName = 'guid'
+      FieldName = 'nome'
       Index = 1
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]

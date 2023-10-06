@@ -14,7 +14,7 @@ type
 
   TfrmUsuario = class(TfrmDBGrid)
     mdUsuario: TRxMemoryData;
-    mdUsuarioguid: TStringField;
+    mdUsuarioid: TLongintField;
     mdUsuarionome: TStringField;
     mdUsuariousername: TStringField;
     procedure acNovoExecute(Sender: TObject);
@@ -35,7 +35,7 @@ implementation
 
 procedure TfrmUsuario.acNovoExecute(Sender: TObject);
 begin
-  if Sistema.Forms.Usuario('') = mrOK then
+  if Sistema.Forms.Usuario(0) = mrOK then
     LoadPage;
 end;
 
@@ -55,7 +55,7 @@ begin
     begin
       ProgressBar(i+1, User.Data.Count);
       mdUsuario.Insert;
-      mdUsuarioguid.AsString := User.Data.Items[i].This.GUID;
+      mdUsuarioid.AsInteger := User.Data.Items[i].This.ID;
       mdUsuarionome.AsString := User.Data.Items[i].This.Nome;
       mdUsuariousername.AsString := User.Data.Items[i].This.UserName;
       mdUsuario.Post;
@@ -67,7 +67,7 @@ end;
 
 procedure TfrmUsuario.Edit;
 begin
-  if Sistema.Forms.Usuario(dsDBGrid.DataSet.FieldByName('guid').AsString) = mrOK then
+  if Sistema.Forms.Usuario(dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
     inherited;
 end;
 

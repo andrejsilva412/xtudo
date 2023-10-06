@@ -26,7 +26,7 @@ type
     FACExcluirVisible: Boolean;
   public
     procedure Insert; virtual;
-    procedure Edit(AGUID: String); virtual;
+    procedure Edit(AID: Integer); virtual;
   end;
 
 var
@@ -57,7 +57,7 @@ begin
   DataSource1.DataSet.Insert;
 end;
 
-procedure TfrmBasCadastro.Edit(AGUID: String);
+procedure TfrmBasCadastro.Edit(AID: Integer);
 begin
 
 end;

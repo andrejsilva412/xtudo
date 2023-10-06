@@ -465,6 +465,10 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
   object mdEmpresa: TRxMemoryData[13]
     FieldDefs = <    
       item
+        Name = 'id'
+        DataType = ftInteger
+      end    
+      item
         Name = 'razaosocial'
         DataType = ftString
         Size = 40
@@ -518,19 +522,23 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
         Name = 'uf'
         DataType = ftString
         Size = 2
-      end    
-      item
-        Name = 'guid'
-        DataType = ftString
-        Size = 40
       end>
     PacketRecords = 0
     Left = 520
     Top = 112
+    object mdEmpresaid: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
     object mdEmpresarazaosocial: TStringField
       FieldKind = fkData
       FieldName = 'razaosocial'
-      Index = 0
+      Index = 1
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -540,7 +548,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresafantasia: TStringField
       FieldKind = fkData
       FieldName = 'fantasia'
-      Index = 1
+      Index = 2
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -550,7 +558,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresacnpj: TStringField
       FieldKind = fkData
       FieldName = 'cnpj'
-      Index = 2
+      Index = 3
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -559,7 +567,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresainscricaoestadual: TStringField
       FieldKind = fkData
       FieldName = 'inscricaoestadual'
-      Index = 3
+      Index = 4
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -568,7 +576,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresacep: TStringField
       FieldKind = fkData
       FieldName = 'cep'
-      Index = 4
+      Index = 5
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -577,7 +585,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresaendereco: TStringField
       FieldKind = fkData
       FieldName = 'endereco'
-      Index = 5
+      Index = 6
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -587,7 +595,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresanumero: TStringField
       FieldKind = fkData
       FieldName = 'numero'
-      Index = 6
+      Index = 7
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -596,7 +604,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresacomplemento: TStringField
       FieldKind = fkData
       FieldName = 'complemento'
-      Index = 7
+      Index = 8
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -605,7 +613,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresabairro: TStringField
       FieldKind = fkData
       FieldName = 'bairro'
-      Index = 8
+      Index = 9
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -615,7 +623,7 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresacidade: TStringField
       FieldKind = fkData
       FieldName = 'cidade'
-      Index = 9
+      Index = 10
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
@@ -625,22 +633,12 @@ inherited frmAssistenteInicial: TfrmAssistenteInicial
     object mdEmpresauf: TStringField
       FieldKind = fkData
       FieldName = 'uf'
-      Index = 10
-      LookupCache = False
-      ProviderFlags = [pfInUpdate, pfInWhere]
-      ReadOnly = False
-      Required = False
-      Size = 2
-    end
-    object mdEmpresaguid: TStringField
-      FieldKind = fkData
-      FieldName = 'guid'
       Index = 11
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
-      Size = 40
+      Size = 2
     end
   end
 end

@@ -16,10 +16,9 @@ uses
   uframecnpj, uframeendereco, uvalida,
   model.crud, model.user, model.database.sqlite,
   usyserror, model.log, udatacollection, model.endereco,
-  uformats, view.main, model.pessoa,
-  model.empresa, view.dbgrid, view.usuario,
+  uformats, view.main, model.empresa, view.dbgrid, view.usuario,
   urxdbgrid, uprogressbar, model.database.mariadb, 
-view.cadempresa, view.cadusuario;
+view.cadempresa, view.cadusuario, model.dataset;
 
 
 {$R *.res}
