@@ -5,7 +5,7 @@ unit controller.pessoa;
 interface
 
 uses
-  Classes, SysUtils, utypes, controller.endereco, controller.dataset,
+  Classes, SysUtils, controller.endereco, controller.dataset,
   udatacollection;
 
 type

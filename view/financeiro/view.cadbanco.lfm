@@ -1,0 +1,138 @@
+inherited frmCadBanco: TfrmCadBanco
+  Left = 365
+  Height = 143
+  Top = 150
+  Width = 458
+  Caption = 'Banco'
+  ClientHeight = 143
+  ClientWidth = 458
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 359
+    Top = 105
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 248
+    Top = 105
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 153
+    Top = 105
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 58
+    Top = 105
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = -37
+    Top = 105
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = -132
+    Top = 105
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = -225
+    Top = 105
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = -318
+    Top = 105
+  end
+  object Label1: TLabel[8]
+    Left = 27
+    Height = 15
+    Top = 32
+    Width = 39
+    Caption = 'Código'
+    ParentColor = False
+  end
+  object DBEdit1: TDBEdit[9]
+    Left = 27
+    Height = 23
+    Top = 48
+    Width = 80
+    DataField = 'codigo'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 8
+  end
+  object Label2: TLabel[10]
+    Left = 120
+    Height = 15
+    Top = 32
+    Width = 33
+    Caption = 'Nome'
+    ParentColor = False
+  end
+  object DBEdit2: TDBEdit[11]
+    Left = 120
+    Height = 23
+    Top = 48
+    Width = 288
+    DataField = 'nome'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 9
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[12]
+  end
+  inherited ActionList1: TActionList[13]
+    inherited acSalvar: TAction
+      OnExecute = acSalvarExecute
+    end
+  end
+  inherited DataSource1: TDataSource[14]
+    DataSet = mdBanco
+  end
+  object mdBanco: TRxMemoryData[15]
+    FieldDefs = <    
+      item
+        Name = 'id'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'codigo'
+        DataType = ftString
+        Size = 50
+      end    
+      item
+        Name = 'nome'
+        DataType = ftString
+        Size = 50
+      end>
+    PacketRecords = 0
+    Left = 425
+    Top = 14
+    object mdBancoid: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdBancocodigo: TStringField
+      FieldKind = fkData
+      FieldName = 'codigo'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object mdBanconome: TStringField
+      FieldKind = fkData
+      FieldName = 'nome'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+  end
+end

@@ -5,7 +5,7 @@ unit model.user;
 interface
 
 uses
-  Classes, SysUtils, Controls, controller.user, model.dataset, BufDataset, usyserror;
+  Classes, SysUtils, Controls, controller.user, model.dataset, BufDataset;
 
 type
 
@@ -127,7 +127,6 @@ end;
 function TModelUser.Get(AID: Integer; AUser: TUser): Integer;
 var
   ADataSet: TBufDataset;
-  Str: String;
 begin
 
   Result := C_REG_NOT_FOUND;

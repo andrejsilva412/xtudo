@@ -1,0 +1,120 @@
+inherited frmBanco: TfrmBanco
+  Left = 244
+  Top = 152
+  Caption = 'Banco'
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+  end
+  inherited pnOptions: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+  end
+  inherited Panel1: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    inherited RxDBGrid1: TRxDBGrid
+      Columns = <      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Código'
+          Width = 100
+          FieldName = 'codigo'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footer.FieldName = 'id'
+          Footer.ValueType = fvtCount
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Nome'
+          Width = 300
+          FieldName = 'nome'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footers = <>
+          KeyList.Strings = (          )
+        end>
+      FooterOptions.Active = True
+      FooterOptions.RowCount = 1
+      OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgFooterRows, rdgAllowQuickFilter]
+      FooterRowCount = 1
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acNovo: TAction
+      OnExecute = acNovoExecute
+    end
+  end
+  inherited dsDBGrid: TDataSource
+    DataSet = mdBanco
+    Left = 352
+    Top = 152
+  end
+  object mdBanco: TRxMemoryData[13]
+    FieldDefs = <    
+      item
+        Name = 'id'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'codigo'
+        DataType = ftString
+        Size = 50
+      end    
+      item
+        Name = 'nome'
+        DataType = ftString
+        Size = 50
+      end>
+    PacketRecords = 0
+    Left = 449
+    Top = 152
+    object mdBancoid: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdBancocodigo: TStringField
+      FieldKind = fkData
+      FieldName = 'codigo'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object mdBanconome: TStringField
+      FieldKind = fkData
+      FieldName = 'nome'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+  end
+end

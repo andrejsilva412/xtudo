@@ -5320,8 +5320,8 @@ inherited frmMain: TfrmMain
             Height = 48
             Top = 1
             Width = 144
-            Action = acCaixa
             Align = alClient
+            Caption = 'Caixa'
             Font.CharSet = ANSI_CHARSET
             Font.Height = -16
             Font.Name = 'Segoe UI Semibold'
@@ -5761,32 +5761,42 @@ inherited frmMain: TfrmMain
   object ActionList1: TActionList[2]
     Left = 400
     Top = 120
-    object acCaixa: TAction
-      Caption = 'Caixa'
-    end
     object acFinalizar: TAction
       Caption = 'Finalizar'
       OnExecute = acFinalizarExecute
     end
     object acUsuario: TAction
+      Category = 'Administrativo'
       Caption = 'Usuários'
       OnExecute = acUsuarioExecute
     end
     object acEmpresa: TAction
+      Category = 'Administrativo'
       Caption = 'Empresa'
       OnExecute = acEmpresaExecute
+    end
+    object acBanco: TAction
+      Category = 'Financeiro'
+      Caption = 'Banco'
+      OnExecute = acBancoExecute
     end
   end
   object mnuConfig: TPopupMenu[3]
     Left = 522
     Top = 105
     object MenuItem2: TMenuItem
-      Caption = 'Cadastros'
+      Caption = 'Administrativo'
       object MenuItem3: TMenuItem
         Action = acEmpresa
       end
       object MenuItem4: TMenuItem
         Action = acUsuario
+      end
+    end
+    object MenuItem1: TMenuItem
+      Caption = 'Financeiro'
+      object MenuItem5: TMenuItem
+        Action = acBanco
       end
     end
   end

@@ -10,6 +10,8 @@ uses
 type
 
   TFormAdministrativo = class;
+  TFormFinanceiro = class;
+
 
 type
 
@@ -18,7 +20,9 @@ type
   TForms = class
     private
       FAdministrativo: TFormAdministrativo;
+      FFinanceiro: TFormFinanceiro;
       function Administrativo: TFormAdministrativo;
+      function Financeiro: TFormFinanceiro;
     protected
       function FormExists(FormClass: TFormClass): Boolean;
     public
@@ -28,6 +32,8 @@ type
       procedure Empresa;
       function Usuario: Integer;
       function Usuario(AID: Integer): Integer;
+      function Banco: Integer;
+      function Banco(AID: Integer): Integer;
   end;
 
 type
@@ -39,10 +45,48 @@ type
       function View(AView: TView; AList: Boolean; AID: Integer): Integer;
   end;
 
+type
+
+  { TFormFinanceiro }
+
+  TFormFinanceiro = class(TForms)
+    public
+      function View(AView: TView; AList: Boolean; AID: Integer): Integer;
+  end;
+
 implementation
 
 uses view.main, view.assistenteinicial, view.usuario, view.cadusuario,
-  view.cadempresa;
+  view.banco, view.cadbanco, view.cadempresa;
+
+{ TFormFinanceiro }
+
+function TFormFinanceiro.View(AView: TView; AList: Boolean; AID: Integer
+  ): Integer;
+begin
+  case AView of
+    vBanco: begin
+      if (AList) then
+      begin
+        if not FormExists(TfrmBanco) then
+          frmBanco := TfrmBanco.Create(nil);
+        frmMain.TDINoteBook1.ShowFormInPage(frmBanco);
+        Result := mrIgnore;
+      end else begin
+        frmCadBanco := TfrmCadBanco.Create(nil);
+        try
+          if AID = 0 then
+            frmCadBanco.Insert
+          else
+            frmCadBanco.Edit(AID);
+          Result := frmCadBanco.ShowModal;
+        finally
+          FreeAndNil(frmCadBanco);
+        end;
+      end;
+    end;
+  end;
+end;
 
 { TFormAdministrativo }
 
@@ -92,6 +136,13 @@ begin
   Result := FAdministrativo;
 end;
 
+function TForms.Financeiro: TFormFinanceiro;
+begin
+  if not Assigned(FFinanceiro) then
+    FFinanceiro := TFormFinanceiro.Create;
+  Result := FFinanceiro;
+end;
+
 function TForms.FormExists(FormClass: TFormClass): Boolean;
 var
   i: byte;
@@ -116,6 +167,8 @@ begin
     FreeAndNil(frmAssistenteInicial);
   if Assigned(FAdministrativo) then
     FreeAndNil(FAdministrativo);
+  if Assigned(FFinanceiro) then
+    FreeAndNil(FFinanceiro);
   inherited Destroy;
 end;
 
@@ -152,6 +205,20 @@ function TForms.Usuario(AID: Integer): Integer;
 begin
 
   Result := Administrativo.View(vUsuario, false, AID);
+
+end;
+
+function TForms.Banco: Integer;
+begin
+
+  Result := Financeiro.View(vBanco, true, 0);
+
+end;
+
+function TForms.Banco(AID: Integer): Integer;
+begin
+
+  Result := Financeiro.View(vBanco, false, AID);
 
 end;
 

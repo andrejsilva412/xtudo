@@ -307,6 +307,32 @@
         <Filename Value="model\database\model.dataset.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="controller\financeiro\controller.banco.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\financeiro\model.banco.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\financeiro\view.banco.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmBanco"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\financeiro\controller.financeiro.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\financeiro\view.cadbanco.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCadBanco"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -317,7 +343,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\admin;model\administrativo;view\administrativo"/>
+      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\administrativo;view\administrativo;controller\financeiro;model\financeiro;view\financeiro;controller\administrativo"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

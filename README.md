@@ -4,10 +4,13 @@ Sistema para Administração de Lanchonetes, Bares e Restautantes
 
 Versão 1.0
 
-Recursos
+--> Administração
+	-- Cadastro da Empresa
+	-- Cadastro de usuário
+	
+--> Financeiro
 
--- Cadastro de usuário
--- Movimento Financeiro
-  + Cadastro de Banco
-  + Cadastro de Conta Corrente
-  + Transferência entre Conta
+	-- Cadastro de Banco
+	-- Cadastro de Conta Corrente
+	-- Movimento Financeiro
+	-- Transferência entre Conta

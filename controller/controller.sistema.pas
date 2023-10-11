@@ -5,8 +5,8 @@ unit controller.sistema;
 interface
 
 uses
-  Classes, SysUtils, Controls, Dialogs, Forms, LMessages, uimage, controller.config,
-  controller.admin, uvalida, controller.forms;
+  Classes, SysUtils, Controls, Dialogs, Forms, uimage, controller.config,
+  controller.admin, uvalida, controller.forms, controller.financeiro;
 
 type
 
@@ -38,9 +38,11 @@ type
       FConfig: TConfig;
       FValidador: TValidador;
       FForms: TForms;
+      FFinanceiro: TFinanceiro;
     public
       destructor Destroy; override;
       function Administrativo: TAdministrativo;
+      function Financeiro: TFinanceiro;
       function Image: TImages;
       function Mensagem: TMensagem;
       function Config: TConfig;
@@ -149,6 +151,8 @@ begin
     FreeAndNil(FValidador);
   if Assigned(FForms) then
     FreeAndNil(FForms);
+  if Assigned(FFinanceiro) then
+    FreeAndNil(FFinanceiro);
   inherited Destroy;
 end;
 
@@ -157,6 +161,13 @@ begin
   if not Assigned(FAdministrativo) then
     FAdministrativo := TAdministrativo.Create;
   Result := FAdministrativo;
+end;
+
+function TSistema.Financeiro: TFinanceiro;
+begin
+  if not Assigned(FFinanceiro) then
+    FFinanceiro := TFinanceiro.Create;
+  Result := FFinanceiro;
 end;
 
 function TSistema.Image: TImages;
