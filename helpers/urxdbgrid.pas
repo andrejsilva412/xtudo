@@ -23,9 +23,11 @@ type
       function toTXT(Sender: TObject; lpp: Integer; PageBreak: Boolean): TStringList;
       function toHTML(Sender: TObject; ACaption: String): TStringList;
       function StrToHtml(mStr: string; mFont: TFont = nil): string;
+      procedure AddMask(Sender: TObject);
     protected
       procedure DoProgress(const APosition: Integer; const AMax: Integer);
     public
+      constructor Create(AOwner: TComponent); override;
       procedure ExportToSpreedSheet(aFileName: String;  aOpenFile: Boolean = true);
       // AGrid the Grid to Export, lpp: Lines per page. Not including the text header, pageBreak: insert a page break that some printers could use for starting a new page
       procedure ExportToTXT(aFileName: String; lpp: Integer = 80;
@@ -297,10 +299,33 @@ begin
 
 end;
 
+procedure TRxDBGrid.AddMask(Sender: TObject);
+var
+  i: Integer;
+  AGrid: TRxDBGrid;
+begin
+
+  AGrid := TRxDBGrid(Sender);
+  for i := 0 to AGrid.Columns.Count - 1 do
+  begin
+    if AGrid.Columns.Items[i].Field.DataType = ftCurrency then
+    begin
+      AGrid.Columns.Items[i].DisplayFormat := '###,###,##0.00';
+      AGrid.Columns.Items[i].Footer.DisplayFormat := '###,###,##0.00';
+    end;
+  end;
+
+end;
+
 procedure TRxDBGrid.DoProgress(const APosition: Integer; const AMax: Integer);
 begin
   if Assigned(FOnProgress) then
     FOnProgress(APosition, AMax);
+end;
+
+constructor TRxDBGrid.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
 end;
 
 procedure TRxDBGrid.ExportToSpreedSheet(aFileName: String; aOpenFile: Boolean);

@@ -35,11 +35,18 @@ type
     private
       FCNPJ: String;
       FContato: TContato;
+      FEmail: String;
       FEndereco: TEndereco;
       FID: Integer;
       FInscricaoEstadual: String;
       FNome: String;
       FNomeFantasia: String;
+      FTelefone: String;
+      FWhatsapp: String;
+      procedure SetCNPJ(AValue: String);
+      procedure SetEmail(AValue: String);
+      procedure SetTelefone(AValue: String);
+      procedure SetWhatsapp(AValue: String);
     public
       constructor Create;
       destructor Destroy; override;
@@ -50,12 +57,17 @@ type
       property Nome: String read FNome write FNome;
       property Endereco: TEndereco read FEndereco;
       property Contato: TContato read FContato;
-      property CNPJ: String read FCNPJ write FCNPJ;
+      property CNPJ: String read FCNPJ write SetCNPJ;
       property InscricaoEstadual: String read FInscricaoEstadual write FInscricaoEstadual;
       property NomeFantasia: String read FNomeFantasia write FNomeFantasia;
+      property Telefone: String read FTelefone write SetTelefone;
+      property Whatsapp: String read FWhatsapp write SetWhatsapp;
+      property Email: String read FEmail write SetEmail;
   end;
 
 implementation
+
+uses uformats;
 
 { TContato }
 
@@ -65,6 +77,30 @@ begin
 end;
 
 { TPessoa }
+
+procedure TPessoa.SetCNPJ(AValue: String);
+begin
+  if FCNPJ = AValue then Exit;
+  FCNPJ := FormataCNPJCPF(AValue);
+end;
+
+procedure TPessoa.SetEmail(AValue: String);
+begin
+  if FEmail = AValue then Exit;
+  FEmail := LowerCase(AValue);
+end;
+
+procedure TPessoa.SetTelefone(AValue: String);
+begin
+  if FTelefone = AValue then Exit;
+  FTelefone := FormataTelefone(AValue);
+end;
+
+procedure TPessoa.SetWhatsapp(AValue: String);
+begin
+  if FWhatsapp = AValue then Exit;
+  FWhatsapp := FormataTelefone(AValue);
+end;
 
 constructor TPessoa.Create;
 begin

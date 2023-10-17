@@ -18,7 +18,7 @@ type
   TUserType = (utNormal, utAdmin);
 
 type
-  TView = (vEmpresa, vUsuario, vBanco);
+  TView = (vEmpresa, vUsuario, vBanco, vContaCorrente);
 
 function SVGImagesToString(ASVGImage: TSVGImages): String;
 function UserTypeToInteger(AUserType: TUserType): Integer;

@@ -9,6 +9,8 @@ uses
 
 function DelChars(const S: string; Chr: Char): string; overload;
 function DelChars(const S: string; Chr: String): string; overload;
+// Remove espaços e acentos
+function FiltraString(AStr: String; AUpperCase: Boolean = true): String;
 function RemoveAcentos(Str: String;
    RemoveEspacosDuplos: Boolean = true; aStrToUpper: Boolean = false): String;
 // Remove todos os caracteres deixando apenas os números
@@ -41,6 +43,24 @@ begin
   Result := S;
   for i := Length(Result) downto 1 do
       if Result[i] = Chr then Delete(Result, I, 1);
+
+end;
+
+function FiltraString(AStr: String; AUpperCase: Boolean): String;
+const
+  cDouble = '  ';
+  cOne = ' ';
+begin
+
+  while pos(cDouble, AStr) > 0 do
+    AStr := StringReplace(AStr, cDouble, cOne, [rfReplaceAll]);
+
+  AStr := Trim(RemoveAcentos(AStr));
+
+  if AUpperCase then
+    AStr := UpperCase(AStr);
+
+  Result := AStr;
 
 end;
 

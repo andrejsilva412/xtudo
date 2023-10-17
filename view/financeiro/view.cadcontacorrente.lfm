@@ -1,0 +1,235 @@
+inherited frmCadContaCorrente: TfrmCadContaCorrente
+  Left = 436
+  Height = 140
+  Top = 139
+  Width = 480
+  Caption = 'Conta Corrente'
+  ClientHeight = 140
+  ClientWidth = 480
+  OnCreate = FormCreate
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 381
+    Top = 102
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 270
+    Top = 102
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 175
+    Top = 102
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 80
+    Top = 102
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = -15
+    Top = 102
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = -110
+    Top = 102
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = -203
+    Top = 102
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = -296
+    Top = 102
+  end
+  object Label1: TLabel[8]
+    Left = 24
+    Height = 15
+    Top = 40
+    Width = 33
+    Caption = 'Banco'
+    ParentColor = False
+  end
+  object RxDBComboBox1: TRxDBComboBox[9]
+    Left = 24
+    Height = 23
+    Top = 56
+    Width = 100
+    Style = csDropDownList
+    DataField = 'idbanco'
+    DataSource = DataSource1
+    EnableValues = True
+    ItemHeight = 15
+    MaxLength = 0
+    TabOrder = 8
+  end
+  object Label2: TLabel[10]
+    Left = 136
+    Height = 15
+    Top = 40
+    Width = 46
+    Caption = 'Abertura'
+    ParentColor = False
+  end
+  object DBDateTimePicker1: TDBDateTimePicker[11]
+    Left = 136
+    Height = 23
+    Top = 56
+    Width = 83
+    DataField = 'abertura'
+    DataSource = DataSource1
+    ReadOnly = False
+    CenturyFrom = 1941
+    MaxDate = 2958465
+    MinDate = -53780
+    TabOrder = 9
+    TrailingSeparator = False
+    TextForNullDate = 'NULL'
+    LeadingZeros = True
+    Kind = dtkDate
+    TimeFormat = tf24
+    TimeDisplay = tdHMS
+    DateMode = dmComboBox
+    UseDefaultSeparators = True
+    HideDateTimeParts = []
+    MonthNames = 'Long'
+  end
+  object Label3: TLabel[12]
+    Left = 226
+    Height = 15
+    Top = 40
+    Width = 44
+    Caption = 'Número'
+    ParentColor = False
+  end
+  object DBEdit1: TDBEdit[13]
+    Left = 226
+    Height = 23
+    Top = 56
+    Width = 142
+    DataField = 'numero'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 10
+  end
+  object Label4: TLabel[14]
+    Left = 376
+    Height = 15
+    Top = 40
+    Width = 29
+    Caption = 'Saldo'
+    ParentColor = False
+  end
+  object RxDBCurrEdit1: TRxDBCurrEdit[15]
+    Left = 376
+    Height = 23
+    Top = 56
+    Width = 80
+    Alignment = taRightJustify
+    Enabled = False
+    TabOrder = 11
+    DataField = 'saldo'
+    DataSource = DataSource1
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[16]
+  end
+  inherited ActionList1: TActionList[17]
+    inherited acNovo: TAction
+      OnExecute = acNovoExecute
+    end
+    inherited acSalvar: TAction
+      OnExecute = acSalvarExecute
+    end
+  end
+  inherited DataSource1: TDataSource[18]
+    DataSet = mdContaCorrente
+  end
+  object mdContaCorrente: TRxMemoryData[19]
+    FieldDefs = <    
+      item
+        Name = 'id'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'abertura'
+        DataType = ftDate
+      end    
+      item
+        Name = 'numero'
+        DataType = ftString
+        Size = 50
+      end    
+      item
+        Name = 'idbanco'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'banco'
+        DataType = ftString
+        Size = 50
+      end    
+      item
+        Name = 'saldo'
+        DataType = ftCurrency
+      end>
+    PacketRecords = 0
+    Left = 440
+    Top = 16
+    object mdContaCorrenteid: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdContaCorrenteabertura: TDateField
+      FieldKind = fkData
+      FieldName = 'abertura'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdContaCorrentenumero: TStringField
+      FieldKind = fkData
+      FieldName = 'numero'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object mdContaCorrentebanco: TStringField
+      FieldKind = fkData
+      FieldName = 'banco'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 50
+    end
+    object mdContaCorrentesaldo: TCurrencyField
+      FieldKind = fkData
+      FieldName = 'saldo'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = 2
+    end
+    object mdContaCorrenteidbanco: TLongintField
+      FieldKind = fkData
+      FieldName = 'idbanco'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+  end
+end

@@ -19,7 +19,9 @@ uses
   uformats, view.main, model.empresa, view.dbgrid, view.usuario,
   urxdbgrid, uprogressbar, model.database.mariadb, 
 view.cadempresa, view.cadusuario, model.dataset, controller.banco, 
-model.banco, view.banco, controller.financeiro, view.cadbanco;
+model.banco, view.banco, controller.financeiro, view.cadbanco, 
+controller.contacorrente, model.contacorrente, view.contacorrente, 
+view.cadcontacorrente;
 
 
 {$R *.res}

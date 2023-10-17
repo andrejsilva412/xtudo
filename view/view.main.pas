@@ -33,6 +33,8 @@ type
     acFinalizar: TAction;
     acEmpresa: TAction;
     acBanco: TAction;
+    acEditarUsuario: TAction;
+    acContaCorrente: TAction;
     acUsuario: TAction;
     ActionList1: TActionList;
     BCButtonFocus1: TBCButtonFocus;
@@ -53,10 +55,12 @@ type
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
     pnBtnCaixa: TPanel;
+    pnBtnUsuario: TPanel;
     pnMenu: TPanel;
     Panel4: TPanel;
     pnCenter: TPanel;
@@ -69,10 +73,13 @@ type
     SpeedButton3: TSpeedButton;
     SpeedButton4: TSpeedButton;
     SpeedButton5: TSpeedButton;
+    SpeedButton6: TSpeedButton;
     tbMain: TTabSheet;
     tbLogin: TTabSheet;
     TDINoteBook1: TTDINoteBook;
     procedure acBancoExecute(Sender: TObject);
+    procedure acContaCorrenteExecute(Sender: TObject);
+    procedure acEditarUsuarioExecute(Sender: TObject);
     procedure acEmpresaExecute(Sender: TObject);
     procedure acFinalizarExecute(Sender: TObject);
     procedure acUsuarioExecute(Sender: TObject);
@@ -206,6 +213,7 @@ begin
   InitPanel(Panel3);
   InitPanel(Panel4);
   InitPanel(pnBtnCaixa);
+  InitPanel(pnBtnUsuario);
   InitPanel(pnTop);
   InitPanel(pnCenter);
   InitPanel(pnBottom);
@@ -233,6 +241,7 @@ begin
   SpeedButton3.Flat := true;
   SpeedButton4.Flat := true;
   SpeedButton5.Flat := true;
+  SpeedButton6.Flat := true;
   AColor := Sistema.Config.Theme.Secondary4;
   Sistema.Image.SVG(SpeedButton1, C_SVG_POWER, AColor);
   Sistema.Image.SVG(SpeedButton2, C_SVG_CONFIG, AColor);
@@ -240,9 +249,16 @@ begin
   Sistema.Image.SVG(SpeedButton4, C_SVG_MENU, clWhite);
 
   pnBtnCaixa.Color := AColor;
+  pnBtnUsuario.Color := AColor;
+
   Sistema.Image.SVG(SpeedButton5.Glyph, c_SVG_POINT_OF_SALE,
-    48, 48, clWhite);
+    46, 46, clWhite);
+
   SpeedButton5.Font.Color := clWhite;
+  SpeedButton6.Font.Color := clWhite;
+
+  Sistema.Image.SVG(SpeedButton6.Glyph, C_SVG_USER, 46, 46, clWhite);
+
 
 end;
 
@@ -291,6 +307,7 @@ begin
   Sistema.Administrativo.User.OnStatus  := @OnLoginStatus;
   if Sistema.Administrativo.User.Login then
   begin
+    acEditarUsuario.Tag := Sistema.Administrativo.User.ID;
     JSONPropStorage1.JSONFileName := Sistema.Administrativo.User.ConfigFile;
     JSONPropStorage1.Active := true;
     tbMain.Show;
@@ -306,6 +323,16 @@ end;
 procedure TfrmMain.acBancoExecute(Sender: TObject);
 begin
   Sistema.Forms.Banco;
+end;
+
+procedure TfrmMain.acContaCorrenteExecute(Sender: TObject);
+begin
+  Sistema.Forms.ContaCorrente;
+end;
+
+procedure TfrmMain.acEditarUsuarioExecute(Sender: TObject);
+begin
+  Sistema.Forms.Usuario(acEditarUsuario.Tag);
 end;
 
 procedure TfrmMain.acFinalizarExecute(Sender: TObject);

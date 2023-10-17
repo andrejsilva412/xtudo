@@ -30,10 +30,12 @@ type
       procedure ShowWizard;
       procedure CloseWizard;
       procedure Empresa;
-      function Usuario: Integer;
-      function Usuario(AID: Integer): Integer;
-      function Banco: Integer;
-      function Banco(AID: Integer): Integer;
+      function Usuario: Integer; overload;
+      function Usuario(AID: Integer): Integer; overload;
+      function Banco: Integer; overload;
+      function Banco(AID: Integer): Integer; overload;
+      function ContaCorrente: Integer; overload;
+      function ContaCorrente(AID: Integer): Integer; overload;
   end;
 
 type
@@ -57,7 +59,7 @@ type
 implementation
 
 uses view.main, view.assistenteinicial, view.usuario, view.cadusuario,
-  view.banco, view.cadbanco, view.cadempresa;
+  view.banco, view.cadbanco, view.contacorrente, view.cadcontacorrente, view.cadempresa;
 
 { TFormFinanceiro }
 
@@ -82,6 +84,26 @@ begin
           Result := frmCadBanco.ShowModal;
         finally
           FreeAndNil(frmCadBanco);
+        end;
+      end;
+    end;
+    vContaCorrente: begin
+      if (AList) then
+      begin
+        if not FormExists(TfrmContaCorrente) then
+          frmContaCorrente := TfrmContaCorrente.Create(nil);
+        frmMain.TDINoteBook1.ShowFormInPage(frmContaCorrente);
+        Result := mrIgnore;
+      end else begin
+        frmCadContaCorrente := TfrmCadContaCorrente.Create(nil);
+        try
+          if AID = 0 then
+            frmCadContaCorrente.Insert
+          else
+            frmCadContaCorrente.Edit(AID);
+          Result := frmCadContaCorrente.ShowModal;
+        finally
+          FreeAndNil(frmCadContaCorrente);
         end;
       end;
     end;
@@ -219,6 +241,20 @@ function TForms.Banco(AID: Integer): Integer;
 begin
 
   Result := Financeiro.View(vBanco, false, AID);
+
+end;
+
+function TForms.ContaCorrente: Integer;
+begin
+
+  Result := Financeiro.View(vContaCorrente, true, 0);
+
+end;
+
+function TForms.ContaCorrente(AID: Integer): Integer;
+begin
+
+  Result := Financeiro.View(vContaCorrente, false, AID);
 
 end;
 

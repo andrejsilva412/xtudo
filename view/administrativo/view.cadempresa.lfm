@@ -1,16 +1,58 @@
 inherited frmCadEmpresa: TfrmCadEmpresa
   Left = 240
+  Height = 358
   Top = 138
+  Width = 557
   Caption = 'Editar Cadastro da Empresa'
+  ClientHeight = 358
+  ClientWidth = 557
   OnShow = FormShow
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
+    Left = 458
+    Top = 320
+    TabOrder = 16
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 347
+    Top = 320
+    TabOrder = 15
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 252
+    Top = 320
+    TabOrder = 14
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 157
+    Top = 320
+    TabOrder = 13
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = 62
+    Top = 320
+    TabOrder = 12
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = -33
+    Top = 320
+    TabOrder = 11
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = -126
+    Top = 320
+    TabOrder = 10
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = -219
+    Top = 320
+    TabOrder = 9
   end
   object Label1: TLabel[8]
     Left = 16
     Height = 15
-    Top = 24
+    Top = 28
     Width = 65
     Caption = 'Razão Social'
     ParentColor = False
@@ -18,24 +60,195 @@ inherited frmCadEmpresa: TfrmCadEmpresa
   object DBEdit1: TDBEdit[9]
     Left = 16
     Height = 23
-    Top = 42
-    Width = 416
+    Top = 46
+    Width = 264
     DataField = 'razaosocial'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 0
+  end
+  object Label2: TLabel[10]
+    Left = 285
+    Height = 15
+    Top = 28
+    Width = 79
+    Caption = 'Nome Fantasia'
+    ParentColor = False
+  end
+  object DBEdit2: TDBEdit[11]
+    Left = 285
+    Height = 23
+    Top = 46
+    Width = 264
+    DataField = 'fantasia'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 1
+  end
+  inline frameCNPJ1: TframeCNPJ[12]
+    Left = 16
+    Top = 77
+    Width = 264
+    ClientWidth = 264
+    TabOrder = 2
+    inherited lblFrameCNPJ: TLabel
+      AnchorSideLeft.Control = frameCNPJ1
+      AnchorSideTop.Control = frameCNPJ1
+    end
+    inherited DBEditFrameCNPJ: TDBEdit
+      Width = 241
+      DataField = 'cnpj'
+      DataSource = DataSource1
+    end
+    inherited SpeedButton1: TSpeedButton
+      AnchorSideRight.Control = frameCNPJ1
+      Left = 241
+    end
+  end
+  object Label3: TLabel[13]
+    Left = 285
+    Height = 15
+    Top = 77
+    Width = 94
+    Caption = 'Inscrição Estadual'
+    ParentColor = False
+  end
+  object DBEdit3: TDBEdit[14]
+    Left = 285
+    Height = 23
+    Top = 94
+    Width = 264
+    DataField = 'inscricaoestadual'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 3
+  end
+  inline FrameEndereco1: TFrameEndereco[15]
+    Left = 16
+    Top = 124
+    Width = 533
+    ClientWidth = 533
+    TabOrder = 4
+    inherited DBEdit1: TDBEdit
+      DataField = 'cep'
+      DataSource = DataSource1
+    end
+    inherited DBEdit2: TDBEdit
+      DataField = 'endereco'
+      DataSource = DataSource1
+    end
+    inherited DBEdit3: TDBEdit
+      AnchorSideRight.Control = FrameEndereco1
+      Width = 181
+      DataField = 'numero'
+      DataSource = DataSource1
+    end
+    inherited DBComboBox1: TDBComboBox
+      DataField = 'complemento'
+      DataSource = DataSource1
+    end
+    inherited DBComboBox2: TDBComboBox
+      AnchorSideRight.Control = FrameEndereco1
+      DataField = 'cidade'
+      DataSource = DataSource1
+    end
+    inherited DBComboBox3: TDBComboBox
+      DataField = 'bairro'
+      DataSource = DataSource1
+    end
+    inherited DBComboBox4: TDBComboBox
+      AnchorSideRight.Control = FrameEndereco1
+      Width = 112
+      DataField = 'uf'
+      DataSource = DataSource1
+    end
+  end
+  object Label4: TLabel[16]
+    Left = 16
+    Height = 15
+    Top = 221
+    Width = 44
+    Caption = 'Telefone'
+    ParentColor = False
+  end
+  object DBEdit4: TDBEdit[17]
+    Left = 16
+    Height = 23
+    Top = 237
+    Width = 160
+    DataField = 'telefone'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 5
+  end
+  object Label5: TLabel[18]
+    Left = 184
+    Height = 15
+    Top = 221
+    Width = 53
+    Caption = 'Whatsapp'
+    ParentColor = False
+  end
+  object DBEdit5: TDBEdit[19]
+    Left = 184
+    Height = 23
+    Top = 237
+    Width = 130
+    DataField = 'whatsapp'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 6
+  end
+  object Label6: TLabel[20]
+    Left = 16
+    Height = 15
+    Top = 272
+    Width = 19
+    Caption = 'Site'
+    ParentColor = False
+  end
+  object DBEdit6: TDBEdit[21]
+    Left = 16
+    Height = 23
+    Top = 288
+    Width = 264
+    DataField = 'site'
+    DataSource = DataSource1
+    MaxLength = 0
+    TabOrder = 7
+  end
+  object Label7: TLabel[22]
+    Left = 285
+    Height = 15
+    Top = 272
+    Width = 34
+    Caption = 'E-mail'
+    ParentColor = False
+  end
+  object DBEdit7: TDBEdit[23]
+    Left = 285
+    Height = 23
+    Top = 288
+    Width = 264
+    DataField = 'email'
     DataSource = DataSource1
     MaxLength = 0
     TabOrder = 8
   end
-  inherited JSONPropStorage1: TJSONPropStorage[10]
+  inherited JSONPropStorage1: TJSONPropStorage[24]
+    Top = 12
   end
-  inherited ActionList1: TActionList[11]
+  inherited ActionList1: TActionList[25]
+    Top = 12
     inherited acSalvar: TAction
       OnExecute = acSalvarExecute
     end
   end
-  inherited DataSource1: TDataSource[12]
+  inherited DataSource1: TDataSource[26]
     DataSet = mdEmpresa
+    Top = 12
   end
-  object mdEmpresa: TRxMemoryData[13]
+  object mdEmpresa: TRxMemoryData[27]
     FieldDefs = <    
       item
         Name = 'id'
@@ -45,10 +258,80 @@ inherited frmCadEmpresa: TfrmCadEmpresa
         Name = 'razaosocial'
         DataType = ftString
         Size = 40
+      end    
+      item
+        Name = 'fantasia'
+        DataType = ftString
+        Size = 60
+      end    
+      item
+        Name = 'cnpj'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'inscricaoestadual'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'cep'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'endereco'
+        DataType = ftString
+        Size = 60
+      end    
+      item
+        Name = 'numero'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'complemento'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'bairro'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'cidade'
+        DataType = ftString
+        Size = 20
+      end    
+      item
+        Name = 'uf'
+        DataType = ftString
+        Size = 2
+      end    
+      item
+        Name = 'telefone'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'whatsapp'
+        DataType = ftString
+        Size = 40
+      end    
+      item
+        Name = 'site'
+        DataType = ftString
+        Size = 255
+      end    
+      item
+        Name = 'email'
+        DataType = ftString
+        Size = 255
       end>
     PacketRecords = 0
-    Left = 331
-    Top = 92
+    Left = 198
+    Top = 90
     object mdEmpresaid: TLongintField
       FieldKind = fkData
       FieldName = 'id'
@@ -67,6 +350,140 @@ inherited frmCadEmpresa: TfrmCadEmpresa
       ReadOnly = False
       Required = False
       Size = 40
+    end
+    object mdEmpresafantasia: TStringField
+      FieldKind = fkData
+      FieldName = 'fantasia'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object mdEmpresacnpj: TStringField
+      FieldKind = fkData
+      FieldName = 'cnpj'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresainscricaoestadual: TStringField
+      FieldKind = fkData
+      FieldName = 'inscricaoestadual'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresacep: TStringField
+      FieldKind = fkData
+      FieldName = 'cep'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresaendereco: TStringField
+      FieldKind = fkData
+      FieldName = 'endereco'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
+    object mdEmpresanumero: TStringField
+      FieldKind = fkData
+      FieldName = 'numero'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresacomplemento: TStringField
+      FieldKind = fkData
+      FieldName = 'complemento'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresabairro: TStringField
+      FieldKind = fkData
+      FieldName = 'bairro'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object mdEmpresacidade: TStringField
+      FieldKind = fkData
+      FieldName = 'cidade'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdEmpresauf: TStringField
+      FieldKind = fkData
+      FieldName = 'uf'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 2
+    end
+    object mdEmpresatelefone: TStringField
+      FieldKind = fkData
+      FieldName = 'telefone'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object mdEmpresawhatsapp: TStringField
+      FieldKind = fkData
+      FieldName = 'whatsapp'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 40
+    end
+    object mdEmpresasite: TStringField
+      FieldKind = fkData
+      FieldName = 'site'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object mdEmpresaemail: TStringField
+      FieldKind = fkData
+      FieldName = 'email'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
     end
   end
 end

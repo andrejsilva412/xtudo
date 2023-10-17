@@ -12,11 +12,15 @@ type
   { TEmpresa }
 
   TEmpresa = class(TPessoa)
+  private
+    FSite: String;
+    procedure SetSite(AValue: String);
     protected
       procedure Valida; override;
     public
       function Post: Integer; override;
       function Get: Boolean;
+      property Site: String read FSite write SetSite;
   end;
 
 implementation
@@ -24,6 +28,12 @@ implementation
 uses uconst, model.empresa;
 
 { TEmpresa }
+
+procedure TEmpresa.SetSite(AValue: String);
+begin
+  if FSite = AValue then Exit;
+  FSite := LowerCase(AValue);
+end;
 
 procedure TEmpresa.Valida;
 begin
