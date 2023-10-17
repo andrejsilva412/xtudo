@@ -20,7 +20,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="26"/>
+        <TopLine Value="93"/>
+        <CursorPos X="22" Y="105"/>
         <UsageCount Value="99"/>
       </Unit>
       <Unit>
@@ -46,7 +47,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="29"/>
+        <TopLine Value="23"/>
         <CursorPos X="3" Y="35"/>
         <UsageCount Value="99"/>
       </Unit>
@@ -118,6 +119,9 @@
         <ComponentName Value="frameTitulo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4"/>
+        <CursorPos X="3" Y="14"/>
         <UsageCount Value="99"/>
       </Unit>
       <Unit>
@@ -328,8 +332,8 @@
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="16"/>
-        <CursorPos X="48" Y="18"/>
+        <TopLine Value="316"/>
+        <CursorPos X="39" Y="346"/>
         <UsageCount Value="88"/>
       </Unit>
       <Unit>
@@ -441,6 +445,43 @@
         <TopLine Value="30"/>
         <CursorPos X="74" Y="47"/>
         <UsageCount Value="25"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\financeiro\controller.contacorrente.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="93"/>
+        <CursorPos X="3" Y="97"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\financeiro\model.contacorrente.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="92"/>
+        <CursorPos X="39" Y="111"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\financeiro\view.contacorrente.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmContaCorrente"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="41" Y="14"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\financeiro\view.cadcontacorrente.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCadContaCorrente"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="61"/>
+        <CursorPos X="61" Y="87"/>
+        <UsageCount Value="21"/>
       </Unit>
       <Unit>
         <Filename Value="view\view.dbgridimage.pas"/>
@@ -739,43 +780,6 @@
         <TopLine Value="33"/>
         <CursorPos Y="53"/>
         <UsageCount Value="10"/>
-      </Unit>
-      <Unit>
-        <Filename Value="controller\financeiro\controller.contacorrente.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="93"/>
-        <CursorPos X="3" Y="97"/>
-        <UsageCount Value="23"/>
-      </Unit>
-      <Unit>
-        <Filename Value="model\financeiro\model.contacorrente.pas"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="92"/>
-        <CursorPos X="39" Y="111"/>
-        <UsageCount Value="22"/>
-      </Unit>
-      <Unit>
-        <Filename Value="view\financeiro\view.contacorrente.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmContaCorrente"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="25" Y="65"/>
-        <UsageCount Value="22"/>
-      </Unit>
-      <Unit>
-        <Filename Value="view\financeiro\view.cadcontacorrente.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="frmCadContaCorrente"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="61"/>
-        <CursorPos X="61" Y="87"/>
-        <UsageCount Value="21"/>
       </Unit>
     </Units>
     <General>

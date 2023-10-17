@@ -1,4 +1,6 @@
 inherited frmDBGrid: TfrmDBGrid
+  Left = 412
+  Top = 122
   Caption = 'DBGrid'
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -160,25 +162,25 @@ inherited frmDBGrid: TfrmDBGrid
   end
   object Panel1: TPanel[9]
     AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Owner
+    AnchorSideTop.Control = frameTitulo1
+    AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnOptions
     Left = 10
-    Height = 299
-    Top = 20
+    Height = 243
+    Top = 76
     Width = 783
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Left = 10
-    BorderSpacing.Top = 20
     BorderSpacing.Bottom = 4
     Caption = 'Panel1'
-    ClientHeight = 299
+    ClientHeight = 243
     ClientWidth = 783
     TabOrder = 9
     object RxDBGrid1: TRxDBGrid
       Left = 1
-      Height = 291
+      Height = 235
       Top = 5
       Width = 781
       ColumnDefValues.BlobText = '(blob)'
@@ -257,11 +259,37 @@ inherited frmDBGrid: TfrmDBGrid
       OnDblClick = RxDBGrid1DblClick
     end
   end
-  inherited JSONPropStorage1: TJSONPropStorage[10]
+  inline frameTitulo1: TframeTitulo[10]
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 48
+    Top = 28
+    Width = 773
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 28
+    BorderSpacing.Right = 10
+    ClientHeight = 48
+    ClientWidth = 773
+    TabOrder = 10
+    inherited Bevel1: TBevel
+      Width = 769
+    end
+    inherited lblTitulo: TLabel
+      AnchorSideLeft.Control = frameTitulo1
+      AnchorSideTop.Control = frameTitulo1
+      AnchorSideRight.Control = frameTitulo1
+      Width = 769
+    end
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[11]
     Left = 544
     Top = 256
   end
-  inherited ActionList1: TActionList[11]
+  inherited ActionList1: TActionList[12]
     Left = 632
     Top = 256
     inherited acSalvar: TAction
@@ -284,7 +312,7 @@ inherited frmDBGrid: TfrmDBGrid
       OnExecute = acLastExecute
     end
   end
-  object dsDBGrid: TDataSource[12]
+  object dsDBGrid: TDataSource[13]
     OnDataChange = dsDBGridDataChange
     Left = 411
     Top = 176

@@ -97,7 +97,6 @@ begin
   Application.OnException  := @SysError.OnException;
   Application.Title := C_APP_TITLE;
   Icon := Application.Icon;
-  Caption := C_APP_TITLE + ' ' + Caption;
   JSONPropStorage1.JSONFileName := Sistema.Administrativo.User.ConfigFile;
   JSONPropStorage1.Active := true;
   FBorderColor := Sistema.Config.Theme.BackGround2;

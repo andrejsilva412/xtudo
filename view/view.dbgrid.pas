@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, urxdbgrid,
   view.buttons, Menus, Buttons, StdCtrls, Grids, ComCtrls, ActnList, DB,
-  fpsTypes,
+  fpsTypes, uframetitulo,
   uprogressbar;
 
 type
@@ -22,6 +22,7 @@ type
     btnGridOptions: TSpeedButton;
     cboTPagina: TComboBox;
     dsDBGrid: TDataSource;
+    frameTitulo1: TframeTitulo;
     lblDatabaseStatus: TLabel;
     Panel1: TPanel;
     pnFuncaoPagina: TPanel;
@@ -49,8 +50,10 @@ type
     FGridMenu: TPopupMenu;
     FMaxPage: Integer;
     FPage: Integer;
+    FTitulo: String;
     procedure OnExportToExcel(Sender: TObject);
     procedure SetMaxPage(AValue: Integer);
+    procedure SetTitulo(AValue: String);
     procedure UpdatePageButtons;
     procedure FirstPage;
     procedure PriorPage;
@@ -66,6 +69,7 @@ type
     procedure ProgressBar(const APosition: Integer; const AMax: Integer);
     procedure Edit; virtual;
   public
+    property Titulo: String read FTitulo write SetTitulo;
   end;
 
 var
@@ -172,6 +176,7 @@ end;
 
 procedure TfrmDBGrid.FormShow(Sender: TObject);
 begin
+  Titulo := Caption;
   LoadPage;
 end;
 
@@ -190,6 +195,13 @@ begin
   for i := 1 to FMaxPage do
     cboTPagina.Items.Add(IntToStr(i));
   UpdatePageButtons;
+end;
+
+procedure TfrmDBGrid.SetTitulo(AValue: String);
+begin
+  if FTitulo = AValue then Exit;
+  FTitulo := AValue;
+  frameTitulo1.lblTitulo.Caption := FTitulo;
 end;
 
 procedure TfrmDBGrid.OnExportToExcel(Sender: TObject);
@@ -329,6 +341,10 @@ begin
   Sistema.Image.SVG(SpeedButton2, C_SVG_PRIOR, aColor);
   Sistema.Image.SVG(SpeedButton3, C_SVG_NEXT, aColor);
   Sistema.Image.SVG(SpeedButton4, C_SVG_LAST, aColor);
+  frameTitulo1.ParentColor := false;
+  frameTitulo1.Color := Sistema.Config.Theme.BackGround2;
+  frameTitulo1.Bevel1.Visible := false;
+  frameTitulo1.lblTitulo.Font.Color := InvertColor(frameTitulo1.Color);
 end;
 
 end.

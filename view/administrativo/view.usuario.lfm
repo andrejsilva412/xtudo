@@ -10,7 +10,6 @@ inherited frmUsuario: TfrmUsuario
   end
   inherited Panel1: TPanel
     AnchorSideLeft.Control = Owner
-    AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     inherited RxDBGrid1: TRxDBGrid
       AnchorSideTop.Control = Owner
@@ -58,6 +57,32 @@ inherited frmUsuario: TfrmUsuario
       FooterRowCount = 1
     end
   end
+  inherited frameTitulo1: TframeTitulo
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 48
+    Top = 28
+    Width = 773
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 28
+    BorderSpacing.Right = 10
+    ClientHeight = 48
+    ClientWidth = 773
+    TabOrder = 10
+    inherited Bevel1: TBevel
+      Width = 769
+    end
+    inherited lblTitulo: TLabel
+      AnchorSideLeft.Control = frameTitulo1
+      AnchorSideTop.Control = frameTitulo1
+      AnchorSideRight.Control = frameTitulo1
+      Width = 769
+    end
+  end
   inherited ActionList1: TActionList
     inherited acNovo: TAction
       OnExecute = acNovoExecute
@@ -68,7 +93,7 @@ inherited frmUsuario: TfrmUsuario
     Left = 320
     Top = 113
   end
-  object mdUsuario: TRxMemoryData[13]
+  object mdUsuario: TRxMemoryData[14]
     FieldDefs = <    
       item
         Name = 'id'
