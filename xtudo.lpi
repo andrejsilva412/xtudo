@@ -355,6 +355,35 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit>
+      <Unit>
+        <Filename Value="view\financeiro\view.movfinanceiro.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMovFinanceiro"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\frames\uframeperiodo.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrameDataInicialFinal"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Frame"/>
+      </Unit>
+      <Unit>
+        <Filename Value="view\financeiro\view.cadmovfinanceiro.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmCadMovFinanceiro"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\financeiro\controller.formsfinanceiro.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="controller\administrativo\controller.formsadministrativo.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

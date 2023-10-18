@@ -38,7 +38,7 @@ implementation
 
 procedure TfrmBanco.acNovoExecute(Sender: TObject);
 begin
-  if Sistema.Forms.Banco(0) = mrOK then
+  if Sistema.Forms.Financeiro.Banco(0) = mrOK then
     LoadPage;
 end;
 
@@ -69,7 +69,8 @@ end;
 
 procedure TfrmBanco.Edit;
 begin
-  if Sistema.Forms.Banco(dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
+  if Sistema.Forms.Financeiro.Banco(
+    dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
     inherited;
 end;
 

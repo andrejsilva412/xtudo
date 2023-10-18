@@ -1,0 +1,344 @@
+inherited frmMovFinanceiro: TfrmMovFinanceiro
+  Left = 146
+  Height = 451
+  Top = 143
+  Width = 893
+  Caption = 'Movimento Financeiro'
+  ClientHeight = 451
+  ClientWidth = 893
+  OnCreate = FormCreate
+  inherited BCButtonFocus1: TBCButtonFocus
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
+    Left = 794
+    Top = 413
+  end
+  inherited BCButtonFocus2: TBCButtonFocus
+    Left = 683
+    Top = 413
+  end
+  inherited BCButtonFocus3: TBCButtonFocus
+    Left = 588
+    Top = 413
+  end
+  inherited BCButtonFocus4: TBCButtonFocus
+    Left = 493
+    Top = 413
+  end
+  inherited BCButtonFocus5: TBCButtonFocus
+    Left = 398
+    Top = 413
+  end
+  inherited BCButtonFocus6: TBCButtonFocus
+    Left = 303
+    Top = 413
+  end
+  inherited BCButtonFocus8: TBCButtonFocus
+    Left = 210
+    Top = 413
+  end
+  inherited BCButtonFocus9: TBCButtonFocus
+    Left = 117
+    Top = 413
+  end
+  inherited pnOptions: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    Top = 381
+    Width = 873
+    ClientWidth = 873
+    inherited btnGridOptions: TSpeedButton
+      Left = 850
+    end
+    inherited pnFuncaoPagina: TPanel
+      Left = 282
+    end
+    inherited lblDatabaseStatus: TLabel
+      Left = 753
+    end
+  end
+  inherited Panel1: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Panel2
+    AnchorSideRight.Control = Owner
+    Height = 251
+    Top = 126
+    Width = 883
+    ClientHeight = 251
+    ClientWidth = 883
+    inherited RxDBGrid1: TRxDBGrid
+      Height = 243
+      Width = 881
+      Columns = <      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'ID'
+          Width = 80
+          FieldName = 'id'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footer.FieldName = 'id'
+          Footer.ValueType = fvtCount
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Data'
+          Width = 100
+          FieldName = 'data'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Histórico'
+          Width = 400
+          FieldName = 'historico'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          Alignment = taRightJustify
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Valor'
+          Width = 120
+          FieldName = 'valor'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footer.Alignment = taRightJustify
+          Footer.FieldName = 'valor'
+          Footer.ValueType = fvtSum
+          Footers = <>
+          KeyList.Strings = (          )
+        end>
+      FooterOptions.Active = True
+      FooterOptions.RowCount = 1
+      OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgFooterRows, rdgAllowQuickFilter]
+      FooterRowCount = 1
+    end
+  end
+  inherited frameTitulo1: TframeTitulo
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 48
+    Top = 28
+    Width = 873
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 28
+    BorderSpacing.Right = 10
+    ClientHeight = 48
+    ClientWidth = 873
+    TabOrder = 10
+    inherited Bevel1: TBevel
+      Width = 869
+    end
+    inherited lblTitulo: TLabel
+      AnchorSideLeft.Control = frameTitulo1
+      AnchorSideTop.Control = frameTitulo1
+      AnchorSideRight.Control = frameTitulo1
+      Width = 869
+    end
+  end
+  object Panel2: TPanel[11]
+    AnchorSideLeft.Control = frameTitulo1
+    AnchorSideTop.Control = frameTitulo1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = frameTitulo1
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 50
+    Top = 76
+    Width = 873
+    Anchors = [akTop, akLeft, akRight]
+    BevelOuter = bvNone
+    ClientHeight = 50
+    ClientWidth = 873
+    TabOrder = 11
+    inline FrameDataInicialFinal1: TFrameDataInicialFinal
+      AnchorSideLeft.Control = Panel2
+      AnchorSideTop.Control = Panel2
+      Height = 38
+      ClientHeight = 38
+      inherited Label1: TLabel
+        AnchorSideLeft.Control = FrameDataInicialFinal1
+        AnchorSideTop.Control = FrameDataInicialFinal1
+        Left = 5
+        BorderSpacing.Left = 5
+      end
+      inherited DateTimePicker1: TDateTimePicker
+        Left = 5
+      end
+      inherited Label2: TLabel
+        AnchorSideTop.Control = FrameDataInicialFinal1
+        Left = 93
+      end
+      inherited DateTimePicker2: TDateTimePicker
+        Left = 93
+      end
+    end
+    object Label1: TLabel
+      AnchorSideLeft.Control = FrameDataInicialFinal1
+      AnchorSideLeft.Side = asrBottom
+      Left = 181
+      Height = 15
+      Top = 0
+      Width = 81
+      BorderSpacing.Left = 8
+      Caption = 'Conta Corrente'
+      ParentColor = False
+    end
+    object cboContaCorrente: TComboBox
+      AnchorSideLeft.Control = Label1
+      Left = 181
+      Height = 23
+      Top = 15
+      Width = 280
+      ItemHeight = 15
+      Style = csDropDownList
+      TabOrder = 1
+    end
+    object Label2: TLabel
+      AnchorSideLeft.Control = cboContaCorrente
+      AnchorSideLeft.Side = asrBottom
+      Left = 465
+      Height = 15
+      Top = 0
+      Width = 48
+      BorderSpacing.Left = 4
+      Caption = 'Histórico'
+      ParentColor = False
+    end
+    object edHistorico: TEdit
+      AnchorSideLeft.Control = Label2
+      Left = 465
+      Height = 23
+      Top = 15
+      Width = 248
+      TabOrder = 2
+      Text = 'edHistorico'
+    end
+    object Button1: TButton
+      AnchorSideLeft.Control = edHistorico
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideBottom.Control = edHistorico
+      AnchorSideBottom.Side = asrBottom
+      Left = 717
+      Height = 25
+      Top = 13
+      Width = 76
+      Anchors = [akLeft, akBottom]
+      AutoSize = True
+      BorderSpacing.Left = 4
+      Caption = 'Pesquisar'
+      TabOrder = 3
+    end
+  end
+  inherited JSONPropStorage1: TJSONPropStorage[12]
+  end
+  inherited ActionList1: TActionList[13]
+    inherited acNovo: TAction
+      OnExecute = acNovoExecute
+    end
+  end
+  inherited dsDBGrid: TDataSource[14]
+    DataSet = mdMovFinanceiro
+  end
+  object mdMovFinanceiro: TRxMemoryData[15]
+    FieldDefs = <    
+      item
+        Name = 'id'
+        DataType = ftInteger
+      end    
+      item
+        Name = 'data'
+        DataType = ftDateTime
+      end    
+      item
+        Name = 'historico'
+        DataType = ftString
+        Size = 255
+      end    
+      item
+        Name = 'valor'
+        DataType = ftCurrency
+      end>
+    PacketRecords = 0
+    Left = 630
+    Top = 182
+    object mdMovFinanceiroid: TLongintField
+      FieldKind = fkData
+      FieldName = 'id'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdMovFinanceirodata: TDateTimeField
+      FieldKind = fkData
+      FieldName = 'data'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object mdMovFinanceirohistorico: TStringField
+      FieldKind = fkData
+      FieldName = 'historico'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 255
+    end
+    object mdMovFinanceirovalor: TCurrencyField
+      FieldKind = fkData
+      FieldName = 'valor'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = 2
+    end
+  end
+end

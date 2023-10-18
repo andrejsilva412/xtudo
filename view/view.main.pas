@@ -35,6 +35,7 @@ type
     acBanco: TAction;
     acEditarUsuario: TAction;
     acContaCorrente: TAction;
+    acMovFinanceiro: TAction;
     acUsuario: TAction;
     ActionList1: TActionList;
     BCButtonFocus1: TBCButtonFocus;
@@ -56,6 +57,8 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    Separator1: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -82,6 +85,7 @@ type
     procedure acEditarUsuarioExecute(Sender: TObject);
     procedure acEmpresaExecute(Sender: TObject);
     procedure acFinalizarExecute(Sender: TObject);
+    procedure acMovFinanceiroExecute(Sender: TObject);
     procedure acUsuarioExecute(Sender: TObject);
     procedure BCButtonFocus1Click(Sender: TObject);
     procedure BCButtonFocus2Click(Sender: TObject);
@@ -317,22 +321,22 @@ end;
 
 procedure TfrmMain.acEmpresaExecute(Sender: TObject);
 begin
-  Sistema.Forms.Empresa;
+  Sistema.Forms.Administrativo.Empresa;
 end;
 
 procedure TfrmMain.acBancoExecute(Sender: TObject);
 begin
-  Sistema.Forms.Banco;
+  Sistema.Forms.Financeiro.Banco;
 end;
 
 procedure TfrmMain.acContaCorrenteExecute(Sender: TObject);
 begin
-  Sistema.Forms.ContaCorrente;
+  Sistema.Forms.Financeiro.ContaCorrente;
 end;
 
 procedure TfrmMain.acEditarUsuarioExecute(Sender: TObject);
 begin
-  Sistema.Forms.Usuario(acEditarUsuario.Tag);
+  Sistema.Forms.Administrativo.Usuario(acEditarUsuario.Tag);
 end;
 
 procedure TfrmMain.acFinalizarExecute(Sender: TObject);
@@ -340,9 +344,14 @@ begin
   Sistema.Finaliza;
 end;
 
+procedure TfrmMain.acMovFinanceiroExecute(Sender: TObject);
+begin
+  Sistema.Forms.Financeiro.Movimento;
+end;
+
 procedure TfrmMain.acUsuarioExecute(Sender: TObject);
 begin
-  Sistema.Forms.Usuario;
+  Sistema.Forms.Administrativo.Usuario;
 end;
 
 procedure TfrmMain.FormPaint(Sender: TObject);

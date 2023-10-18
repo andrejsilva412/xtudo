@@ -1,0 +1,83 @@
+object FrameDataInicialFinal: TFrameDataInicialFinal
+  Left = 0
+  Height = 40
+  Top = 0
+  Width = 173
+  ClientHeight = 40
+  ClientWidth = 173
+  TabOrder = 0
+  DesignLeft = 360
+  DesignTop = 132
+  object Label1: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 0
+    Height = 15
+    Top = 0
+    Width = 58
+    Caption = 'Data Inicial'
+    ParentColor = False
+  end
+  object DateTimePicker1: TDateTimePicker
+    AnchorSideLeft.Control = Label1
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 0
+    Height = 23
+    Top = 15
+    Width = 83
+    CenturyFrom = 1941
+    MaxDate = 2958465
+    MinDate = -53780
+    TabOrder = 0
+    TrailingSeparator = False
+    TextForNullDate = 'NULL'
+    LeadingZeros = True
+    Kind = dtkDate
+    TimeFormat = tf24
+    TimeDisplay = tdHMS
+    DateMode = dmComboBox
+    Date = 45216
+    Time = 0.853970104166365
+    UseDefaultSeparators = True
+    HideDateTimeParts = []
+    MonthNames = 'Long'
+  end
+  object Label2: TLabel
+    AnchorSideLeft.Control = DateTimePicker1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 88
+    Height = 15
+    Top = 0
+    Width = 52
+    BorderSpacing.Left = 5
+    Caption = 'Data Final'
+    ParentColor = False
+  end
+  object DateTimePicker2: TDateTimePicker
+    AnchorSideLeft.Control = Label2
+    AnchorSideTop.Control = Label2
+    AnchorSideTop.Side = asrBottom
+    Left = 88
+    Height = 23
+    Top = 15
+    Width = 83
+    CenturyFrom = 1941
+    MaxDate = 2958465
+    MinDate = -53780
+    TabOrder = 1
+    TrailingSeparator = False
+    TextForNullDate = 'NULL'
+    LeadingZeros = True
+    Kind = dtkDate
+    TimeFormat = tf24
+    TimeDisplay = tdHMS
+    DateMode = dmComboBox
+    Date = 45216
+    Time = 0.854564907407621
+    UseDefaultSeparators = True
+    HideDateTimeParts = []
+    MonthNames = 'Long'
+  end
+end

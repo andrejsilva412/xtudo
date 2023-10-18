@@ -5,7 +5,7 @@ unit view.contacorrente;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, rxmemds, view.dbgrid,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, uframetitulo, rxmemds, view.dbgrid,
   DB;
 
 type
@@ -40,7 +40,7 @@ implementation
 
 procedure TfrmContaCorrente.acNovoExecute(Sender: TObject);
 begin
-  if Sistema.Forms.ContaCorrente(0) = mrOK then
+  if Sistema.Forms.Financeiro.ContaCorrente(0) = mrOK then
     LoadPage;
 end;
 
@@ -73,7 +73,8 @@ end;
 
 procedure TfrmContaCorrente.Edit;
 begin
-  if Sistema.Forms.ContaCorrente(dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
+  if Sistema.Forms.Financeiro.ContaCorrente(
+    dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
     inherited;
 end;
 

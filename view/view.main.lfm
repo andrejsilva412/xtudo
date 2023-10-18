@@ -5537,6 +5537,11 @@ inherited frmMain: TfrmMain
       Caption = 'Conta Corrente'
       OnExecute = acContaCorrenteExecute
     end
+    object acMovFinanceiro: TAction
+      Category = 'Financeiro'
+      Caption = 'Movimento'
+      OnExecute = acMovFinanceiroExecute
+    end
   end
   object mnuConfig: TPopupMenu[3]
     Left = 522
@@ -5552,6 +5557,12 @@ inherited frmMain: TfrmMain
     end
     object MenuItem1: TMenuItem
       Caption = 'Financeiro'
+      object MenuItem7: TMenuItem
+        Action = acMovFinanceiro
+      end
+      object Separator1: TMenuItem
+        Caption = '-'
+      end
       object MenuItem5: TMenuItem
         Action = acBanco
       end

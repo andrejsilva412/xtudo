@@ -35,7 +35,7 @@ implementation
 
 procedure TfrmUsuario.acNovoExecute(Sender: TObject);
 begin
-  if Sistema.Forms.Usuario(0) = mrOK then
+  if Sistema.Forms.Administrativo.Usuario(0) = mrOK then
     LoadPage;
 end;
 
@@ -67,7 +67,7 @@ end;
 
 procedure TfrmUsuario.Edit;
 begin
-  if Sistema.Forms.Usuario(dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
+  if Sistema.Forms.Administrativo.Usuario(dsDBGrid.DataSet.FieldByName('id').AsInteger) = mrOK then
     inherited;
 end;
 
