@@ -6,6 +6,8 @@ inherited frmCadMovFinanceiro: TfrmCadMovFinanceiro
   Caption = 'Movimento Financeiro'
   ClientHeight = 123
   ClientWidth = 507
+  OnCreate = FormCreate
+  OnShow = FormShow
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
@@ -120,6 +122,9 @@ inherited frmCadMovFinanceiro: TfrmCadMovFinanceiro
   inherited ActionList1: TActionList[15]
     Left = 224
     Top = 11
+    inherited acSalvar: TAction
+      OnExecute = acSalvarExecute
+    end
   end
   inherited DataSource1: TDataSource[16]
     DataSet = mdMovimento
@@ -128,6 +133,10 @@ inherited frmCadMovFinanceiro: TfrmCadMovFinanceiro
   end
   object mdMovimento: TRxMemoryData[17]
     FieldDefs = <    
+      item
+        Name = 'idcontacorrente'
+        DataType = ftInteger
+      end    
       item
         Name = 'historico'
         DataType = ftString
@@ -144,33 +153,45 @@ inherited frmCadMovFinanceiro: TfrmCadMovFinanceiro
     PacketRecords = 0
     Left = 356
     Top = 22
-    object mdMovimentohistorico: TStringField
+    object mdMovimentoidcontacorrente: TLongintField
+      DisplayLabel = 'Conta Corrente'
       FieldKind = fkData
-      FieldName = 'historico'
+      FieldName = 'idcontacorrente'
       Index = 0
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
-      Required = False
+      Required = True
+    end
+    object mdMovimentohistorico: TStringField
+      DisplayLabel = 'Histórico'
+      FieldKind = fkData
+      FieldName = 'historico'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
       Size = 255
     end
     object mdMovimentotipo: TLongintField
       FieldKind = fkData
       FieldName = 'tipo'
-      Index = 1
+      Index = 2
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
     end
     object mdMovimentovalor: TCurrencyField
+      DisplayLabel = 'Valor'
       FieldKind = fkData
       FieldName = 'valor'
-      Index = 2
+      Index = 3
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
-      Required = False
+      Required = True
       Precision = 2
     end
   end

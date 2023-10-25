@@ -7,6 +7,7 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
   ClientHeight = 451
   ClientWidth = 893
   OnCreate = FormCreate
+  SessionProperties = 'Height;Left;Top;Width;cboContaCorrente.ItemIndex'
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
@@ -149,6 +150,14 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
       OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgFooterRows, rdgAllowQuickFilter]
       FooterRowCount = 1
     end
+    object Button2: TButton[1]
+      Left = 239
+      Height = 25
+      Top = 94
+      Width = 75
+      Caption = 'Button2'
+      TabOrder = 1
+    end
   end
   inherited frameTitulo1: TframeTitulo
     AnchorSideLeft.Control = Owner
@@ -231,6 +240,7 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
       Top = 15
       Width = 280
       ItemHeight = 15
+      OnChange = cboContaCorrenteChange
       Style = csDropDownList
       TabOrder = 1
     end
@@ -273,8 +283,11 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
   inherited JSONPropStorage1: TJSONPropStorage[12]
   end
   inherited ActionList1: TActionList[13]
-    inherited acNovo: TAction
-      OnExecute = acNovoExecute
+    inherited acGenerico1: TAction
+      OnExecute = acGenerico1Execute
+    end
+    inherited acGenerico2: TAction
+      OnExecute = acGenerico2Execute
     end
   end
   inherited dsDBGrid: TDataSource[14]

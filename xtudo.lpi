@@ -384,6 +384,14 @@
         <Filename Value="controller\administrativo\controller.formsadministrativo.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="controller\financeiro\controller.movfinanceiro.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="model\financeiro\model.movfinanceiro.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

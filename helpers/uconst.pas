@@ -55,7 +55,7 @@ resourcestring
   SMSGExcluir = 'Deseja realmente excluir';
 
   // Validação
-  SMSGCampoObrigatorio = 'Desculpe, mas o campo %s, é obrigatário.';
+  SMSGCampoObrigatorio = 'Desculpe, mas o campo %s, é obrigatório';
   SMSGFieldNotFoundInDataSet = 'Field %s not found in DataSet.';
   SMSGSenhaTamanhoMinimo = 'A senha deve ter no mínimo ' + C_MIN_PASSWORD_LENGHT + ' caracteres.';
   SMSGUsuarioOuSenhaInvalido = 'Usuário ou Senha inválido.';

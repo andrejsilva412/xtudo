@@ -21,7 +21,7 @@ uses
   view.cadbanco, controller.contacorrente, model.contacorrente,
   view.contacorrente, view.cadcontacorrente, view.movfinanceiro, uframeperiodo,
   view.cadmovfinanceiro, controller.formsfinanceiro, 
-controller.formsadministrativo;
+controller.formsadministrativo, controller.movfinanceiro, model.movfinanceiro;
 
 
 {$R *.res}

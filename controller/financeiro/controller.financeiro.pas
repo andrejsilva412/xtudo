@@ -5,7 +5,7 @@ unit controller.financeiro;
 interface
 
 uses
-  Classes, SysUtils, controller.banco, controller.contacorrente;
+  Classes, SysUtils, controller.banco, controller.contacorrente, controller.movfinanceiro;
 
 type
 
@@ -15,10 +15,12 @@ type
     private
       FBanco: TBanco;
       FContaCorrente: TContaCorrente;
+      FMovFinanceiro: TMovFinanceiro;
     public
       destructor Destroy; override;
       function Banco: TBanco;
       function ContaCorrente: TContaCorrente;
+      function Movimento: TMovFinanceiro;
   end;
 
 implementation
@@ -31,6 +33,8 @@ begin
     FreeAndNil(FBanco);
   if Assigned(FContaCorrente) then
     FreeAndNil(FContaCorrente);
+  if Assigned(FMovFinanceiro) then
+    FreeAndNil(FMovFinanceiro);
   inherited Destroy;
 end;
 
@@ -48,6 +52,13 @@ begin
   if not Assigned(FContaCorrente) then
     FContaCorrente := TContaCorrente.Create;
   Result := FContaCorrente;
+end;
+
+function TFinanceiro.Movimento: TMovFinanceiro;
+begin
+  if not Assigned(FMovFinanceiro) then
+    FMovFinanceiro := TMovFinanceiro.Create;
+  Result := FMovFinanceiro;
 end;
 
 end.

@@ -20,7 +20,8 @@ type
       function ContaCorrente: Integer; overload;
       function ContaCorrente(AID: Integer): Integer; overload;
       function Movimento: Integer; overload;
-      function CadastrarMovimento: Integer;
+      function MovimentoEntrada(AIDContaCorrente: Integer): Integer;
+      function MovimentoSaida(AIDContaCorrente: Integer): Integer;
   end;
 
 implementation
@@ -81,9 +82,11 @@ begin
       frmMain.TDINoteBook1.ShowFormInPage(frmMovFinanceiro);
       Result := mrIgnore;
     end;
-    vCadMovFinanceiro: begin
+    vCadMovFinanceiroEntrada, vCadMovFinanceiroSaida: begin
       frmCadMovFinanceiro := TfrmCadMovFinanceiro.Create(nil);
       try
+        frmCadMovFinanceiro.Tipo := iif(AView = vCadMovFinanceiroEntrada, tEntrada, tSaida);
+        frmCadMovFinanceiro.IDContaCorrente := AID;
        Result := frmCadMovFinanceiro.ShowModal;
       finally
         FreeAndNil(frmCadMovFinanceiro);
@@ -104,7 +107,7 @@ end;
 
 function TFormFinanceiro.ContaCorrente: Integer;
 begin
-  Result := View(vMovFinanceiro, true, 0);
+  Result := View(vContaCorrente, true, 0);
 end;
 
 function TFormFinanceiro.ContaCorrente(AID: Integer): Integer;
@@ -119,11 +122,14 @@ begin
 
 end;
 
-function TFormFinanceiro.CadastrarMovimento: Integer;
+function TFormFinanceiro.MovimentoEntrada(AIDContaCorrente: Integer): Integer;
 begin
+  Result := View(vCadMovFinanceiroEntrada, false, AIDContaCorrente);
+end;
 
-  Result := View(vCadMovFinanceiro, false, 0);
-
+function TFormFinanceiro.MovimentoSaida(AIDContaCorrente: Integer): Integer;
+begin
+  Result := View(vCadMovFinanceiroSaida, false, AIDContaCorrente);
 end;
 
 end.

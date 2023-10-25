@@ -24,15 +24,20 @@ type
   private
     FACNovoVisible: Boolean;
     FACExcluirVisible: Boolean;
+    FValidado: Boolean;
+    procedure ValidaDataSet;
   public
     procedure Insert; virtual;
     procedure Edit(AID: Integer); virtual;
+    property Validado: Boolean read FValidado;
   end;
 
 var
   frmBasCadastro: TfrmBasCadastro;
 
 implementation
+
+uses uconst;
 
 {$R *.lfm}
 
@@ -48,6 +53,34 @@ procedure TfrmBasCadastro.FormShow(Sender: TObject);
 begin
   FACNovoVisible := acNovo.Visible;
   FACExcluirVisible := acExcluir.Visible;
+end;
+
+procedure TfrmBasCadastro.ValidaDataSet;
+var
+  i: Integer;
+begin
+
+  FValidado := true; // Assume que todos os campos estão preenchidos
+
+  if DataSource1.DataSet.State in [dsInsert, dsEdit] then
+  begin
+    for i := 0 to DataSource1.DataSet.FieldCount -1 do
+    begin
+      if DataSource1.DataSet.Fields[i].Required then
+      begin
+        if (DataSource1.DataSet.Fields[i].IsNull) or
+          (DataSource1.DataSet.Fields[i].AsString = '') then
+        begin
+          Sistema.Mensagem.Alerta('Falha na validação', Caption,
+            Format(SMSGCampoObrigatorio, [DataSource1.DataSet.Fields[i].DisplayLabel]));
+          FValidado := false;
+          DataSource1.DataSet.Fields[i].FocusControl;
+          break;
+        end;
+      end;
+    end;
+  end;
+
 end;
 
 procedure TfrmBasCadastro.Insert;
@@ -101,7 +134,9 @@ end;
 
 procedure TfrmBasCadastro.acSalvarExecute(Sender: TObject);
 begin
-  DataSource1.DataSet.Post;
+  ValidaDataSet;
+  if Validado then
+    DataSource1.DataSet.Post;
 end;
 
 end.

@@ -19,7 +19,7 @@ type
 
 type
   TView = (vEmpresa, vUsuario, vBanco, vContaCorrente, vMovFinanceiro,
-   vCadMovFinanceiro);
+   vCadMovFinanceiroEntrada, vCadMovFinanceiroSaida);
 
 function SVGImagesToString(ASVGImage: TSVGImages): String;
 function UserTypeToInteger(AUserType: TUserType): Integer;
