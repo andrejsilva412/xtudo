@@ -49,7 +49,7 @@ var
   i, APage: Integer;
 begin
 
-  APage := GetPage;
+  APage := Page;
   mdContaCorrente.CloseOpen;
   with Sistema.Financeiro do
   begin
@@ -69,6 +69,7 @@ begin
     end;
     inherited;
   end;
+
 end;
 
 procedure TfrmContaCorrente.Edit;

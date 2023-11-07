@@ -5,7 +5,7 @@ unit model.dataset;
 interface
 
 uses
-  Classes, SysUtils, BufDataset, model.crud;
+  Classes, SysUtils, BufDataset, fpjson, model.crud;
 
 type
 
@@ -18,17 +18,13 @@ type
       function Insert(AFields: String; AParams: array of Variant;
         ACache: Boolean = false): Integer;
       function GetNextID(AIDField: String = 'id'; ACache: Boolean = false): Integer;
-      function Search(AField, ACondicao: String;
-         AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
-      function Search(AField, ACondicao: String;
-         AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
-      function Search(AField, ACondicao: String;
-         AParams: array of Variant; ADefault: String; ACache: Boolean = false): String; overload;
-      function Select(AFields, ACondicao: String;
-        AParams: array of Variant; ADataSet: TBufDataset;
-        ACache: Boolean = false): Integer; overload;
-      function Select(AFields, ACondicao: String;
-        AParams: array of Variant; ACount: String; AFieldCount: String;
+      function Select(AField, ACondicao: String; AParams: array of Variant; ADefault: String; ACache: Boolean = false): String; overload;
+      function Select(AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
+      function Select(AField, ACondicao: String; AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
+      function SelectCurr(AField, ACondicao: String; AParams: array of Variant; ADefault: Currency; ACache: Boolean = false): Currency; overload;
+      function Select(AFields, ACondicao: String; AParams: array of Variant; AJSON: TJSONObject; ACache: Boolean = false): Integer; overload;
+      function Select(AFields, ACondicao: String; AParams: array of Variant; ADataSet: TBufDataset; ACache: Boolean = false): Integer; overload;
+      function Select(AFields, ACondicao: String; AParams: array of Variant; ACount: String; AFieldCount: String;
         APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset;
         ACache: Boolean = false): Integer; overload;
       function Update(AFields, Acondicao: String; AParams: array of Variant;
@@ -56,22 +52,38 @@ begin
 
 end;
 
-function TModelDataSet.Search(AField, ACondicao: String;
-  AParams: array of Variant; ADefault: Integer; ACache: Boolean): Integer;
-begin
-  Result := Inherited Search(TableName, AField, ACondicao, AParams, ADefault, ACache);
-end;
-
-function TModelDataSet.Search(AField, ACondicao: String;
-  AParams: array of Variant; ADefault: Boolean; ACache: Boolean): Boolean;
-begin
-  Result := inherited Search(TableName, AField, ACondicao, AParams, ADefault, ACache);
-end;
-
-function TModelDataSet.Search(AField, ACondicao: String;
+function TModelDataSet.Select(AField, ACondicao: String;
   AParams: array of Variant; ADefault: String; ACache: Boolean): String;
 begin
-  Result := inherited Search(TableName, AField, ACondicao, AParams, ADefault, ACache);
+  Result := inherited Select(TableName, AField, ACondicao,
+   AParams, ADefault, ACache);
+end;
+
+function TModelDataSet.Select(AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Boolean; ACache: Boolean): Boolean;
+begin
+  Result := inherited Select(TableName, AField, ACondicao,
+   AParams, ADefault, ACache);
+end;
+
+function TModelDataSet.Select(AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Integer; ACache: Boolean): Integer;
+begin
+  Result := inherited Select(TableName, AField, ACondicao,
+   AParams, ADefault, ACache);
+end;
+
+function TModelDataSet.SelectCurr(AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Currency; ACache: Boolean): Currency;
+begin
+  Result := inherited SelectCurr(TableName, AField, ACondicao,
+   AParams, ADefault, ACache);
+end;
+
+function TModelDataSet.Select(AFields, ACondicao: String;
+  AParams: array of Variant; AJSON: TJSONObject; ACache: Boolean): Integer;
+begin
+  Result := inherited Select(TableName, AFields, ACondicao, AParams, AJSON, ACache);
 end;
 
 function TModelDataSet.Select(AFields, ACondicao: String;

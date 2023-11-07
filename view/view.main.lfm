@@ -5529,7 +5529,7 @@ inherited frmMain: TfrmMain
     end
     object acEditarUsuario: TAction
       Category = 'Administrativo'
-      Caption = 'Editar Usuário'
+      Caption = 'Perfil'
       OnExecute = acEditarUsuarioExecute
     end
     object acContaCorrente: TAction

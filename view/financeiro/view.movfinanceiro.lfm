@@ -1,61 +1,62 @@
 inherited frmMovFinanceiro: TfrmMovFinanceiro
-  Left = 146
+  Left = 31
   Height = 451
-  Top = 143
-  Width = 893
+  Top = 102
+  Width = 1181
   Caption = 'Movimento Financeiro'
   ClientHeight = 451
-  ClientWidth = 893
+  ClientWidth = 1181
   OnCreate = FormCreate
+  OnShow = FormShow
   SessionProperties = 'Height;Left;Top;Width;cboContaCorrente.ItemIndex'
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
-    Left = 794
+    Left = 1082
     Top = 413
   end
   inherited BCButtonFocus2: TBCButtonFocus
-    Left = 683
+    Left = 971
     Top = 413
   end
   inherited BCButtonFocus3: TBCButtonFocus
-    Left = 588
+    Left = 876
     Top = 413
   end
   inherited BCButtonFocus4: TBCButtonFocus
-    Left = 493
+    Left = 781
     Top = 413
   end
   inherited BCButtonFocus5: TBCButtonFocus
-    Left = 398
+    Left = 686
     Top = 413
   end
   inherited BCButtonFocus6: TBCButtonFocus
-    Left = 303
+    Left = 591
     Top = 413
   end
   inherited BCButtonFocus8: TBCButtonFocus
-    Left = 210
+    Left = 498
     Top = 413
   end
   inherited BCButtonFocus9: TBCButtonFocus
-    Left = 117
+    Left = 405
     Top = 413
   end
   inherited pnOptions: TPanel
     AnchorSideLeft.Control = Owner
     AnchorSideRight.Control = Owner
     Top = 381
-    Width = 873
-    ClientWidth = 873
+    Width = 1161
+    ClientWidth = 1161
     inherited btnGridOptions: TSpeedButton
-      Left = 850
+      Left = 1138
     end
     inherited pnFuncaoPagina: TPanel
-      Left = 282
+      Left = 407
     end
     inherited lblDatabaseStatus: TLabel
-      Left = 753
+      Left = 1041
     end
   end
   inherited Panel1: TPanel
@@ -64,19 +65,19 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
     AnchorSideRight.Control = Owner
     Height = 251
     Top = 126
-    Width = 883
+    Width = 1171
     ClientHeight = 251
-    ClientWidth = 883
+    ClientWidth = 1171
     inherited RxDBGrid1: TRxDBGrid
       Height = 243
-      Width = 881
+      Width = 1169
       Columns = <      
         item
           PickList.Strings = (          )
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'ID'
-          Width = 80
+          Width = 70
           FieldName = 'id'
           EditButtons = <>
           Filter.DropDownRows = 0
@@ -95,7 +96,7 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
           Title.Caption = 'Data'
-          Width = 100
+          Width = 130
           FieldName = 'data'
           EditButtons = <>
           Filter.DropDownRows = 0
@@ -111,9 +112,45 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
           PickList.Strings = (          )
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
+          Title.Caption = 'Conta'
+          Width = 150
+          FieldName = 'conta'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
           Title.Caption = 'Histórico'
-          Width = 400
+          Width = 300
           FieldName = 'historico'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footer.Alignment = taRightJustify
+          Footer.Font.Style = [fsItalic]
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Valor|Anterior'
+          Width = 90
+          FieldName = 'saldoanterior'
           EditButtons = <>
           Filter.DropDownRows = 0
           Filter.EmptyValue = '(Empty)'
@@ -129,9 +166,9 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
           PickList.Strings = (          )
           Title.Alignment = taCenter
           Title.Orientation = toHorizontal
-          Title.Caption = 'Valor'
-          Width = 120
-          FieldName = 'valor'
+          Title.Caption = 'Valor|Entrada'
+          Width = 90
+          FieldName = 'entrada'
           EditButtons = <>
           Filter.DropDownRows = 0
           Filter.EmptyValue = '(Empty)'
@@ -140,8 +177,44 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
           Filter.EmptyFont.Style = [fsItalic]
           Filter.ItemIndex = -1
           Footer.Alignment = taRightJustify
-          Footer.FieldName = 'valor'
-          Footer.ValueType = fvtSum
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          Alignment = taRightJustify
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Valor|Saída'
+          Width = 90
+          FieldName = 'saida'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footer.Alignment = taRightJustify
+          Footers = <>
+          KeyList.Strings = (          )
+        end      
+        item
+          Alignment = taRightJustify
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Valor|Atual'
+          Width = 90
+          FieldName = 'saldoatual'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footer.Alignment = taRightJustify
           Footers = <>
           KeyList.Strings = (          )
         end>
@@ -149,14 +222,6 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
       FooterOptions.RowCount = 1
       OptionsRx = [rdgAllowColumnsForm, rdgAllowDialogFind, rdgFooterRows, rdgAllowQuickFilter]
       FooterRowCount = 1
-    end
-    object Button2: TButton[1]
-      Left = 239
-      Height = 25
-      Top = 94
-      Width = 75
-      Caption = 'Button2'
-      TabOrder = 1
     end
   end
   inherited frameTitulo1: TframeTitulo
@@ -167,22 +232,22 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
     Left = 10
     Height = 48
     Top = 28
-    Width = 873
+    Width = 1161
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Left = 10
     BorderSpacing.Top = 28
     BorderSpacing.Right = 10
     ClientHeight = 48
-    ClientWidth = 873
+    ClientWidth = 1161
     TabOrder = 10
     inherited Bevel1: TBevel
-      Width = 869
+      Width = 1157
     end
     inherited lblTitulo: TLabel
       AnchorSideLeft.Control = frameTitulo1
       AnchorSideTop.Control = frameTitulo1
       AnchorSideRight.Control = frameTitulo1
-      Width = 869
+      Width = 1157
     end
   end
   object Panel2: TPanel[11]
@@ -194,11 +259,11 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
     Left = 10
     Height = 50
     Top = 76
-    Width = 873
+    Width = 1161
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
     ClientHeight = 50
-    ClientWidth = 873
+    ClientWidth = 1161
     TabOrder = 11
     inline FrameDataInicialFinal1: TFrameDataInicialFinal
       AnchorSideLeft.Control = Panel2
@@ -277,6 +342,7 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
       AutoSize = True
       BorderSpacing.Left = 4
       Caption = 'Pesquisar'
+      OnClick = Button1Click
       TabOrder = 3
     end
   end
@@ -296,12 +362,13 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
   object mdMovFinanceiro: TRxMemoryData[15]
     FieldDefs = <    
       item
-        Name = 'id'
-        DataType = ftInteger
-      end    
-      item
         Name = 'data'
         DataType = ftDateTime
+      end    
+      item
+        Name = 'conta'
+        DataType = ftString
+        Size = 60
       end    
       item
         Name = 'historico'
@@ -309,8 +376,24 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
         Size = 255
       end    
       item
-        Name = 'valor'
+        Name = 'saldoanterior'
         DataType = ftCurrency
+      end    
+      item
+        Name = 'entrada'
+        DataType = ftCurrency
+      end    
+      item
+        Name = 'saida'
+        DataType = ftCurrency
+      end    
+      item
+        Name = 'saldoatual'
+        DataType = ftCurrency
+      end    
+      item
+        Name = 'id'
+        DataType = ftInteger
       end>
     PacketRecords = 0
     Left = 630
@@ -333,20 +416,60 @@ inherited frmMovFinanceiro: TfrmMovFinanceiro
       ReadOnly = False
       Required = False
     end
+    object mdMovFinanceiroconta: TStringField
+      FieldKind = fkData
+      FieldName = 'conta'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 60
+    end
     object mdMovFinanceirohistorico: TStringField
       FieldKind = fkData
       FieldName = 'historico'
-      Index = 2
+      Index = 3
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
       Size = 255
     end
-    object mdMovFinanceirovalor: TCurrencyField
+    object mdMovFinanceirosaldoanterior: TCurrencyField
       FieldKind = fkData
-      FieldName = 'valor'
-      Index = 3
+      FieldName = 'saldoanterior'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = 2
+    end
+    object mdMovFinanceiroentrada: TCurrencyField
+      FieldKind = fkData
+      FieldName = 'entrada'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = 2
+    end
+    object mdMovFinanceirosaida: TCurrencyField
+      FieldKind = fkData
+      FieldName = 'saida'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Precision = 2
+    end
+    object mdMovFinanceirosaldoatual: TCurrencyField
+      FieldKind = fkData
+      FieldName = 'saldoatual'
+      Index = 7
       LookupCache = False
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False

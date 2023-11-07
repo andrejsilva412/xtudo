@@ -9,22 +9,47 @@ uses
 
 type
 
+  { TPeriodo }
+
+  TPeriodo = class
+    private
+      FFim: TDateTime;
+      FInicio: TDateTime;
+    public
+      constructor Create;
+      property Inicio: TDateTime read FInicio write FInicio;
+      property Fim: TDateTime read FFim write FFim;
+  end;
+
+type
+
   { TControllerDataSet }
 
   TControllerDataSet = class(TDBNotifier)
     private
+      FPeriodo: TPeriodo;
       FValidador: TValidador;
     protected
       function Validador: TValidador;
       procedure Valida; virtual;
     public
+      constructor Create;
       destructor Destroy; override;
       function Delete: Integer; virtual;
       function Post: Integer; virtual;
       procedure GetPage(APage: Integer = 1); virtual;
+      property Periodo: TPeriodo read FPeriodo;
   end;
 
 implementation
+
+{ TPeriodo }
+
+constructor TPeriodo.Create;
+begin
+  FInicio := Date;
+  FFim := Date;
+end;
 
 { TControllerDataSet }
 
@@ -40,8 +65,14 @@ begin
 
 end;
 
+constructor TControllerDataSet.Create;
+begin
+  FPeriodo := TPeriodo.Create;
+end;
+
 destructor TControllerDataSet.Destroy;
 begin
+  FreeAndNil(FPeriodo);
   if Assigned(FValidador) then
     FreeAndNil(FValidador);
   inherited Destroy;

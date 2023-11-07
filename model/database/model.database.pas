@@ -5,7 +5,8 @@ unit model.database;
 interface
 
 uses
-  Classes, SysUtils, sqldb, db, BufDataset, controller.config, Math, usyserror,
+
+  Classes, SysUtils, sqldb, db, BufDataset, fpjson, controller.config, Math, usyserror,
   udbnotifier;
 
 type
@@ -24,7 +25,6 @@ type
         AParams: array of Variant): Integer;
       function CountRecords(ATable, ACondicao: String;
         AParams: array of Variant; ACount: String; AFieldCount: String): Integer;
-      function MaxPage(ARecords: Integer): Integer;
     public
       constructor Create;
       destructor Destroy; override;
@@ -37,12 +37,13 @@ type
       function Insert(ATable, AFields: String; AParams: array of Variant): Integer;
       function Select(ATable, AFields, ACondicao: String;
         AParams: array of Variant; ACount: String; AFieldCount: String;
-        APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer; virtual;
-      function Select(ATable, AFields, ACondicao: String;
-        AParams: array of Variant; ADataSet: TBufDataset): Integer; virtual;
-      function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String): String; overload;
-      function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean): Boolean; overload;
-      function Search(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer): Integer; overload;
+        APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
+      function Select(ATable, AFields, ACondicao: String; AParams: array of Variant; ADataSet: TBufDataset): Integer; overload;
+      function Select(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String): String; overload;
+      function Select(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean): Boolean; overload;
+      function Select(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer): Integer; overload;
+      function SelectCurr(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Currency): Currency;
+      function Select(ATable, AFields, ACondicao: String; AParams: array of Variant; AJSON: TJSONObject): Integer; overload;
       procedure StartTransaction;
       function Update(ATable, AFields, Acondicao: String; AParams: array of Variant): Integer;
       function Update(ATable, GUID, BlobField: String; AStream: TStream): Integer;
@@ -51,7 +52,6 @@ type
   end;
 
 const
-  C_MAX_REG = 100; // Limite de Resultado de Registros por página
   C_SELECT = 'select %s from %s';
   C_INSERT = 'insert into %s (%s) values (%s)';
   C_UPDATE = 'update %s set %s where %s';
@@ -59,7 +59,7 @@ const
 
 implementation
 
-uses ustrutils, utils;
+uses ustrutils, utils, DataSet.Serialize, udatabaseutils;
 
 procedure TModelDatabase.BeforeConnect(Sender: TObject);
 begin
@@ -131,15 +131,6 @@ begin
   finally
     FreeAndNil(APageDataSet);
   end;
-end;
-
-function TModelDatabase.MaxPage(ARecords: Integer): Integer;
-var
-  AMaxPage: Integer;
-begin
-  AMaxPage := Ceil(ARecords / C_MAX_REG);
-  AMaxPage := iif(AMaxPage = 0, 1, AMaxPage);
-  Result := AMaxPage;
 end;
 
 procedure TModelDatabase.StartTransaction;
@@ -280,17 +271,14 @@ end;
 function TModelDatabase.Select(ATable, AFields, ACondicao: String;
   AParams: array of Variant; ACount: String; AFieldCount: String;
   APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset): Integer;
-const
-  C_LIMIT = ' limit %d, %d';
 var
   SQL: String;
-  OffSet, ARecords: Integer;
+  ARecords: Integer;
 begin
 
   ARecords := CountRecords(ATable, ACondicao, AParams, ACount, AFieldCount);
-  OffSet := (C_MAX_REG * APage) - C_MAX_REG;
   SQL := Trim(Format(C_SELECT, [AFields, ATable + ' ' + ACondicao]));
-  SQL := SQL + Format(C_LIMIT, [OffSet, C_MAX_REG]);
+  SQL := SQL + SetLimit(GetOffSet(APage));
   Execute(SQL, ADataSet, AParams);
   AMaxPage := MaxPage(ARecords);
   Result := ARecords;
@@ -308,17 +296,7 @@ begin
 
 end;
 
-function TModelDatabase.Connected: Boolean;
-begin
-  Result := FDataBase.Connected;
-end;
-
-procedure TModelDatabase.ExecuteDirect(ASQL: String);
-begin
-  FDatabase.ExecuteDirect(ASQL);
-end;
-
-function TModelDatabase.Search(ATable, AField, ACondicao: String;
+function TModelDatabase.Select(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: String): String;
 var
   ADataSet: TBufDataset;
@@ -338,25 +316,72 @@ begin
 
 end;
 
-function TModelDatabase.Search(ATable, AField, ACondicao: String;
+function TModelDatabase.Connected: Boolean;
+begin
+  Result := FDataBase.Connected;
+end;
+
+procedure TModelDatabase.ExecuteDirect(ASQL: String);
+begin
+  FDatabase.ExecuteDirect(ASQL);
+end;
+
+function TModelDatabase.Select(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: Boolean): Boolean;
 var
-  LBoolean: String;
+  lBoolean: String;
 begin
 
-  LBoolean := Search(ATable, AField, ACondicao, AParams, '');
+  LBoolean := Select(ATable, AField, ACondicao, AParams, '');
   Result := iif(LBoolean = '', ADefault, true);
 
 end;
 
-function TModelDatabase.Search(ATable, AField, ACondicao: String;
+function TModelDatabase.Select(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: Integer): Integer;
 var
   LInteger: String;
 begin
 
-  LInteger := Search(ATable, AField, ACondicao, AParams, '');
+  LInteger := Select(ATable, AField, ACondicao, AParams, '');
   Result := iif(LInteger = '', ADefault, StrToIntDef(LInteger, ADefault));
+
+end;
+
+function TModelDatabase.SelectCurr(ATable, AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Currency): Currency;
+var
+  ADataSet: TBufDataset;
+begin
+
+  ADataSet := TBufDataset.Create(nil);
+  try
+    Select(ATable, AField, ACondicao,
+      AParams, ADataSet);
+    if ADataSet.IsEmpty then
+      Result := ADefault
+    else
+      Result := ADataSet.FieldByName(AField).AsCurrency;
+  finally
+    FreeAndNil(ADataSet);
+  end;
+
+
+end;
+
+function TModelDatabase.Select(ATable, AFields, ACondicao: String;
+  AParams: array of Variant; AJSON: TJSONObject): Integer;
+var
+  ADataSet: TBufDataset;
+begin
+
+  ADataSet := TBufDataset.Create(nil);
+  try
+    Result := Select(ATable, AFields, ACondicao, AParams, ADataSet);
+    AJSON := ADataSet.ToJSONObject();
+  finally
+    FreeAndNil(ADataSet);
+  end;
 
 end;
 

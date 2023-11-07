@@ -73,13 +73,13 @@ begin
   begin
     with Sistema.Financeiro do
     begin
-      Movimento.Data := Now;
+      Movimento.DataMovimento := Now;
       Movimento.ContaCorrente.ID := mdMovimentoidcontacorrente.AsInteger;
       Movimento.Historico := mdMovimentohistorico.AsString;
       Movimento.Valor := mdMovimentovalor.AsCurrency;
       case Tipo of
-        tEntrada: ModalResult := Movimento.Entrada;
-        tSaida: ModalResult := Movimento.Saida;
+        tEntrada: ModalResult := Movimento.PostEntrada;
+        tSaida: ModalResult := Movimento.PostSaida;
       end;
     end;
   end;

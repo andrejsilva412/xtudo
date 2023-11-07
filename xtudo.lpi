@@ -392,6 +392,10 @@
         <Filename Value="model\financeiro\model.movfinanceiro.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="helpers\udatabaseutils.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -402,7 +406,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\administrativo;view\administrativo;controller\financeiro;model\financeiro;view\financeiro;controller\administrativo"/>
+      <OtherUnitFiles Value="view;helpers;controller;model;view\assistenteinicial;view\frames;model\config;model\database;model\administrativo;view\administrativo;controller\financeiro;model\financeiro;view\financeiro;controller\administrativo;C:\lazarus\components\dataset-serialize\src\"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>

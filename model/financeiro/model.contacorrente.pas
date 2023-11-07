@@ -17,6 +17,8 @@ type
       function Update(AContaCorrente: TContaCorrente): Integer;
     public
       constructor Create;
+      function AtualizaSaldo(AID: Integer): Integer;
+      function GetSaldo(AID: Integer): Currency;
       function Get(AID: Integer; AContaCorrente: TContaCorrente): Integer; overload;
       function Get(AContaCorrente: TContaCorrente; APage: Integer): Integer; overload;
       function Post(AContaCorrente: TContaCorrente): Integer;
@@ -24,7 +26,7 @@ type
 
 implementation
 
-uses utypes, uconst;
+uses uconst;
 
 { TModelContaCorrente }
 
@@ -54,6 +56,30 @@ begin
 
   inherited;
   TableName := 'contacorrente';
+
+end;
+
+function TModelContaCorrente.AtualizaSaldo(AID: Integer): Integer;
+begin
+  StartTransaction();
+  try
+    Result := inherited Update('saldo = :saldo', 'where id = :id',
+      [GetSaldo(AID), AID]);
+    Commit();
+  except
+    on E: Exception do
+    begin
+      RollBack();
+      raise Exception.Create(E.Message);
+    end;
+  end;
+end;
+
+function TModelContaCorrente.GetSaldo(AID: Integer): Currency;
+begin
+
+  Result := SelectCurr('movfinanceiro', 'SUM(movfinanceiro.valor)',
+    'WHERE movfinanceiro.idconta = :idconta', [AID], 0);
 
 end;
 

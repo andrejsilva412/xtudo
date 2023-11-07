@@ -39,7 +39,7 @@ type
       FID: Integer;
       FSaida: Currency;
       FSaldoAnterior: Currency;
-      FSaltoAtual: Currency;
+      FSaldoAtual: Currency;
       FValor: Currency;
     protected
       procedure Valida; override;
@@ -48,8 +48,9 @@ type
       destructor Destroy; override;
       procedure Clear;
       function Post: Integer; override;
-      function Entrada: Integer;
-      function Saida: Integer;
+      function PostEntrada: Integer;
+      function PostSaida: Integer;
+      function GetSaldo(IDContaCorrente: Integer): Currency;
       procedure GetPage(APage: Integer = 1); override;
       property ID: Integer read FID write FID;
       property Data: TData read FData write FData;
@@ -60,7 +61,7 @@ type
       property SaldoAnterior: Currency read FSaldoAnterior write FSaldoAnterior;
       property Entrada: Currency read FEntrada write FEntrada;
       property Saida: Currency read FSaida write FSaida;
-      property SaltoAtual: Currency read FSaltoAtual write FSaltoAtual;
+      property SaldoAtual: Currency read FSaldoAtual write FSaldoAtual;
   end;
 
 implementation
@@ -108,13 +109,13 @@ procedure TMovFinanceiro.Clear;
 begin
   FID := 0;
   FContaCorrente.Clear;
-  FData := 0;
+  FDataMovimento := 0;
   FHistorico := '';
   FValor := 0;
   FSaldoAnterior := 0;
   FEntrada := 0;
   FSaida := 0;
-  FSaltoAtual := 0;
+  FSaldoAtual := 0;
 end;
 
 function TMovFinanceiro.Post: Integer;
@@ -133,14 +134,14 @@ begin
 
 end;
 
-function TMovFinanceiro.Entrada: Integer;
+function TMovFinanceiro.PostEntrada: Integer;
 begin
 
    Result := Post;
 
 end;
 
-function TMovFinanceiro.Saida: Integer;
+function TMovFinanceiro.PostSaida: Integer;
 begin
 
   Valor := Valor *-1;
@@ -148,9 +149,32 @@ begin
 
 end;
 
-procedure TMovFinanceiro.GetPage(APage: Integer);
+function TMovFinanceiro.GetSaldo(IDContaCorrente: Integer): Currency;
+var
+  MMovFinanceiro: TModelMovFinanceiro;
 begin
-  inherited GetPage(APage);
+
+  MMovFinanceiro := TModelMovFinanceiro.Create;
+  try
+    Result := MMovFinanceiro.GetSaldo(IDContaCorrente);
+  finally
+    FreeAndNil(MMovFinanceiro);
+  end;
+
+end;
+
+procedure TMovFinanceiro.GetPage(APage: Integer);
+var
+  MMovFinanceiro: TModelMovFinanceiro;
+begin
+
+  MMovFinanceiro := TModelMovFinanceiro.Create;
+  try
+   MMovFinanceiro.Get(Self, APage);
+  finally
+    FreeAndNil(MMovFinanceiro);
+  end;
+
 end;
 
 end.

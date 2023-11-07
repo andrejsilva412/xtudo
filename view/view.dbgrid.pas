@@ -59,17 +59,19 @@ type
     procedure PriorPage;
     procedure NextPage;
     procedure LastPage;
+    procedure DisableActions;
+    procedure EnableActions;
     procedure DatabaseStatus(AUpdateStatus: TUpdateStatus;
       const RowsAffected: Integer);
   protected
     procedure LoadPage; virtual;
     procedure SetStyle; override;
-    function GetPage: Integer;
     property MaxPage: Integer read FMaxPage write SetMaxPage;
     procedure ProgressBar(const APosition: Integer; const AMax: Integer);
     procedure Edit; virtual;
   public
     property Titulo: String read FTitulo write SetTitulo;
+    property Page: Integer read FPage write FPage;
   end;
 
 var
@@ -85,7 +87,7 @@ uses uconst;
 
 procedure TfrmDBGrid.FormResize(Sender: TObject);
 begin
- pnFuncaoPagina.Left := Trunc(pnOptions.Width / 2) - Trunc(pnFuncaoPagina.Width / 2);
+  pnFuncaoPagina.Left := Trunc(pnOptions.Width / 2) - Trunc(pnFuncaoPagina.Width / 2);
 end;
 
 procedure TfrmDBGrid.FormCreate(Sender: TObject);
@@ -160,7 +162,7 @@ begin
   acSalvar.Enabled := btnGridOptions.Enabled;
   if cboTPagina.Items.Count > 0 then
   begin
-    cboTPagina.ItemIndex := 0;
+//    cboTPagina.ItemIndex := 0;
     cboTPagina.Enabled := not dsDBGrid.DataSet.IsEmpty;
   end;
 end;
@@ -259,29 +261,53 @@ end;
 
 procedure TfrmDBGrid.FirstPage;
 begin
+  DisableActions;
   FPage := 1;
   LoadPage;
+  EnableActions;
 end;
 
 procedure TfrmDBGrid.PriorPage;
 begin
+  DisableActions;
   if FPage > 1 then
     FPage := FPage -1;
   LoadPage;
+  EnableActions;
 end;
 
 procedure TfrmDBGrid.NextPage;
 begin
+  DisableActions;
   FPage := FPage + 1;
   if FPage > MaxPage then
     FPage := MaxPage;
   LoadPage;
+  EnableActions;
 end;
 
 procedure TfrmDBGrid.LastPage;
 begin
+  DisableActions;
   FPage := MaxPage;
   LoadPage;
+  EnableActions;
+end;
+
+procedure TfrmDBGrid.DisableActions;
+begin
+  acFirst.Enabled := false;
+  acPrior.Enabled := false;
+  acNext.Enabled := false;
+  acLast.Enabled := false;
+end;
+
+procedure TfrmDBGrid.EnableActions;
+begin
+  acFirst.Enabled := true;
+  acPrior.Enabled := true;
+  acNext.Enabled := true;
+  acLast.Enabled := true;
 end;
 
 procedure TfrmDBGrid.DatabaseStatus(AUpdateStatus: TUpdateStatus;
@@ -299,18 +325,17 @@ begin
   UpdatePageButtons
 end;
 
-function TfrmDBGrid.GetPage: Integer;
-begin
-  Result := FPage;
-end;
-
 procedure TfrmDBGrid.ProgressBar(const APosition: Integer; const AMax: Integer);
 begin
-  ProgressBar1.Position := APosition;
+  ProgressBar1.Visible := true;
   ProgressBar1.Max := AMax;
+  ProgressBar1.Position := APosition;
+  ProgressBar1.Repaint;
   if APosition = AMax then
+  begin
     ProgressBar1.Position := 0;
-  //Application.ProcessMessages;
+    ProgressBar1.Visible := false;
+  end;
 end;
 
 procedure TfrmDBGrid.Edit;

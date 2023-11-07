@@ -1,1 +1,1 @@
-{ "TApplication" : { "frmMain" : { "frmMain_Height" : "657", "frmMain_Width" : "1280", "frmMain_Top" : "-8", "frmMain_Left" : "-8", "mainpnmenu_expandir" : "-1" } } }
+{ "TApplication" : { "frmMain" : { "frmMain_Height" : "657", "frmMain_Width" : "1280", "frmMain_Top" : "-8", "frmMain_Left" : "-8", "mainpnmenu_expandir" : "-1" } }, "frmMovFinanceiro" : { "frmMovFinanceiro_Height" : "451", "frmMovFinanceiro_Left" : "31", "frmMovFinanceiro_Top" : "102", "frmMovFinanceiro_Width" : "1181", "cboContaCorrente_ItemIndex" : "2" } }

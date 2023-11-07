@@ -44,7 +44,7 @@ var
   i, APage: Integer;
 begin
 
-  APage := GetPage;
+  APage := Page;
   mdUsuario.CloseOpen;
   with Sistema.Administrativo do
   begin

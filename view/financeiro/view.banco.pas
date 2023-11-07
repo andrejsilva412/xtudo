@@ -47,7 +47,7 @@ var
   i, APage: Integer;
 begin
 
-  APage := GetPage;
+  APage := Page;
   mdBanco.CloseOpen;
   with Sistema.Financeiro do
   begin

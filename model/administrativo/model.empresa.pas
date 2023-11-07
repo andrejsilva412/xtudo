@@ -28,7 +28,7 @@ implementation
 function TModelEmpresa.Insert(AEmpresa: TEmpresa): Integer;
 begin
 
-  if Search('id', '', [], 0) > 0 then
+  if Select('id', '', [], 0) > 0 then
     raise Exception.Create('O sistema não permite multiempresa.');
 
   AEmpresa.ID := GetNextID();

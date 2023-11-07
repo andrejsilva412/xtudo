@@ -66,8 +66,7 @@ end;
 function TModelUser.AdministradorCadastrado: Boolean;
 begin
 
-  Result := Search('id', 'where tipo = :tipo',
-    [1], false);
+  Result := Select('id', 'where tipo = :tipo', [1], false);
 
 end;
 
@@ -78,10 +77,10 @@ begin
   if APassword <> '' then
   begin
     APassword := GetPasswordHash(APassword);
-    AUser.ID := Search('id', 'where username = :username and senha = :senha',
+    AUser.ID := Select('id', 'where username = :username and senha = :senha',
       [AUserName, APassword], 0);
   end else begin
-    AUser.ID := Search('id', 'where username = :username',
+    AUser.ID := Select('id', 'where username = :username',
       [AUserName], 0);
   end;
   Result := Get(AUser.ID, AUser);

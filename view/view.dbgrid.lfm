@@ -80,6 +80,7 @@ inherited frmDBGrid: TfrmDBGrid
         AnchorSideTop.Control = pnFuncaoPagina
         AnchorSideBottom.Control = pnFuncaoPagina
         AnchorSideBottom.Side = asrBottom
+        Cursor = crHandPoint
         Left = 0
         Height = 24
         Top = 0
@@ -93,6 +94,7 @@ inherited frmDBGrid: TfrmDBGrid
         AnchorSideTop.Control = pnFuncaoPagina
         AnchorSideBottom.Control = pnFuncaoPagina
         AnchorSideBottom.Side = asrBottom
+        Cursor = crHandPoint
         Left = 23
         Height = 24
         Top = 0
@@ -107,6 +109,7 @@ inherited frmDBGrid: TfrmDBGrid
         AnchorSideRight.Control = SpeedButton4
         AnchorSideBottom.Control = pnFuncaoPagina
         AnchorSideBottom.Side = asrBottom
+        Cursor = crHandPoint
         Left = 146
         Height = 24
         Top = 0
@@ -122,6 +125,7 @@ inherited frmDBGrid: TfrmDBGrid
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = pnFuncaoPagina
         AnchorSideBottom.Side = asrBottom
+        Cursor = crHandPoint
         Left = 169
         Height = 24
         Top = 0
@@ -135,12 +139,14 @@ inherited frmDBGrid: TfrmDBGrid
       AnchorSideTop.Control = pnOptions
       AnchorSideBottom.Control = pnOptions
       AnchorSideBottom.Side = asrBottom
-      Left = 0
+      Left = 2
       Height = 20
       Top = 2
       Width = 120
       Anchors = [akTop, akLeft, akBottom]
+      BorderSpacing.Left = 2
       BorderSpacing.Top = 2
+      BorderSpacing.Bottom = 2
       Constraints.MaxHeight = 20
       TabOrder = 1
     end

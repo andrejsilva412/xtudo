@@ -82,7 +82,7 @@ function TModelConfig.GetConfig(AConfig: String; ADefault: String;
 begin
 
   Global := not Global;
-  Result := Search('config', 'valor', 'where nome = :nome', [AConfig], '', Global);
+  Result := Select('config', 'valor', 'where nome = :nome', [AConfig], '', Global);
   Result := iif(Result = '', ADefault, Result);
 
 end;
@@ -118,7 +118,7 @@ begin
   Global := not Global;
   StartTransaction(Global);
   try
-    lExists := Search('config', 'nome', 'where nome = :nome', [AConfig], false, Global);
+    lExists := Select('config', 'nome', 'where nome = :nome', [AConfig], false, Global);
     if not lExists then
       Insert('config', 'id = :id, nome = :nome, valor = :valor',
           [GetNextID('config', 'id', true), AConfig, AValue], Global)

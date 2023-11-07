@@ -20,8 +20,9 @@ uses
   controller.banco, model.banco, view.banco, controller.financeiro,
   view.cadbanco, controller.contacorrente, model.contacorrente,
   view.contacorrente, view.cadcontacorrente, view.movfinanceiro, uframeperiodo,
-  view.cadmovfinanceiro, controller.formsfinanceiro, 
-controller.formsadministrativo, controller.movfinanceiro, model.movfinanceiro;
+  view.cadmovfinanceiro, controller.formsfinanceiro,
+  controller.formsadministrativo, controller.movfinanceiro, model.movfinanceiro,
+  udatabaseutils;
 
 
 {$R *.res}

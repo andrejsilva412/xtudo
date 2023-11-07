@@ -5,7 +5,7 @@ unit model.crud;
 interface
 
 uses
-  Classes, SysUtils, BufDataset, Graphics, model.database.mariadb,
+  Classes, SysUtils, BufDataset, Graphics, fpjson, model.database.mariadb,
   model.database.sqlite, udbnotifier, uvalida, uimage, ucript;
 
 type
@@ -36,21 +36,15 @@ type
       function GetPasswordHash(APassword: String): String;
       function GetBase64Content(ATable, GUIDField, GUID, ABase64Field: String): String;
       function GetNextID(ATable, AIDField: String; ACache: Boolean): Integer; overload;
-      function Update(ATable, AFields, Acondicao: String; AParams: array of Variant;
-        ACache: Boolean = false): Integer;
-      function Select(ATable, AFields, ACondicao: String;
-        AParams: array of Variant; ACount: String; AFieldCount: String;
-        APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset;
-        ACache: Boolean = false): Integer; overload;
-      function Select(ATable, AFields, ACondicao: String;
-        AParams: array of Variant; ADataSet: TBufDataset;
-        ACache: Boolean = false): Integer; overload;
-      function Search(ATable, AField, ACondicao: String;
-         AParams: array of Variant; ADefault: String; ACache: Boolean = false): String; overload;
-      function Search(ATable, AField, ACondicao: String;
-         AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
-      function Search(ATable, AField, ACondicao: String;
-         AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
+      function Update(ATable, AFields, Acondicao: String; AParams: array of Variant; ACache: Boolean = false): Integer;
+      function Select(ATable, AFields, ACondicao: String; AParams: array of Variant; ACount: String; AFieldCount: String;
+        APage: Integer; out AMaxPage: Integer; ADataSet: TBufDataset; ACache: Boolean = false): Integer; overload;
+      function Select(ATable, AFields, ACondicao: String; AParams: array of Variant; ADataSet: TBufDataset; ACache: Boolean = false): Integer; overload;
+      function Select(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: String; ACache: Boolean = false): String; overload;
+      function Select(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Boolean; ACache: Boolean = false): Boolean; overload;
+      function Select(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Integer; ACache: Boolean = false): Integer; overload;
+      function SelectCurr(ATable, AField, ACondicao: String; AParams: array of Variant; ADefault: Currency; ACache: Boolean = false): Currency;
+      function Select(ATable, AFields, ACondicao: String; AParams: array of Variant; AJSON: TJSONObject; ACache: Boolean = false): Integer; overload;
       function SaveToBlobField(ATable, GUID, BlobField: String; AStream: TStream; ACache: Boolean = false): Integer; overload;
       function SaveToBlobField(ATable, GUID, BlobField: String; APNG: TPortableNetworkGraphic; ACache: Boolean = false): Integer; overload;
       procedure ExecuteDirect(ASQL: String; ACache: Boolean = false);
@@ -248,31 +242,58 @@ begin
       AParams, ADataSet);
 end;
 
-function TModelCRUD.Search(ATable, AField, ACondicao: String;
+function TModelCRUD.Select(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: String; ACache: Boolean): String;
 begin
+
   if ACache then
-    Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
-  else
-    Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
+     Result := DatabaseCache.Select(ATable, AField, ACondicao,
+       AParams, ADefault)
+   else
+     Result := Database.Select(ATable, AField, ACondicao,
+       AParams, ADefault);
 end;
 
-function TModelCRUD.Search(ATable, AField, ACondicao: String;
+function TModelCRUD.Select(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: Boolean; ACache: Boolean): Boolean;
 begin
   if ACache then
-    Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
-  else
-    Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
+     Result := DatabaseCache.Select(ATable, AField, ACondicao,
+       AParams, ADefault)
+   else
+     Result := Database.Select(ATable, AField, ACondicao,
+       AParams, ADefault);
 end;
 
-function TModelCRUD.Search(ATable, AField, ACondicao: String;
+function TModelCRUD.Select(ATable, AField, ACondicao: String;
   AParams: array of Variant; ADefault: Integer; ACache: Boolean): Integer;
 begin
   if ACache then
-    Result := DatabaseCache.Search(ATable, AField, ACondicao, AParams, ADefault)
+     Result := DatabaseCache.Select(ATable, AField, ACondicao,
+       AParams, ADefault)
+   else
+     Result := Database.Select(ATable, AField, ACondicao,
+       AParams, ADefault);
+end;
+
+function TModelCRUD.SelectCurr(ATable, AField, ACondicao: String;
+  AParams: array of Variant; ADefault: Currency; ACache: Boolean): Currency;
+begin
+  if ACache then
+     Result := DatabaseCache.SelectCurr(ATable, AField, ACondicao,
+       AParams, ADefault)
+   else
+     Result := Database.SelectCurr(ATable, AField, ACondicao,
+       AParams, ADefault);
+end;
+
+function TModelCRUD.Select(ATable, AFields, ACondicao: String;
+  AParams: array of Variant; AJSON: TJSONObject; ACache: Boolean): Integer;
+begin
+  if ACache then
+    Result := DatabaseCache.Select(ATable, AFields, ACondicao, AParams, AJSON)
   else
-    Result := Database.Search(ATable, AField, ACondicao, AParams, ADefault);
+    Result := Database.Select(ATable, AFields, ACondicao, AParams, AJSON);
 end;
 
 function TModelCRUD.SaveToBlobField(ATable, GUID, BlobField: String;
@@ -340,7 +361,7 @@ begin
       FreeAndNil(ADataSet);
     end;
   end else begin
-    lResult := DatabaseCache.Search('sqlite_master', 'name', 'WHERE type=:tipo AND name=:name',
+    lResult := DatabaseCache.Select('sqlite_master', 'name', 'WHERE type=:tipo AND name=:name',
       ['table', ATable], '');
     Result := iif(lResult = '', false, true);
   end;

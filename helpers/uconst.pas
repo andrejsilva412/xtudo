@@ -40,6 +40,7 @@ const
 
   // Mask
   C_CNPJ_MASK = '99.999.999/9999-99;1;_';
+  C_MOEDA = '#,##0.00;-#,##0.00';
 
   // MINIMAL PASSWORD LENGTH
   C_MIN_PASSWORD_LENGHT = '5';

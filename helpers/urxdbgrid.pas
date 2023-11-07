@@ -310,8 +310,8 @@ begin
   begin
     if AGrid.Columns.Items[i].Field.DataType = ftCurrency then
     begin
-      AGrid.Columns.Items[i].DisplayFormat := '###,###,##0.00';
-      AGrid.Columns.Items[i].Footer.DisplayFormat := '###,###,##0.00';
+      AGrid.Columns.Items[i].DisplayFormat := C_MOEDA;
+      AGrid.Columns.Items[i].Footer.DisplayFormat := C_MOEDA;
     end;
   end;
 
