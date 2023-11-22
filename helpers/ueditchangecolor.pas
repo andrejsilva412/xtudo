@@ -8,13 +8,6 @@ uses
 
 type
 
-  { TRegisteredObjects }
-
-  TRegisteredObjects = class(TList)
-    public
-      destructor Destroy; override;
-  end;
-
   { TWinControlChangeColor }
 
   TWinControlChangeColor = class
@@ -48,7 +41,6 @@ procedure DestacaLabel(ALabel: TLabel; bEnter: Boolean);
 var
   NewColor: TColor;
   OldColor: TColor;
-  _RegisteredObjects: TRegisteredObjects;
 
 implementation
 
@@ -218,24 +210,5 @@ begin
   end;
 
 end;
-
-{ TRegisteredObjects }
-
-destructor TRegisteredObjects.Destroy;
-var
-  i: Integer;
-begin
-
-  for i := 0 to Pred(Count) do
-    TObject(Items[i]).Free;
-  inherited Destroy;
-
-end;
-
-initialization
-  _RegisteredObjects := TRegisteredObjects.Create;
-
-finalization
-  _RegisteredObjects.Free;
 
 end.

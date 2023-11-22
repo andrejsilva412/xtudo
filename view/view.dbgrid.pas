@@ -47,7 +47,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure RxDBGrid1DblClick(Sender: TObject);
   private
-    FGridMenu: TPopupMenu;
     FMaxPage: Integer;
     FPage: Integer;
     FTitulo: String;
@@ -93,7 +92,6 @@ end;
 procedure TfrmDBGrid.FormCreate(Sender: TObject);
 begin
   inherited;
-  FGridMenu := TPopupMenu.Create(Self);
   cboTPagina.Items.Clear;
   cboTPagina.Text := '';
   cboTPagina.Enabled := false;
@@ -112,16 +110,16 @@ begin
 end;
 
 procedure TfrmDBGrid.btnGridOptionsClick(Sender: TObject);
-var
-  Item: TMenuItem;
+//var
+  //Item: TMenuItem;
 begin
-  FGridMenu.Items.Clear;
+{  FGridMenu.Items.Clear;
   Item := TMenuItem.Create(FGridMenu);
   Item.Caption := 'Exportar para o Excel';
   Item.OnClick  := @OnExportToExcel;
   Item.Enabled := not dsDBGrid.DataSet.IsEmpty;
   FGridMenu.Items.Add(Item);
-  FGridMenu.PopUp;
+  FGridMenu.PopUp;   }
 end;
 
 procedure TfrmDBGrid.acFirstExecute(Sender: TObject);
@@ -171,7 +169,7 @@ procedure TfrmDBGrid.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if CanClose then
   begin
-    FreeAndNil(FGridMenu);
+    //FreeAndNil(FGridMenu);
     inherited;
   end;
 end;
@@ -211,9 +209,9 @@ var
   aFileName: String;
 begin
 
- aFileName := ChangeFileExt(GetTempFileName, STR_EXCEL_EXTENSION);
- RxDBGrid1.OnProgress := @ProgressBar;
- RxDBGrid1.ExportToSpreedSheet(aFileName);
+  aFileName := ChangeFileExt(GetTempFileName, STR_EXCEL_EXTENSION);
+  RxDBGrid1.OnProgress := @ProgressBar;
+  RxDBGrid1.ExportToSpreedSheet(aFileName);
 
 end;
 
@@ -322,7 +320,7 @@ end;
 
 procedure TfrmDBGrid.LoadPage;
 begin
-  UpdatePageButtons
+  UpdatePageButtons;
 end;
 
 procedure TfrmDBGrid.ProgressBar(const APosition: Integer; const AMax: Integer);
@@ -370,6 +368,7 @@ begin
   frameTitulo1.Color := Sistema.Config.Theme.BackGround2;
   frameTitulo1.Bevel1.Visible := false;
   frameTitulo1.lblTitulo.Font.Color := InvertColor(frameTitulo1.Color);
+  RxDBGrid1.AlternateColor := Sistema.Config.Theme.Secondary2;
 end;
 
 end.

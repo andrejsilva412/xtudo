@@ -12,9 +12,11 @@ type
   { TModelMovFinanceiro }
 
   TModelMovFinanceiro = class(TModelDataSet)
+    private
+      procedure AtualizaSaldoContaCorrente(AIDContaCorrente:  Integer);
+      function GetSaldo(AIDContaCorrente: Integer): Currency;
     public
       constructor Create;
-      function GetSaldo(AIDContaCorrente: Integer): Currency;
       function Post(AMovFinanceiro: TMovFinanceiro): Integer;
       function Get(AMovFinanceiro: TMovFinanceiro; APage: Integer): Integer; overload;
   end;
@@ -31,44 +33,48 @@ begin
   TableName := 'movfinanceiro';
 end;
 
-function TModelMovFinanceiro.GetSaldo(AIDContaCorrente: Integer): Currency;
+procedure TModelMovFinanceiro.AtualizaSaldoContaCorrente(
+  AIDContaCorrente: Integer);
 var
+  ASaldo: Currency;
   MContaCorrente: TModelContaCorrente;
 begin
 
   MContaCorrente := TModelContaCorrente.Create;
   try
-    Result := MContaCorrente.GetSaldo(AIDContaCorrente);
+    ASaldo := SelectCurr('movfinanceiro', 'SUM(movfinanceiro.valor)',
+      'WHERE movfinanceiro.idconta = :idconta', [AIDContaCorrente], 0);
+    MContaCorrente.AtualizaSaldo(AIDContaCorrente, ASaldo);
   finally
     FreeAndNil(MContaCorrente);
   end;
 
 end;
 
-function TModelMovFinanceiro.Post(AMovFinanceiro: TMovFinanceiro): Integer;
-var
-  MContaCorrente: TModelContaCorrente;
+function TModelMovFinanceiro.GetSaldo(AIDContaCorrente: Integer): Currency;
 begin
 
-  MContaCorrente := TModelContaCorrente.Create;
+
+
+end;
+
+function TModelMovFinanceiro.Post(AMovFinanceiro: TMovFinanceiro): Integer;
+begin
+
+  StartTransaction();
   try
-    StartTransaction();
-    try
-      AMovFinanceiro.ID := GetNextID();
-      Result := inherited Insert('id = :id, idconta = :idconta, data = :data, historico = :historico, '
-       + 'valor = :valor', [AMovFinanceiro.ID, AMovFinanceiro.ContaCorrente.ID, AMovFinanceiro.DataMovimento,
-         AMovFinanceiro.Historico, AMovFinanceiro.Valor]);
-      Commit();
-      MContaCorrente.AtualizaSaldo(AMovFinanceiro.ContaCorrente.ID);
-    except
-      on E: Exception do
-      begin
-        RollBack();
-        raise Exception.Create(E.Message);
-      end;
+    AMovFinanceiro.ID := GetNextID();
+    Result := inherited Insert('id = :id, idconta = :idconta, data = :data, historico = :historico, '
+     + 'valor = :valor', [AMovFinanceiro.ID, AMovFinanceiro.ContaCorrente.ID, AMovFinanceiro.DataMovimento,
+       AMovFinanceiro.Historico, AMovFinanceiro.Valor]);
+    Commit();
+    AtualizaSaldoContaCorrente(AMovFinanceiro.ContaCorrente.ID);
+  except
+    on E: Exception do
+    begin
+      RollBack();
+      raise Exception.Create(E.Message);
     end;
-  finally
-    FreeAndNil(MContaCorrente);
   end;
 
 end;
@@ -79,15 +85,18 @@ var
   ADataSet: TBufDataset;
   ARecords, AMaxPage: Integer;
   sLimit: String;
+  MContaCorrente: TModelContaCorrente;
 begin
 
+  MContaCorrente := TModelContaCorrente.Create;
   ADataSet := TBufDataset.Create(nil);
   try
     Result := C_REG_FOUND;
 
     ARecords := Select('movfinanceiro', 'count(movfinanceiro.id)',
       'inner join contacorrente on contacorrente.id = movfinanceiro.idconta '
-      + 'where movfinanceiro.idconta = :idconta', [AMovFinanceiro.ContaCorrente.ID], 0);
+      + 'where date(movfinanceiro.data) between :data1 and :data and movfinanceiro.idconta = :idconta', [
+       AMovFinanceiro.Periodo.Inicio, AMovFinanceiro.Periodo.Fim, AMovFinanceiro.ContaCorrente.ID], 0);
 
     AMaxPage := MaxPage(ARecords);
     sLimit := SetLimit(GetOffSet(APage));
@@ -104,7 +113,7 @@ begin
      + 'mov.entrada, mov.saida, mov.saldo_atual', 'where date(mov.data) between :data1 and :data '
      + ' ORDER BY mov.id ' + sLimit  + '', [
        AMovFinanceiro.ContaCorrente.ID, AMovFinanceiro.Periodo.Inicio, AMovFinanceiro.Periodo.Fim], ADataSet);
-
+    AtualizaSaldoContaCorrente(AMovFinanceiro.ContaCorrente.ID);
     ADataSet.First;
     AMovFinanceiro.Data.Clear;
     AMovFinanceiro.Data.MaxPage := AMaxPage;
@@ -130,8 +139,6 @@ begin
   finally
     FreeAndNil(ADataSet);
   end;
-
-
 
 end;
 

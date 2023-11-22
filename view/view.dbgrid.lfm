@@ -1,5 +1,5 @@
 inherited frmDBGrid: TfrmDBGrid
-  Left = 412
+  Left = 276
   Top = 122
   Caption = 'DBGrid'
   OnCloseQuery = FormCloseQuery

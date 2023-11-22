@@ -68,7 +68,7 @@ var
 
 implementation
 
-uses ueditchangecolor;
+uses ueditchangecolor, urxdbgrid;
 
 {$R *.lfm}
 
@@ -112,6 +112,10 @@ begin
     if (Components[i] is TWinControl) then
     begin
       TWinControlTrocaCor.RegisterEdit(Components[i] as TWinControl);
+    end;
+    if (Components[i] is TRxDBGrid) then
+    begin
+      TRxGridRegister.RegisterRxDBGrid(Components[i] as TRxDBGrid);
     end;
   end;
   acGenerico1.Visible := false;

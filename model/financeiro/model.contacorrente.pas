@@ -17,8 +17,7 @@ type
       function Update(AContaCorrente: TContaCorrente): Integer;
     public
       constructor Create;
-      function AtualizaSaldo(AID: Integer): Integer;
-      function GetSaldo(AID: Integer): Currency;
+      function AtualizaSaldo(AID: Integer; ASaldo: Currency): Integer;
       function Get(AID: Integer; AContaCorrente: TContaCorrente): Integer; overload;
       function Get(AContaCorrente: TContaCorrente; APage: Integer): Integer; overload;
       function Post(AContaCorrente: TContaCorrente): Integer;
@@ -59,12 +58,13 @@ begin
 
 end;
 
-function TModelContaCorrente.AtualizaSaldo(AID: Integer): Integer;
+function TModelContaCorrente.AtualizaSaldo(AID: Integer; ASaldo: Currency
+  ): Integer;
 begin
   StartTransaction();
   try
     Result := inherited Update('saldo = :saldo', 'where id = :id',
-      [GetSaldo(AID), AID]);
+      [ASaldo, AID]);
     Commit();
   except
     on E: Exception do
@@ -73,14 +73,6 @@ begin
       raise Exception.Create(E.Message);
     end;
   end;
-end;
-
-function TModelContaCorrente.GetSaldo(AID: Integer): Currency;
-begin
-
-  Result := SelectCurr('movfinanceiro', 'SUM(movfinanceiro.valor)',
-    'WHERE movfinanceiro.idconta = :idconta', [AID], 0);
-
 end;
 
 function TModelContaCorrente.Get(AID: Integer; AContaCorrente: TContaCorrente

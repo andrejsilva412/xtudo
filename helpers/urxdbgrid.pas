@@ -8,8 +8,18 @@ unit urxdbgrid;
 interface
 
 uses
-  LCLIntf, LazUTF8, Forms, Classes, Graphics, uhtmlutils, DBGrids, SysUtils,
+  LCLIntf, LazUTF8, Forms, Classes, Controls, Menus,
+  Graphics, uhtmlutils, DBGrids, SysUtils, Dialogs,
   ustatus, RxDBGrid, db, fpsTypes, fpSpreadsheet;
+
+type
+
+  { TRegisteredObjects }
+
+  TRegisteredObjects = class(TList)
+    public
+      destructor Destroy; override;
+  end;
 
 type
 
@@ -17,17 +27,24 @@ type
 
   TRxDBGrid = class(RxDBGrid.TRxDBGrid)
     private
+      FGridMenu: TPopupMenu;
       FOnProgress: TProgress;
       procedure ConfigPageLayoutWorkSheet(AWorkSheet: TsWorksheet);
+      function SaveDialog(out AFileName: String; AFilter: String; AExt: String): Boolean;
       function ColorToHtml(AColor: TColor): String;
+      procedure OnExportToExcel(Sender: TObject);
+      procedure OnGridMouseDown(Sender: TObject; Button: TMouseButton;
+        Shift: TShiftState; X, Y: Integer);
       function toTXT(Sender: TObject; lpp: Integer; PageBreak: Boolean): TStringList;
       function toHTML(Sender: TObject; ACaption: String): TStringList;
       function StrToHtml(mStr: string; mFont: TFont = nil): string;
-      procedure AddMask(Sender: TObject);
     protected
       procedure DoProgress(const APosition: Integer; const AMax: Integer);
     public
       constructor Create(AOwner: TComponent); override;
+      destructor Destroy; override;
+      procedure AddMask(Sender: TObject);
+      procedure RegisterGrid(var ARxDBGrid: TRxDBGrid);
       procedure ExportToSpreedSheet(aFileName: String;  aOpenFile: Boolean = true);
       // AGrid the Grid to Export, lpp: Lines per page. Not including the text header, pageBreak: insert a page break that some printers could use for starting a new page
       procedure ExportToTXT(aFileName: String; lpp: Integer = 80;
@@ -37,9 +54,41 @@ type
       property OnProgress: TProgress read FOnProgress write FOnProgress;
   end;
 
+  { TRxGridRegister }
+
+  TRxGridRegister = class
+    public
+      class procedure RegisterRxDBGrid(AGrid: TRxDBGrid);
+  end;
+
 implementation
 
 uses uconst, utils;
+
+{ TRegisteredObjects }
+
+destructor TRegisteredObjects.Destroy;
+var
+  i: Integer;
+begin
+
+  for i := 0 to Pred(Count) do
+    TObject(Items[i]).Free;
+  inherited Destroy;
+
+end;
+
+{ TRxGridRegister }
+
+class procedure TRxGridRegister.RegisterRxDBGrid(AGrid: TRxDBGrid);
+var
+  ARxGrid: TRxDBGrid;
+begin
+
+  ARxGrid := TRxDBGrid.Create(nil);
+  ARxGrid.RegisterGrid(AGrid);
+
+end;
 
 { TRxDBGrid }
 
@@ -48,6 +97,25 @@ begin
   AWorkSheet.PageLayout.Headers[HEADER_FOOTER_INDEX_ALL] := '&C&D &T';
   AWorkSheet.PageLayout.Footers[HEADER_FOOTER_INDEX_ODD] := '&RPage &P of &N';
   AWorkSheet.PageLayout.Footers[HEADER_FOOTER_INDEX_EVEN] := '&LPage &P of &N';
+end;
+
+function TRxDBGrid.SaveDialog(out AFileName: String; AFilter: String;
+  AExt: String): Boolean;
+var
+  SD: TSaveDialog;
+begin
+
+  SD := TSaveDialog.Create(nil);
+  try
+    SD.Filter := AFilter;
+    SD.FileName := FormatDateTime('ddmmyyyyhhmmss', Now) + AExt;
+    Result := SD.Execute;
+    if Result then
+      AFileName := SD.FileName;
+  finally
+    FreeAndNil(SD);
+  end;
+
 end;
 
 function TRxDBGrid.ColorToHtml(AColor: TColor): String;
@@ -60,6 +128,36 @@ begin
     Result := htmlUtils.ColorToHTML(AColor);
   finally
     FreeAndNil(htmlUtils);
+  end;
+
+end;
+
+procedure TRxDBGrid.OnExportToExcel(Sender: TObject);
+var
+  AFileName: String;
+begin
+
+  AFileName := '';
+  if SaveDialog(AFileName, 'Planilha do Excel|.xls', STR_EXCEL_EXTENSION) then
+    ExportToSpreedSheet(AFileName);
+
+end;
+
+procedure TRxDBGrid.OnGridMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  Item: TMenuItem;
+begin
+
+  if Button = mbRight then
+  begin
+    FGridMenu.Items.Clear;
+    Item := TMenuItem.Create(FGridMenu);
+    Item.Caption := 'Exportar para o Excel';
+    Item.OnClick := @OnExportToExcel;
+    Item.Enabled := not TRxDBGrid(Sender).DataSource.DataSet.IsEmpty;
+    FGridMenu.Items.Add(Item);
+    FGridMenu.PopUp;
   end;
 
 end;
@@ -317,6 +415,19 @@ begin
 
 end;
 
+procedure TRxDBGrid.RegisterGrid(var ARxDBGrid: TRxDBGrid);
+begin
+
+  if not Assigned(ARxDBGrid) then
+    exit;
+
+  if (ARxDBGrid) is TRxDBGrid then
+  begin
+    ARxDBGrid.OnMouseDown := @OnGridMouseDown;
+  end;
+
+end;
+
 procedure TRxDBGrid.DoProgress(const APosition: Integer; const AMax: Integer);
 begin
   if Assigned(FOnProgress) then
@@ -326,6 +437,13 @@ end;
 constructor TRxDBGrid.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  FGridMenu := TPopupMenu.Create(Self);
+end;
+
+destructor TRxDBGrid.Destroy;
+begin
+  FreeAndNil(FGridMenu);
+  inherited Destroy;
 end;
 
 procedure TRxDBGrid.ExportToSpreedSheet(aFileName: String; aOpenFile: Boolean);

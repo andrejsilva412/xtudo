@@ -86,7 +86,7 @@ end;
 
 procedure TfrmMovFinanceiro.FormCreate(Sender: TObject);
 var
-  i, APage: Integer;
+  i, APage, AMaxPage: Integer;
 begin
   inherited;
   acSalvar.Visible := false;
@@ -103,7 +103,7 @@ begin
   APage := 1;
   repeat
     Sistema.Financeiro.ContaCorrente.GetPage(APage);
-    MaxPage := Sistema.Financeiro.ContaCorrente.Data.MaxPage;
+    AMaxPage := Sistema.Financeiro.ContaCorrente.Data.MaxPage;
     for i := 0 to Sistema.Financeiro.ContaCorrente.Data.Count -1 do
     begin
       cboContaCorrente.Items.Add(
@@ -112,13 +112,14 @@ begin
         IntToStr(Sistema.Financeiro.ContaCorrente.Data.Items[i].This.ID));
     end;
     inc(APage);
-  until APage > MaxPage;
+  until APage > AMaxPage;
 end;
 
 procedure TfrmMovFinanceiro.FormShow(Sender: TObject);
 begin
-  CarregaMovimento;
   inherited;
+  CarregaMovimento;
+
 end;
 
 function TfrmMovFinanceiro.IDContaCorrente: Integer;
@@ -195,7 +196,7 @@ begin
   Screen.Cursor := crHourGlass;
   Button1.Enabled := false;
   try
-    LoadPage;
+    CarregaMovimento;
   finally
     Button1.Enabled := true;
     Screen.Cursor := crDefault;

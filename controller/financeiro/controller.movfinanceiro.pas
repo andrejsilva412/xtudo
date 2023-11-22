@@ -50,7 +50,6 @@ type
       function Post: Integer; override;
       function PostEntrada: Integer;
       function PostSaida: Integer;
-      function GetSaldo(IDContaCorrente: Integer): Currency;
       procedure GetPage(APage: Integer = 1); override;
       property ID: Integer read FID write FID;
       property Data: TData read FData write FData;
@@ -146,20 +145,6 @@ begin
 
   Valor := Valor *-1;
   Result := Post;
-
-end;
-
-function TMovFinanceiro.GetSaldo(IDContaCorrente: Integer): Currency;
-var
-  MMovFinanceiro: TModelMovFinanceiro;
-begin
-
-  MMovFinanceiro := TModelMovFinanceiro.Create;
-  try
-    Result := MMovFinanceiro.GetSaldo(IDContaCorrente);
-  finally
-    FreeAndNil(MMovFinanceiro);
-  end;
 
 end;
 
