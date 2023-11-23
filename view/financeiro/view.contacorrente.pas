@@ -18,6 +18,7 @@ type
     mdContaCorrentebanco: TStringField;
     mdContaCorrenteid: TLongintField;
     mdContaCorrentenumero: TStringField;
+    mdContaCorrentepadrao: TBooleanField;
     mdContaCorrentesaldo: TCurrencyField;
     procedure acNovoExecute(Sender: TObject);
   private
@@ -65,6 +66,7 @@ begin
       mdContaCorrentebanco.AsString := ContaCorrente.Data.Items[i].This.Banco.Nome;
       mdContaCorrentenumero.AsString := ContaCorrente.Data.Items[i].This.Numero;
       mdContaCorrentesaldo.AsCurrency := ContaCorrente.Data.Items[i].This.Saldo;
+      mdContaCorrentepadrao.AsBoolean := ContaCorrente.Data.Items[i].This.Padrao;
       mdContaCorrente.Post;
     end;
     inherited;

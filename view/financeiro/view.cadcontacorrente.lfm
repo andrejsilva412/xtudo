@@ -1,45 +1,52 @@
 inherited frmCadContaCorrente: TfrmCadContaCorrente
   Left = 436
-  Height = 140
+  Height = 154
   Top = 139
   Width = 480
   Caption = 'Conta Corrente'
-  ClientHeight = 140
+  ClientHeight = 154
   ClientWidth = 480
   OnCreate = FormCreate
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
     AnchorSideBottom.Control = Owner
     Left = 381
-    Top = 102
+    Top = 116
+    TabOrder = 12
   end
   inherited BCButtonFocus2: TBCButtonFocus
     Left = 270
-    Top = 102
+    Top = 116
+    TabOrder = 11
   end
   inherited BCButtonFocus3: TBCButtonFocus
     Left = 175
-    Top = 102
+    Top = 116
+    TabOrder = 10
   end
   inherited BCButtonFocus4: TBCButtonFocus
     Left = 80
-    Top = 102
+    Top = 116
+    TabOrder = 9
   end
   inherited BCButtonFocus5: TBCButtonFocus
     Left = -15
-    Top = 102
+    Top = 116
+    TabOrder = 8
   end
   inherited BCButtonFocus6: TBCButtonFocus
     Left = -110
-    Top = 102
+    Top = 116
+    TabOrder = 7
   end
   inherited BCButtonFocus8: TBCButtonFocus
     Left = -203
-    Top = 102
+    Top = 116
   end
   inherited BCButtonFocus9: TBCButtonFocus
     Left = -296
-    Top = 102
+    Top = 116
+    TabOrder = 5
   end
   object Label1: TLabel[8]
     Left = 24
@@ -60,7 +67,7 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
     EnableValues = True
     ItemHeight = 15
     MaxLength = 0
-    TabOrder = 8
+    TabOrder = 0
   end
   object Label2: TLabel[10]
     Left = 136
@@ -81,7 +88,7 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
     CenturyFrom = 1941
     MaxDate = 2958465
     MinDate = -53780
-    TabOrder = 9
+    TabOrder = 1
     TrailingSeparator = False
     TextForNullDate = 'NULL'
     LeadingZeros = True
@@ -109,7 +116,7 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
     DataField = 'numero'
     DataSource = DataSource1
     MaxLength = 0
-    TabOrder = 10
+    TabOrder = 2
   end
   object Label4: TLabel[14]
     Left = 376
@@ -126,13 +133,25 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
     Width = 80
     Alignment = taRightJustify
     Enabled = False
-    TabOrder = 11
+    TabOrder = 3
     DataField = 'saldo'
     DataSource = DataSource1
   end
-  inherited JSONPropStorage1: TJSONPropStorage[16]
+  object DBCheckBox1: TDBCheckBox[16]
+    Left = 24
+    Height = 23
+    Top = 87
+    Width = 432
+    Caption = 'Usar essa conta para padrão de recebimentos/pagamentos'
+    DataField = 'padrao'
+    DataSource = DataSource1
+    TabOrder = 4
+    ValueChecked = 'True'
+    ValueUnchecked = 'False'
   end
-  inherited ActionList1: TActionList[17]
+  inherited JSONPropStorage1: TJSONPropStorage[17]
+  end
+  inherited ActionList1: TActionList[18]
     inherited acNovo: TAction
       OnExecute = acNovoExecute
     end
@@ -140,10 +159,10 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
       OnExecute = acSalvarExecute
     end
   end
-  inherited DataSource1: TDataSource[18]
+  inherited DataSource1: TDataSource[19]
     DataSet = mdContaCorrente
   end
-  object mdContaCorrente: TRxMemoryData[19]
+  object mdContaCorrente: TRxMemoryData[20]
     FieldDefs = <    
       item
         Name = 'id'
@@ -170,6 +189,10 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
       item
         Name = 'saldo'
         DataType = ftCurrency
+      end    
+      item
+        Name = 'padrao'
+        DataType = ftBoolean
       end>
     PacketRecords = 0
     Left = 440
@@ -230,6 +253,16 @@ inherited frmCadContaCorrente: TfrmCadContaCorrente
       ProviderFlags = [pfInUpdate, pfInWhere]
       ReadOnly = False
       Required = False
+    end
+    object mdContaCorrentepadrao: TBooleanField
+      FieldKind = fkData
+      FieldName = 'padrao'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayValues = 'True;False'
     end
   end
 end

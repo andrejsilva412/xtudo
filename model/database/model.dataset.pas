@@ -29,11 +29,15 @@ type
         ACache: Boolean = false): Integer; overload;
       function Update(AFields, Acondicao: String; AParams: array of Variant;
         ACache: Boolean = false): Integer;
+      function IntToBool(Int: Integer): Boolean;
+      function BoolToInt(Bool: Boolean): Integer;
     public
       property TableName: String read FTableName write FTableName;
   end;
 
 implementation
+
+uses utils;
 
 { TModelDataSet }
 
@@ -105,6 +109,16 @@ function TModelDataSet.Update(AFields, Acondicao: String;
   AParams: array of Variant; ACache: Boolean): Integer;
 begin
   Result := Inherited Update(TableName, AFields, Acondicao, AParams, ACache);
+end;
+
+function TModelDataSet.IntToBool(Int: Integer): Boolean;
+begin
+  Result := iif(Int = 1, true, false);
+end;
+
+function TModelDataSet.BoolToInt(Bool: Boolean): Integer;
+begin
+  Result := iif(Bool = true, 1, 0);
 end;
 
 end.

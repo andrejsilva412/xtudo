@@ -69,7 +69,6 @@ end;
 
 function TImages.SetColor(aSVG: String; aCor: TColor): String;
 var
-  HTMLUtils: THTMLUtils;
   HTMLColor, Str: String;
   APos: SmallInt;
 begin
@@ -78,13 +77,8 @@ begin
 
   Str := TextoEntre(aSVG, ' fill', '"', true);
 
-  HTMLUtils := THTMLUtils.Create;
-  try
-    HTMLColor := HTMLUtils.ColorToHTML(aCor);
-    Result := Format(aSVG, [HTMLColor]);
-  finally
-    FreeAndNil(HTMLUtils);
-  end;
+  HTMLColor := ColorToHTML(aCor);
+  Result := Format(aSVG, [HTMLColor]);
 
 end;
 

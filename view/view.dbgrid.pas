@@ -47,10 +47,10 @@ type
     procedure FormShow(Sender: TObject);
     procedure RxDBGrid1DblClick(Sender: TObject);
   private
+    FAutoLoadPage: Boolean;
     FMaxPage: Integer;
     FPage: Integer;
     FTitulo: String;
-    procedure OnExportToExcel(Sender: TObject);
     procedure SetMaxPage(AValue: Integer);
     procedure SetTitulo(AValue: String);
     procedure UpdatePageButtons;
@@ -71,6 +71,7 @@ type
   public
     property Titulo: String read FTitulo write SetTitulo;
     property Page: Integer read FPage write FPage;
+    property AutoLoadPage: Boolean read FAutoLoadPage write FAutoLoadPage;
   end;
 
 var
@@ -107,6 +108,7 @@ begin
   acNovo.Visible := true;
   acSalvar.Caption := 'Editar';
   acSalvar.Visible := true;
+  AutoLoadPage := true;
 end;
 
 procedure TfrmDBGrid.btnGridOptionsClick(Sender: TObject);
@@ -177,7 +179,8 @@ end;
 procedure TfrmDBGrid.FormShow(Sender: TObject);
 begin
   Titulo := Caption;
-  LoadPage;
+  if AutoLoadPage then
+    LoadPage;
 end;
 
 procedure TfrmDBGrid.RxDBGrid1DblClick(Sender: TObject);
@@ -202,17 +205,6 @@ begin
   if FTitulo = AValue then Exit;
   FTitulo := AValue;
   frameTitulo1.lblTitulo.Caption := FTitulo;
-end;
-
-procedure TfrmDBGrid.OnExportToExcel(Sender: TObject);
-var
-  aFileName: String;
-begin
-
-  aFileName := ChangeFileExt(GetTempFileName, STR_EXCEL_EXTENSION);
-  RxDBGrid1.OnProgress := @ProgressBar;
-  RxDBGrid1.ExportToSpreedSheet(aFileName);
-
 end;
 
 procedure TfrmDBGrid.UpdatePageButtons;

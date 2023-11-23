@@ -1,4 +1,6 @@
 inherited frmContaCorrente: TfrmContaCorrente
+  Left = 161
+  Top = 121
   Caption = 'Conta Corrente'
   inherited BCButtonFocus1: TBCButtonFocus
     AnchorSideRight.Control = Owner
@@ -86,6 +88,24 @@ inherited frmContaCorrente: TfrmContaCorrente
           Filter.ItemIndex = -1
           Footers = <>
           KeyList.Strings = (          )
+        end      
+        item
+          ButtonStyle = cbsCheckboxColumn
+          PickList.Strings = (          )
+          Title.Alignment = taCenter
+          Title.Orientation = toHorizontal
+          Title.Caption = 'Padrão'
+          Width = 70
+          FieldName = 'padrao'
+          EditButtons = <>
+          Filter.DropDownRows = 0
+          Filter.EmptyValue = '(Empty)'
+          Filter.NotEmptyValue = '(Não está vazio)'
+          Filter.AllValue = '(Todos os valores)'
+          Filter.EmptyFont.Style = [fsItalic]
+          Filter.ItemIndex = -1
+          Footers = <>
+          KeyList.Strings = (          )
         end>
       FooterOptions.Active = True
       FooterOptions.RowCount = 1
@@ -150,6 +170,10 @@ inherited frmContaCorrente: TfrmContaCorrente
       item
         Name = 'saldo'
         DataType = ftCurrency
+      end    
+      item
+        Name = 'padrao'
+        DataType = ftBoolean
       end>
     PacketRecords = 0
     Left = 528
@@ -201,6 +225,16 @@ inherited frmContaCorrente: TfrmContaCorrente
       ReadOnly = False
       Required = False
       Precision = 2
+    end
+    object mdContaCorrentepadrao: TBooleanField
+      FieldKind = fkData
+      FieldName = 'padrao'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      DisplayValues = 'True;False'
     end
   end
 end

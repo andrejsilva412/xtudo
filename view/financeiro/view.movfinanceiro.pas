@@ -64,8 +64,6 @@ var
 
 implementation
 
-uses uconst;
-
 {$R *.lfm}
 
 { TComboBox }
@@ -113,13 +111,13 @@ begin
     end;
     inc(APage);
   until APage > AMaxPage;
+  AutoLoadPage := false;
 end;
 
 procedure TfrmMovFinanceiro.FormShow(Sender: TObject);
 begin
   inherited;
   CarregaMovimento;
-
 end;
 
 function TfrmMovFinanceiro.IDContaCorrente: Integer;

@@ -13,6 +13,7 @@ type
   { TfrmCadContaCorrente }
 
   TfrmCadContaCorrente = class(TfrmBasCadastro)
+    DBCheckBox1: TDBCheckBox;
     DBDateTimePicker1: TDBDateTimePicker;
     DBEdit1: TDBEdit;
     Label1: TLabel;
@@ -25,6 +26,7 @@ type
     mdContaCorrenteid: TLongintField;
     mdContaCorrenteidbanco: TLongintField;
     mdContaCorrentenumero: TStringField;
+    mdContaCorrentepadrao: TBooleanField;
     mdContaCorrentesaldo: TCurrencyField;
     RxDBComboBox1: TRxDBComboBox;
     RxDBCurrEdit1: TRxDBCurrEdit;
@@ -81,6 +83,7 @@ begin
   Sistema.Financeiro.ContaCorrente.Banco.ID := mdContaCorrenteidbanco.AsInteger;
   Sistema.Financeiro.ContaCorrente.Numero := mdContaCorrentenumero.AsString;
   Sistema.Financeiro.ContaCorrente.Saldo := mdContaCorrentesaldo.AsCurrency;
+  Sistema.Financeiro.ContaCorrente.Padrao := mdContaCorrentepadrao.AsBoolean;
   ModalResult := Sistema.Financeiro.ContaCorrente.Post;
 end;
 
@@ -100,6 +103,7 @@ begin
   mdContaCorrenteabertura.AsDateTime := Sistema.Financeiro.ContaCorrente.Abertura;
   mdContaCorrentenumero.AsString := Sistema.Financeiro.ContaCorrente.Numero;
   mdContaCorrentesaldo.AsCurrency := Sistema.Financeiro.ContaCorrente.Saldo;
+  mdContaCorrentepadrao.AsBoolean := Sistema.Financeiro.ContaCorrente.Padrao;
 end;
 
 end.

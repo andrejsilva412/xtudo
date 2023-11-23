@@ -36,6 +36,7 @@ type
       FData: TData;
       FID: Integer;
       FNumero: String;
+      FPadrao: Boolean;
       FSaldo: Currency;
     public
       constructor Create;
@@ -50,6 +51,7 @@ type
       property Abertura: TDateTime read FAbertura write FAbertura;
       property Saldo: Currency read FSaldo write FSaldo;
       property Data: TData read FData;
+      property Padrao: Boolean read FPadrao write FPadrao;
   end;
 
 implementation

@@ -22,7 +22,7 @@ uses
   view.contacorrente, view.cadcontacorrente, view.movfinanceiro, uframeperiodo,
   view.cadmovfinanceiro, controller.formsfinanceiro,
   controller.formsadministrativo, controller.movfinanceiro, model.movfinanceiro,
-  udatabaseutils;
+  udatabaseutils, uexport;
 
 
 {$R *.res}

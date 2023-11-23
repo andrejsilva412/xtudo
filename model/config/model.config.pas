@@ -164,52 +164,44 @@ begin
 end;
 
 procedure TModelConfig.Get(AConfig: TConfigTheme);
-var
-  FHTMLUtils: THTMLUtils;
 begin
 
-  FHTMLUtils := THTMLUtils.Create;
-  try
+  with AConfig do
+  begin
+    // Seta os valores Default
+    BackGround1 := HTMLToColor('#272727');
+    BackGround2 := HTMLToColor('#2F0505');
+    ForeGround := HTMLToColor('#85311B');
+    Secondary1 := HTMLToColor('#C1853B');
+    Secondary2 := HTMLToColor('#DB9327');
+    Secondary3 := HTMLToColor('#CC1B1B');
+    Secondary4 := HTMLToColor('#9E9E9E');
+    Secondary5 := HTMLToColor('#E2C52C');
+    Secondary6 := HTMLToColor('#0CA147');
+    Secondary7 := HTMLToColor('#F4F4F4');
 
-    with FHTMLUtils, AConfig do
-    begin
-      // Seta os valores Default
-      BackGround1 := HTMLToColor('#272727');
-      BackGround2 := HTMLToColor('#2F0505');
-      ForeGround := HTMLToColor('#85311B');
-      Secondary1 := HTMLToColor('#C1853B');
-      Secondary2 := HTMLToColor('#DB9327');
-      Secondary3 := HTMLToColor('#CC1B1B');
-      Secondary4 := HTMLToColor('#9E9E9E');
-      Secondary5 := HTMLToColor('#E2C52C');
-      Secondary6 := HTMLToColor('#0CA147');
-      Secondary7 := HTMLToColor('#F4F4F4');
-
-      BackGround2 := HTMLToColor(GetConfig(
-        'background2', ColorToHTML(BackGround2)));
-      BackGround2 := HTMLToColor(GetConfig(
-        'background2', ColorToHTML(BackGround2)));
-      ForeGround := HTMLToColor(GetConfig(
-        'foreground',  ColorToHTML(ForeGround)));
-      Secondary1 := HTMLToColor(GetConfig(
-        'secondary1',  ColorToHTML(Secondary1)));
-      Secondary2 := HTMLToColor(GetConfig(
-        'secondary2',  ColorToHTML(Secondary2)));
-      Secondary3 := HTMLToColor(GetConfig(
-         'secondary3', ColorToHTML(Secondary3)));
-      Secondary4 := HTMLToColor(GetConfig(
-         'secondary4', ColorToHTML(Secondary4)));
-      Secondary5 := HTMLToColor(GetConfig(
-         'secondary5', ColorToHTML(Secondary5)));
-      Secondary6 := HTMLToColor(GetConfig(
-         'secondary6', ColorToHTML(Secondary6)));
-      Secondary7 := HTMLToColor(GetConfig(
-         'secondary7',  ColorToHTML(Secondary7)));
-    end;
-
-  finally
-    FreeAndNil(FHTMLUtils);
+    BackGround2 := HTMLToColor(GetConfig(
+      'background2', ColorToHTML(BackGround2)));
+    BackGround2 := HTMLToColor(GetConfig(
+      'background2', ColorToHTML(BackGround2)));
+    ForeGround := HTMLToColor(GetConfig(
+      'foreground',  ColorToHTML(ForeGround)));
+    Secondary1 := HTMLToColor(GetConfig(
+      'secondary1',  ColorToHTML(Secondary1)));
+    Secondary2 := HTMLToColor(GetConfig(
+      'secondary2',  ColorToHTML(Secondary2)));
+    Secondary3 := HTMLToColor(GetConfig(
+       'secondary3', ColorToHTML(Secondary3)));
+    Secondary4 := HTMLToColor(GetConfig(
+       'secondary4', ColorToHTML(Secondary4)));
+    Secondary5 := HTMLToColor(GetConfig(
+       'secondary5', ColorToHTML(Secondary5)));
+    Secondary6 := HTMLToColor(GetConfig(
+       'secondary6', ColorToHTML(Secondary6)));
+    Secondary7 := HTMLToColor(GetConfig(
+       'secondary7',  ColorToHTML(Secondary7)));
   end;
+
 end;
 
 procedure TModelConfig.Get(AConfig: TConfigDatabase);

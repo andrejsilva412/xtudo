@@ -35,9 +35,9 @@ begin
   AContaCorrente.ID := inherited GetNextID();
 
   Result := inherited Insert('id = :id, idbanco = :idbanco, '
-    + 'numero = :numero, dataabertura = :dataabertura, saldo = :saldo',
+    + 'numero = :numero, dataabertura = :dataabertura, saldo = :saldo, padrao = :padrao',
     [AContaCorrente.ID, AContaCorrente.Banco.ID, AContaCorrente.Numero,
-    AContaCorrente.Abertura, AContaCorrente.Saldo]);
+    AContaCorrente.Abertura, AContaCorrente.Saldo, BoolToInt(AContaCorrente.Padrao)]);
 
 end;
 
@@ -45,8 +45,9 @@ function TModelContaCorrente.Update(AContaCorrente: TContaCorrente): Integer;
 begin
 
   Result := inherited Update('idbanco = :idbanco, numero = :numero, '
-    + 'dataabertura = :dataabertura, saldo = :saldo', 'where id = :id', [AContaCorrente.Banco.ID,
-     AContaCorrente.Numero, AContaCorrente.Abertura, AContaCorrente.Saldo, AContaCorrente.ID]);
+    + 'dataabertura = :dataabertura, saldo = :saldo, padrao = :padrao', 'where id = :id', [AContaCorrente.Banco.ID,
+     AContaCorrente.Numero, AContaCorrente.Abertura, AContaCorrente.Saldo,
+     BoolToInt(AContaCorrente.Padrao), AContaCorrente.ID]);
 
 end;
 
@@ -84,7 +85,7 @@ begin
   Result := C_REG_NOT_FOUND;
   ADataSet := TBufDataset.Create(nil);
   try
-    Select('id, idbanco, dataabertura, numero, saldo', 'where id = :id', [AID], ADataSet);
+    Select('id, idbanco, dataabertura, numero, saldo, padrao', 'where id = :id', [AID], ADataSet);
       AContaCorrente.Clear;
       if not ADataSet.IsEmpty then
       begin
@@ -94,6 +95,7 @@ begin
         AContaCorrente.Banco.Get(AContaCorrente.Banco.ID);
         AContaCorrente.Numero := ADataSet.FieldByName('numero').AsString;
         AContaCorrente.Saldo := ADataSet.FieldByName('saldo').AsCurrency;
+        AContaCorrente.Padrao := IntToBool(ADataSet.FieldByName('padrao').AsInteger);
         Result := C_REG_FOUND;
       end;
     finally
@@ -113,7 +115,7 @@ begin
   try
     Result := C_REG_FOUND;
     AMaxPage := 1;
-    ARecords := Select('id, dataabertura, idbanco, numero, saldo', '', [],
+    ARecords := Select('id, dataabertura, idbanco, numero, saldo, padrao', '', [],
                            'count(contacorrente.id) total', 'total', APage,
                            AMaxPage, ADataSet);
     ADataSet.First;
@@ -130,6 +132,7 @@ begin
         This.Abertura := ADataSet.FieldByName('dataabertura').AsDateTime;
         This.numero := ADataSet.FieldByName('numero').AsString;
         This.saldo := ADataSet.FieldByName('saldo').AsCurrency;
+        This.padrao := IntToBool(ADataSet.FieldByName('padrao').AsInteger);
       end;
       ADataSet.Next;
     end;

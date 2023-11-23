@@ -113,10 +113,6 @@ begin
     begin
       TWinControlTrocaCor.RegisterEdit(Components[i] as TWinControl);
     end;
-    if (Components[i] is TRxDBGrid) then
-    begin
-      TRxGridRegister.RegisterRxDBGrid(Components[i] as TRxDBGrid);
-    end;
   end;
   acGenerico1.Visible := false;
   acGenerico2.Visible := false;
